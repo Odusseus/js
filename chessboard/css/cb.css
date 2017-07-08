@@ -10,6 +10,11 @@
     height: 50px;
 }
 
+*.piece {
+    width: 48px;
+    height: 48px;
+}
+
 *.even0, *.odd1 {
     background-color: brown;
 }
