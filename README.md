@@ -1,7 +1,7 @@
 # js
 ## javascript experiments 
 
-Preview : http://htmlpreview.github.io/?https://github.com/Odusseus/js/blob/master/chessboard/cb.html
+Preview : https://cdn.rawgit.com/Odusseus/js/a47c18be/chessboard/cb.html
 
 ## Documentation
 
