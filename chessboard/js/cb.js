@@ -1,5 +1,12 @@
 var Ocb = {}
 
+new Vue({
+    el: '#root',
+    data: {
+        message: 'Hello World'
+    }
+})
+
 Ocb.boardWidth = 400;
 Ocb.squareWidth = 50;
 Ocb.pieceWidth = 48;
