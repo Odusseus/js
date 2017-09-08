@@ -26,8 +26,8 @@ Svsg.Queen = function(id) {
         column = Math.floor(Math.random() * Svsg.Globals.size);
         return column;
     };
-    this.GetReach = function(){
-       
+
+    this.GetReach = function(){       
         return 0;
     };
     this.column = this.GetColumn();
