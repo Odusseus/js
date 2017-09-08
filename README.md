@@ -2,7 +2,7 @@
 
 ## javascript experiments
 
-Preview : <https://cdn.rawgit.com/Odusseus/js/a47c18be/chessboard/cb.html>
+Preview : <https://rawgit.com/Odusseus/js/master/chessboard/cb.html>
 
 Preview : <https://rawgit.com/Odusseus/js/master/svsg/index.html>
 
