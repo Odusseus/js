@@ -31,7 +31,7 @@ Svsg.Queen = function(id) {
         return 0;
     };
     this.column = this.GetColumn();
-    this.reach = this.GetReach;
+    this.reach = this.GetReach();
 };
 
 Svsg.Go = function(size, outputFieldname) {
