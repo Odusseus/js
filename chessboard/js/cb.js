@@ -1,4 +1,4 @@
-var Ocb = {}
+var Ocb = {};
 
 Ocb.boardWidth = 400;
 Ocb.squareWidth = 50;
