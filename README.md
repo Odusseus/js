@@ -6,8 +6,9 @@ Preview : <https://cdn.rawgit.com/Odusseus/js/a47c18be/chessboard/cb.html>
 
 Preview : <https://rawgit.com/Odusseus/js/master/svsg/index.html>
 
-Preview : <https://cdn.rawgit.com/Odusseus/js/if_Hemingway_Wrote_Javascript/index.html>
+Preview : <https://rawgit.com/Odusseus/js/master/if_Hemingway_Wrote_Javascript/index.html>
 
+xxx
 ## Documentation
 
 <https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces>
