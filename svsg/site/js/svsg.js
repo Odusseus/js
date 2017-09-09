@@ -1,12 +1,17 @@
 var Svsg = {};
 
 Svsg.globals = function(){
-    this.size = 0;
+    this.size = 1;
 };
 
 Svsg.field = function(column, line){
     this.column = column;
     this.line = line;
+
+    if(!Svsg.globals.size){
+        Svsg.globals.size = 1;
+    }
+    this.id = Svsg.globals.size * (line - 1) + column; 
 };
 
 Svsg.queenDirectionEnum = {
@@ -48,61 +53,84 @@ Svsg.setOutput = function(outputFieldname, value) {
 
 Svsg.queen = function(id) {
     this.id = id;
-    this.line = this.id;
-    this.getColumn = function(){
-        var column = 0;        
+    this.line = 1;
+    this.column = 1;
+
+    this.setRandomColumn = function(){
+        var column = 1;        
         if(!Svsg.globals.size){
-            Svsg.globals.size = 0;
+            Svsg.globals.size = 1;
         }
-        column = Math.floor(Math.random() * Svsg.globals.size);
-        return column;
+        column = Math.floor(Math.random() * Svsg.globals.size) + 1;
+        this.column = column;
     };
-    this.column = this.getColumn();
+
+    this.getUpFields = function(){
+        var fields = [];
+        var line = this.line;
+        while(line < Svsg.globals.size) {
+            line++;
+            var field = new Svsg.field(this.column, line);
+            fields.push(field);
+        }
+        return fields;
+    };
+
+    this.getDownFields = function(){
+        var fields = [];
+        var line = this.line;
+        while(line > 1) {
+            line--;
+            var field = new Svsg.field(this.column, line);
+            fields.push(field);
+        }
+        return fields;
+    };
+
+    this.getRightFields = function(){
+        var fields = [];
+        var column = this.column;
+        while(column < Svsg.globals.size) {
+            column++;
+            var field = new Svsg.field(column, this.line);
+            fields.push(field);
+        }
+        return fields;
+    };
+
+    this.getLeftFields = function(){
+        var fields = [];
+        var column = this.column;
+        while(column > 1) {
+            column--;
+            var field = new Svsg.field(column, this.line);
+            fields.push(field);
+        }
+        return fields;
+    };
 
     this.getReach = function(){ 
         var fields = [];
+        new Svsg.field(this.column, this.line);
 
         for(var currentDirection = new Svsg.direction(Svsg.queenDirectionEnum);
              currentDirection.value < Object.keys(Svsg.queenDirectionEnum).length;
              currentDirection.next()
              ){
                  if(currentDirection == Svsg.queenDirectionEnum.UP) {
-                     var line = this.line;
-                    while(line < Svsg.globals.size) {
-                        line++;
-                        var field = new Svsg.field(this.column, line);
-                        fields.push(field);
-                    }
+                    fields.concat(this.getUpFields());
                 }
                 if(currentDirection == Svsg.queenDirectionEnum.DOWN) {
-                    var line = this.line;
-                   while(line > -1) {
-                       line--;
-                       var field = new Svsg.field(this.column, line);
-                       fields.push(field);
-                   }
+                    fields.concat(this.getDownFields());
                }
                 if(currentDirection == Svsg.queenDirectionEnum.RIGHT) {
-                    var column = this.column;
-                    while(column < Svsg.globals.size) {
-                        column++;
-                        var field = new Svsg.field(column, this.line);
-                        fields.push(field);
-                    }
+                    fields.concat(this.getRightFields());
                 }
                 if(currentDirection == Svsg.queenDirectionEnum.LEFT) {
-                    var column = this.column;
-                    while(column > -1) {
-                        column--;
-                        var field = new Svsg.field(column, this.line);
-                        fields.push(field);
-                    }
+                    fields.concat(this.getLeftFields());
                 }                
-         }
-
-        var directions = [""];
-
-        return 0;
+         }        
+        return fields;
     };
     this.reach = this.getReach();
 };
