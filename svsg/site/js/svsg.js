@@ -4,6 +4,11 @@ Svsg.globals = function(){
     this.size = 0;
 };
 
+Svsg.field = function(column, line){
+    this.column = column;
+    this.line = line;
+};
+
 Svsg.queenDirectionEnum = {
     UP :        {value: 0, name: "Up", code: "UP"},
     UPRIGHT :   {value: 1, name: "Up-Right", code: "UR"},
@@ -55,12 +60,45 @@ Svsg.queen = function(id) {
     this.column = this.getColumn();
 
     this.getReach = function(){ 
-        
-        // for(var currentDirection = Svsg.QueenDirectionEnum.UP;
-        //     currentDirection.value < Svsg.QueenDirectionEnum.MAX; 
-        //     ){
+        var fields = [];
 
-        // }
+        for(var currentDirection = new Svsg.direction(Svsg.queenDirectionEnum);
+             currentDirection.value < Object.keys(Svsg.queenDirectionEnum).length;
+             currentDirection.next()
+             ){
+                 if(currentDirection == Svsg.queenDirectionEnum.UP) {
+                     var line = this.line;
+                    while(line < Svsg.globals.size) {
+                        line++;
+                        var field = new Svsg.field(this.column, line);
+                        fields.push(field);
+                    }
+                }
+                if(currentDirection == Svsg.queenDirectionEnum.DOWN) {
+                    var line = this.line;
+                   while(line > -1) {
+                       line--;
+                       var field = new Svsg.field(this.column, line);
+                       fields.push(field);
+                   }
+               }
+                if(currentDirection == Svsg.queenDirectionEnum.RIGHT) {
+                    var column = this.column;
+                    while(column < Svsg.globals.size) {
+                        column++;
+                        var field = new Svsg.field(column, this.line);
+                        fields.push(field);
+                    }
+                }
+                if(currentDirection == Svsg.queenDirectionEnum.LEFT) {
+                    var column = this.column;
+                    while(column > -1) {
+                        column--;
+                        var field = new Svsg.field(column, this.line);
+                        fields.push(field);
+                    }
+                }                
+         }
 
         var directions = [""];
 
