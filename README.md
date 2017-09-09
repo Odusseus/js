@@ -4,7 +4,7 @@
 
 Preview : <https://rawgit.com/Odusseus/js/master/chessboard/cb.html>
 
-Preview : <https://rawgit.com/Odusseus/js/master/svsg/index.html>
+Preview : <https://rawgit.com/Odusseus/js/master/svsg/site/index.html>
 
 Preview : <https://rawgit.com/Odusseus/js/master/if_Hemingway_Wrote_Javascript/index.html>
 

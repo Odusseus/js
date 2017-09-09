@@ -13,6 +13,10 @@ Svsg.SetOutput = function(outputFieldname, value) {
 Svsg.GetColumn = function(){
     var column = 0;
 
+    if(!Svsg.Globals.size) {
+        Svsg.Globals.size = 0;
+    }
+
     column = Math.floor(Math.random() * Svsg.Globals.size);
 
     return column;
