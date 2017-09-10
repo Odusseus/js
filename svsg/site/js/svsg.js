@@ -8,6 +8,10 @@ Svsg.formatNumberLength = function(num, length) {
     return r;
 };
 
+Svsg.sortNumber = function(a,b) {
+    return a - b;
+};
+
 Svsg.globals = function(){
     this.size = 1;
 };
@@ -68,10 +72,10 @@ Svsg.setOutput = function(outputFieldname, value) {
     outputField.innerHTML = value;
 };
 
-Svsg.queen = function(id) {
+Svsg.queen = function(id, column, line) {
     this.id = id;
-    this.line = 1;
-    this.column = 1;
+    this.column = column;
+    this.line = line;
 
     this.setRandomColumn = function(){
         var column = 1;        
@@ -97,7 +101,7 @@ Svsg.queen = function(id) {
         var fields = [];
         var column = this.column;
         var line = this.line;
-        while(colimn < Svsg.globals.size && line < Svsg.globals.size) {
+        while(column < Svsg.globals.size && line < Svsg.globals.size) {
             column++;
             line++;
             var field = new Svsg.field(column, line);
@@ -141,7 +145,7 @@ Svsg.queen = function(id) {
         return fields;
     };
 
-    this.getLeftDownFields = function(){
+    this.getDownLeftFields = function(){
         var fields = [];
         var column = this.column;
         var line = this.line;
@@ -165,7 +169,7 @@ Svsg.queen = function(id) {
         return fields;
     };
 
-    this.getLeftUpFields = function(){
+    this.getUpLeftFields = function(){
         var fields = [];
         var column = this.column;
         var line = this.line;
@@ -182,67 +186,70 @@ Svsg.queen = function(id) {
 
     this.setReach = function(){ 
         var fields = [];
-        new Svsg.field(this.column, this.line);
+        var currentField = new Svsg.field(this.column, this.line);
+        fields.push(currentField);
 
-        for(var currentDirection = new Svsg.direction(Svsg.queenDirectionEnum);
-             currentDirection.value < Object.keys(Svsg.queenDirectionEnum).length;
-             currentDirection.next()
+        for(var direction = new Svsg.direction(Svsg.queenDirectionEnum);
+            direction.currentDirection.value < Object.keys(Svsg.queenDirectionEnum).length - 1;
+            direction.next()
              ){
-                if(currentDirection == Svsg.queenDirectionEnum.UP) {
-                    fields.concat(this.getUpFields());
+                if(direction.currentDirection == Svsg.queenDirectionEnum.UP) {
+                    fields.push.apply(fields,this.getUpFields());
                 }
-                if(currentDirection == Svsg.queenDirectionEnum.UPRIGHT) {
-                    fields.concat(this.getUpRightFields());
+                if(direction.currentDirection == Svsg.queenDirectionEnum.UPRIGHT) {
+                    fields.push.apply(fields,this.getUpRightFields());
                 }
-                if(currentDirection == Svsg.queenDirectionEnum.RIGHT) {
-                    fields.concat(this.getRightFields());
+                if(direction.currentDirection == Svsg.queenDirectionEnum.RIGHT) {
+                    fields.push.apply(fields,this.getRightFields());
                 }
-                if(currentDirection == Svsg.queenDirectionEnum.DOWNRIGHT) {
-                    fields.concat(this.getDownRightFields());
+                if(direction.currentDirection == Svsg.queenDirectionEnum.DOWNRIGHT) {
+                    fields.push.apply(fields,this.getDownRightFields());
                 }
-                if(currentDirection == Svsg.queenDirectionEnum.DOWN) {
-                    fields.concat(this.getDownFields());
+                if(direction.currentDirection == Svsg.queenDirectionEnum.DOWN) {
+                    fields.push.apply(fields,this.getDownFields());
                 }
-                if(currentDirection == Svsg.queenDirectionEnum.DOWNLEFT) {
-                    fields.concat(this.getDownLeftFields());
+                if(direction.currentDirection == Svsg.queenDirectionEnum.DOWNLEFT) {
+                    fields.push.apply(fields,this.getDownLeftFields());
                 }
-                if(currentDirection == Svsg.queenDirectionEnum.LEFT) {
-                    fields.concat(this.getLeftFields());
+                if(direction.currentDirection == Svsg.queenDirectionEnum.LEFT) {
+                    fields.push.apply(fields,this.getLeftFields());
                 }
-                if(currentDirection == Svsg.queenDirectionEnum.UPLEFT) {
-                    fields.concat(this.getUpLeftFields());
+                if(direction.currentDirection == Svsg.queenDirectionEnum.UPLEFT) {
+                    fields.push.apply(fields,this.getUpLeftFields());
                 }                
          }        
          this.reach = fields;
     };
     
-    this.getFieldIds = function(){
+    this.fieldIds = [];
+    this.setFieldIds = function(){
         var ids = [];
         this.reach.forEach(function(element) {
             ids.push(element.id);            
         }, this);
-        ids.sort();
+        ids.sort(Svsg.sortNumber);
+        this.fieldIds = ids;
     };
-    this.fieldIds = this.getFieldIds();
     this.displayFields = function(){
         var output = "";
-        var repeat = Svsg.globals.size * Svsg.getSizeLenght();
+        var repeat = (Svsg.globals.size * Svsg.getSizeLenght()) + Svsg.getSizeLenght() + (Svsg.globals.size * 1);
         output += "<div>"; 
-        for(var line = Svsg.globals.size; line > 1; line--){
+        for(var line = Svsg.globals.size; line > 0; line--){
             output += '_'.repeat(repeat); 
+            output += "<br>"; 
             output += Svsg.formatNumberLength(line, Svsg.getSizeLenght())  + "|";
             for(var column = 1; column < Svsg.globals.size; column++){
                 var id = Svsg.ColumnLineToId(column, line);
               if(this.fieldIds[id] != undefined){
-                output += Svsg.formatNumberLength(1, Svsg.getSizeLenght());
-            }
-            else {
-                output += '.'.repeat(repeat); 
-              }
+                output += 'X'.repeat(Svsg.getSizeLenght()) + "|";
+                }
+                else {
+                    output += 'O'.repeat(Svsg.getSizeLenght()) + "|"; 
+                }
             }
             output += "<br>"; 
-            output += '_'.repeat(repeat); 
         }
+        output += '_'.repeat(repeat); 
         output += "</div>"; 
         return output;
     };
@@ -254,25 +261,29 @@ Svsg.go = function(size, outputFieldname) {
 
     var fields = Svsg.globals.size * Svsg.globals.size;
 
-    var queens = [];
+    // var queens = [];
     
-    for(i = 0; i < Svsg.globals.size; i++){
-        var queen = new Svsg.queen(i);
-        queen.setReach();
+    // for(i = 0; i < Svsg.globals.size; i++){
+    //     var queen = new Svsg.queen(i);
+    //     queen.setReach();
 
-        queens.push(new Svsg.queen(i));
-    }
+    //     queens.push(new Svsg.queen(i));
+    // }
     
-    var queensMessage = "";
-    queens.forEach(function(element) {
-      queensMessage += "(" + element.id + "," +element.line +","+ element.column + "),";
-  }, this); 
+//     var queensMessage = "";
+//     queens.forEach(function(element) {
+//       queensMessage += "(" + element.id + "," +element.line +","+ element.column + "),";
+//   }, this); 
 
    //var output = fields + " : " + queensMessage;
 
     //Svsg.setOutput(outputFieldname, output);
 
-    var output = queens[0].displayFields();
+    var queen = new Svsg.queen(1, 1, 1);
+    queen.setReach();
+    queen.setFieldIds();
+
+    var output = queen.displayFields();
     Svsg.setOutput(outputFieldname, output);
 };
 
