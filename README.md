@@ -20,3 +20,5 @@ Preview : if_Hemingway_Wrote_Javascript
 <https://www.nostarch.com/hemingway>
 
 <https://www.st-andrews.ac.uk/news/archive/2017/title,1539813,en.php>
+
+<https://www.codeproject.com/Articles/250102/An-HTML-progressbar-using-web-workers>
