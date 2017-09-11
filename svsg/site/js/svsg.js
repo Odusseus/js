@@ -20,7 +20,7 @@ Svsg.globals = function(){
     //     this.maxFields = this.size * this.size;
     // };
 };
-Svsg.getSizeLenght = function(){
+Svsg.getSizeLength = function(){
             var string = "" + Svsg.globals.size;
             return string.length;
         };
@@ -237,28 +237,28 @@ Svsg.queen = function(id, column, line) {
     };
     this.displayFields = function(){
         var output = "";
-        var repeat = (Svsg.globals.size * Svsg.getSizeLenght()) + Svsg.getSizeLenght() + (Svsg.globals.size * 1);
+        var repeat = (Svsg.globals.size * Svsg.getSizeLength()) + Svsg.getSizeLength() + (Svsg.globals.size * 1);
         output += "<div>"; 
         for(var line = Svsg.globals.size; line > 0; line--){
             output += '_'.repeat(repeat); 
             output += "<br>"; 
-            output += Svsg.formatNumberLength(line, Svsg.getSizeLenght())  + "|";
+            output += Svsg.formatNumberLength(line, Svsg.getSizeLength())  + "|";
             for(var column = 1; column <= Svsg.globals.size; column++){
                 var id = Svsg.ColumnLineToId(column, line);
               if(this.fieldIds[id]){
-                output += 'x'.repeat(Svsg.getSizeLenght()) + "|";
+                output += 'x'.repeat(Svsg.getSizeLength()) + "|";
                 }
                 else {
-                    output += 'o'.repeat(Svsg.getSizeLenght()) + "|"; 
+                    output += 'o'.repeat(Svsg.getSizeLength()) + "|"; 
                 }
             }
             output += "<br>"; 
         }
         output += '_'.repeat(repeat); 
         output += "<br>"; 
-        output += Svsg.formatNumberLength(this.id, Svsg.getSizeLenght())  + "|"; 
+        output += Svsg.formatNumberLength(this.id, Svsg.getSizeLength())  + "|"; 
         for(var column = 1; column <= Svsg.globals.size; column++){
-            output += Svsg.formatNumberLength(column, Svsg.getSizeLenght())  + "|";            
+            output += Svsg.formatNumberLength(column, Svsg.getSizeLength())  + "|";            
         }
         output += "</div>"; 
         return output;
