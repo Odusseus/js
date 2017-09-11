@@ -1,4 +1,4 @@
-var Ocb = {}
+var Ocb = {};
 
 new Vue({
     el: '#root',
