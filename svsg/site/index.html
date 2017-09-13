@@ -4,12 +4,17 @@
     <script type="text/javascript" src="js/svsg.js" defer></script>
 </html>
 <body>
+    <script type="text/javascript">
+        setTimeout(function(){
+        location = ''
+        },60000)
+    </script>
     <h2>
         Square size: 
     </h2>
     <input id="input_square_size" type="number" value="10">
     <button onclick="Svsg.go(document.getElementById('input_square_size').value, 'output')">Go</button>
-    <progress value="5" max="100"></progress>
+    <progress id="progres" value="0" max="100"></progress>
     <div>
         Output:
         <div id="output">?</div>

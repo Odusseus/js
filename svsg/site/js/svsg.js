@@ -12,7 +12,7 @@ Svsg.sortNumber = function(a,b) {
     return a - b;
 };
 
-Svsg.globals = function(){
+Svsg.global = function(){
     this.size = 1;
     this.maxFields = 1;
     // this.setSize = function(size){
@@ -21,15 +21,15 @@ Svsg.globals = function(){
     // };
 };
 Svsg.getSizeLength = function(){
-            var string = "" + Svsg.globals.size;
+            var string = "" + Svsg.global.size;
             return string.length;
         };
 
 Svsg.ColumnLineToId = function(column, line){
-    if(!Svsg.globals.size){
-        Svsg.globals.size = 1;
+    if(!Svsg.global.size){
+        Svsg.global.size = 1;
     }
-    var id = Svsg.globals.size * (line - 1) + column; 
+    var id = Svsg.global.size * (line - 1) + column; 
     return id;
 };
 
@@ -77,24 +77,36 @@ Svsg.setOutput = function(outputFieldname, value) {
     outputField.innerHTML = value;
 };
 
-Svsg.queen = function(id, column, line) {
+aSvsg.queen = function(id, column, line) {
     this.id = id;
     this.column = column;
     this.line = line;
 
+    this.idToColumnAndLine = function(){
+        var columns = this.id;
+        var maxColumn = Svsg.global.size / Svsg.global.size;
+        var line = 1;
+        while(columns < maxColumn){
+            line++;
+            columns-= maxColumn;
+        }
+        this.column = columns;
+        this.line = line;
+    };
+
     this.setRandomColumn = function(){
         var column = 1;        
-        if(!Svsg.globals.size){
-            Svsg.globals.size = 1;
+        if(!Svsg.global.size){
+            Svsg.global.size = 1;
         }
-        column = Math.floor(Math.random() * Svsg.globals.size) + 1;
+        column = Math.floor(Math.random() * Svsg.global.size) + 1;
         this.column = column;
     };
 
     this.getUpFields = function(){
         var fields = [];
         for(var line = this.line;
-            line <= Svsg.globals.size;
+            line <= Svsg.global.size;
             line++) {
             var field = new Svsg.field(this.column, line);
             fields.push(field);
@@ -106,7 +118,7 @@ Svsg.queen = function(id, column, line) {
         var fields = [];
         for(var column = this.column,
             line = this.line;
-            column <= Svsg.globals.size && line <= Svsg.globals.size;
+            column <= Svsg.global.size && line <= Svsg.global.size;
             column++,
             line++) {
             var field = new Svsg.field(column, line);
@@ -117,7 +129,7 @@ Svsg.queen = function(id, column, line) {
 
     this.getRightFields = function(){
         var fields = [];        
-        for(var column = this.column;column <= Svsg.globals.size; column++) {
+        for(var column = this.column;column <= Svsg.global.size; column++) {
             var field = new Svsg.field(column, this.line);
             fields.push(field);
         }
@@ -127,7 +139,7 @@ Svsg.queen = function(id, column, line) {
     this.getDownRightFields = function(){
         var fields = [];
         for( var column = this.column, line = this.line;
-             column <= Svsg.globals.size && line >= 1;
+             column <= Svsg.global.size && line >= 1;
              column ++, 
              line--) {
             var field = new Svsg.field(column, line);
@@ -175,7 +187,7 @@ Svsg.queen = function(id, column, line) {
         var fields = [];
         for( var column = this.column, 
              line = this.line;
-             column >= 1 && line <= Svsg.globals.size;
+             column >= 1 && line <= Svsg.global.size;
              column--,
              line++) {
             var field = new Svsg.field(column, line);
@@ -183,6 +195,15 @@ Svsg.queen = function(id, column, line) {
         }
         return fields;
     };
+
+    this.hash = 0;
+  
+    this.setHash = function(){
+        for(var i = 0; i < this.reach.length; i++) {
+            this.hash += this.reach[i];
+        }
+    };
+    
 
     this.reach = [];
 
@@ -221,6 +242,7 @@ Svsg.queen = function(id, column, line) {
                 }                
          }        
          this.reach = fields;
+         this.setHash();
     };
     
     this.fieldIds = [];
@@ -230,20 +252,19 @@ Svsg.queen = function(id, column, line) {
             ids.push(element.id);            
         }, this);
 
-        for(var i = 1; i <= Svsg.globals.maxFields; i++){
-            
+        for(var i = 1; i <= Svsg.global.maxFields; i++){
             this.fieldIds[i] = ids.indexOf(i) != -1;
         }        
     };
     this.displayFields = function(){
         var output = "";
-        var repeat = (Svsg.globals.size * Svsg.getSizeLength()) + Svsg.getSizeLength() + (Svsg.globals.size * 1);
+        var repeat = (Svsg.global.size * Svsg.getSizeLength()) + Svsg.getSizeLength() + (Svsg.global.size * 1);
         output += "<div>"; 
-        for(var line = Svsg.globals.size; line > 0; line--){
+        for(var line = Svsg.global.size; line > 0; line--){
             output += '_'.repeat(repeat); 
             output += "<br>"; 
             output += Svsg.formatNumberLength(line, Svsg.getSizeLength())  + "|";
-            for(var column = 1; column <= Svsg.globals.size; column++){
+            for(var column = 1; column <= Svsg.global.size; column++){
                 var id = Svsg.ColumnLineToId(column, line);
               if(this.fieldIds[id]){
                 output += 'x'.repeat(Svsg.getSizeLength()) + "|";
@@ -257,7 +278,7 @@ Svsg.queen = function(id, column, line) {
         output += '_'.repeat(repeat); 
         output += "<br>"; 
         output += Svsg.formatNumberLength(this.id, Svsg.getSizeLength())  + "|"; 
-        for(var column = 1; column <= Svsg.globals.size; column++){
+        for(var column = 1; column <= Svsg.global.size; column++){
             output += Svsg.formatNumberLength(column, Svsg.getSizeLength())  + "|";            
         }
         output += "</div>"; 
@@ -267,48 +288,37 @@ Svsg.queen = function(id, column, line) {
 
 Svsg.go = function(size, outputFieldname) {
 
-    Svsg.globals.size = 1 * size;
-    Svsg.globals.maxFields = Svsg.globals.size * Svsg.globals.size;
+    Svsg.global.size = 1 * size;
+    Svsg.global.maxFields = Svsg.global.size * Svsg.global.size;
 
-    //Svsg.globals.setSize(size);
+    //Svsg.global.setSize(size);
 
-    var fields = Svsg.globals.maxFields;
-
- 
-    
-    //for(i = 1; i < Svsg.globals.size; i++){
-    //     var queen = new Svsg.queen(i);
-    //     queen.setReach();
-
-    //     queens.push(new Svsg.queen(i));
-    // }
-    
-//     var queensMessage = "";
-//     queens.forEach(function(element) {
-//       queensMessage += "(" + element.id + "," +element.line +","+ element.column + "),";
-//   }, this); 
-
-   //var output = fields + " : " + queensMessage;
-
-    //Svsg.setOutput(outputFieldname, output);
-
-    // var queen = new Svsg.queen(1, 10, 6);
-    // queen.setReach();
-    // queen.setFieldIds();
+    var fields = Svsg.global.maxFields;
 
     var queens = [];
     var output = "";
-    for( var id = 0, i = 1; i <= Svsg.globals.size; i++ ) {
-        for( var j = 1; j <= Svsg.globals.size; j++ ) {
-            id++;
-            var queen = new Svsg.queen(id, j, i);
+    var progres = document.getElementById("progres");
+
+    // for( var maxColumn = Svsg.global.size * Svsg.global.size,    
+    for( var maxColumn = Svsg.global.size * Svsg.global.size,
+         id = 1;
+         id <= maxColumn;
+         id++ ) {
+         var queen = new Svsg.queen(id);
+            queen.idToColumnAndLine();
             queen.setReach();
             queen.setFieldIds();
             queens.push(queen);
             output += queen.displayFields();
+            progres.value = id;
         }
-    }    
-
+        
+    // var queen = new Svsg.queen(1);
+    // queen.idToColumnAndLine();
+    // queen.setReach();
+    // queen.setFieldIds();
+    // queens.push(queen);
+    // output += queen.displayFields();
     Svsg.setOutput(outputFieldname, output);
 };
 
