@@ -13,10 +13,13 @@
         Square size: 
     </h2>
     <input id="input_square_size" type="number" value="10">
-    <button onclick="Svsg.go(document.getElementById('input_square_size').value, 'output')">Go</button>
+    <button onclick="Svsg.init(document.getElementById('input_square_size').value, 'output')">Init</button>
     <progress id="progres" value="0" max="100"></progress>
+    <button onclick="Svsg.goShadok('output')">Go Shadok</button>
+   
     <div>
         Output:
         <div id="output">?</div>
     </div>
+
 </body>
