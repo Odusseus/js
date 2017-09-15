@@ -35,6 +35,12 @@ Svsg.colorEnum = {
  WHITE :  {value: 1, name: "White", code: "W"},
 };
 
+Svsg.pad = function(num, size) {
+    var s = num+"";
+    while (s.length < size) s = "0" + s;
+    return s;
+};
+
 // Svsg.sleep = function(ms) {
 //     return new Promise(resolve >= setTimeout(resolve, ms));
 // };
@@ -294,7 +300,34 @@ Svsg.queen = function(id) {
     // };
     
 
+
     this.reaches = [];
+    this.othersFieldsIds = [];
+    this.othersFieldsIds.push(null);
+    this.initOthersFieldsIds = function(){
+        for(var i = 1; i <= Svsg.global.maxFields; i++){
+            var field = new Svsg.field().setId(i);
+            this.othersFieldsIds.push(field);
+        }
+        return this;
+    };
+
+    this.addOthersFieldsIds = function(queen){
+        // if(!queen){
+        //     console.log(" No queen ");
+        //     return;
+        // }
+
+        if(queen.reaches){
+            queen.reaches.forEach(function(queen) {
+                console.log(queen.id);
+                this.othersFieldsIds[queen.id].piece = queen;
+            }, this);
+        } 
+        else {
+            console.log(" No reaches " + queen.id);
+        }
+    };
 
     this.setReaches = function(){ 
         var fields = [];
@@ -331,13 +364,15 @@ Svsg.queen = function(id) {
                 }                
          }        
          this.reaches = fields;
+         this.initOthersFieldsIds();
          //this.setHash();
     };
     
     this.fieldIds = [];
     this.setFieldIds = function(){
         var ids = [];
-        this.reaches.foreach(function(element) {
+
+        this.reaches.forEach(function(element) {
             ids.push(element.id);            
         }, this);
 
@@ -346,21 +381,12 @@ Svsg.queen = function(id) {
         }        
     };
 
-    this.othersFieldsIds = [];
-    this.initOthersFieldsIds = function(){
-        for(var i = 1; i <= Svsg.global.maxFields; i++){
-            var field = new Svsg.field().setId(i);
-            this.othersFieldsIds.push(field);
+    this.getOtherFieldPiece = function(){
+        if(this.othersFieldsIds[id].piece){
+            return this.othersFieldsIds[id].piece;
         }
-        return this;
+        return null; 
     };
-
-    this.addOthersFieldsIds = function(queen){
-        queen.reaches.foreach(function(element) {
-            this.othersFieldsIds[element.id].piece = queen;
-       }, this);
-    };
-
 
     this.displayFields = function(){
         var output = "";
@@ -421,7 +447,8 @@ Svsg.board = function(){
                     output += '_'.repeat(Svsg.getSizeLength()) + "|";
                 }
                 else {
-                    output += 'd'.repeat(Svsg.getSizeLength()) + "|"; 
+                   // output += 'd'.repeat(Svsg.getSizeLength()) + "|"; 
+                    output += Svsg.pad(Svsg.ColumnLineToId(column, line), Svsg.getSizeLength())  + "|"; 
                 }
             }
             output += "<br>"; 
@@ -457,6 +484,9 @@ Svsg.init = function(size, outputFieldname) {
          var queen = new Svsg.queen(id);
             queen.setReaches();
             queen.setFieldIds();
+            // if(id > 5) {
+            //     queen.reaches=[]; // TODO test
+            // }
             queens.push(queen);
             //output += queen.displayFields();
             progres.value = id;         
@@ -466,12 +496,14 @@ Svsg.init = function(size, outputFieldname) {
     Svsg.setOutput(outputFieldname, output);
 };
 
-Svsg.goShadok = function(outputFieldname, checkShadokOutput) {
+Svsg.goShadok = function(outputFieldname, checkShadokOutput, colisionOutput) {
 
     Svsg.setOutput(outputFieldname, "");
     Svsg.setOutput(checkShadokOutput, "?");
+    Svsg.setOutput(colisionOutput, "?");
 
     var queensTarget = [];
+    queensTarget.push(null);
     var boardTarget = new Svsg.board().init();
     for(var i = 1, line = 1; i <= Svsg.global.size; i++, line++){
         var column = Math.floor(Math.random() * Svsg.global.size) + 1;
@@ -493,10 +525,27 @@ Svsg.checkShadok = function(outputFieldname, checkShadokOutput) {
         Svsg.setOutput(checkShadokOutput, "?");
     
         for(var i = 1; i <= Svsg.global.size; i++){
-
-            for(var j = i; j <= Svsg.global.size; i++){
-
-                Svsg.global.queenTarget[i].addOthersFieldsIds(Svsg.global.queenTarget[j]);                
+            for(var j = 1; j <= Svsg.global.size; j++){
+                if( i != j) {
+                    Svsg.global.queenTarget[i].addOthersFieldsIds(Svsg.global.queenTarget[j]);                
+                }
             }     
-        }            
+        }     
+        
+        var output = "";
+        for( i = 1; i <= Svsg.global.size; i++){
+            var piece = Svsg.global.queenTarget[i].getOtherFieldPiece();
+            if(piece){
+                output += "( queen : " + Svsg.global.queenTarget[i].id + ", " + piece.id +") ";
+            }
+        }
+        
+        checkShadok = "NOK";
+        if( output == ""){
+            checkShadok = "OK";
+        }
+
+        Svsg.setOutput(outputFieldname, output);
+        Svsg.setOutput(checkShadokOutput, checkShadok);
+        
     };
