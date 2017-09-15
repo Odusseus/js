@@ -22,9 +22,9 @@ Svsg.colorEnum = {
  WHITE :  {value: 1, name: "White", code: "W"},
 };
 
-Svsg.sleep = function(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-};
+// Svsg.sleep = function(ms) {
+//     return new Promise(resolve >= setTimeout(resolve, ms));
+// };
 
 Svsg.formatNumberLength = function(num, length) {
     var r = "" + num;
@@ -86,6 +86,11 @@ Svsg.field = function(){
         this.line = line;
         this.column = columns;
 
+        return this;
+    };
+
+    this.setPiece = function(piece){
+        this.piece = piece;
         return this;
     };
 
@@ -348,8 +353,8 @@ Svsg.queen = function(id) {
         output += '_'.repeat(repeat); 
         output += "<br>"; 
         output += Svsg.formatNumberLength(this.id, Svsg.getSizeLength())  + "|"; 
-        for(var column = 1; column <= Svsg.global.size; column++){
-            output += Svsg.formatNumberLength(column, Svsg.getSizeLength())  + "|";            
+        for(var _column = 1; _column <= Svsg.global.size; _column++){
+            output += Svsg.formatNumberLength(_column, Svsg.getSizeLength())  + "|";            
         }
         output += "</div>"; 
         return output;
@@ -357,13 +362,13 @@ Svsg.queen = function(id) {
 };
 
 Svsg.board = function(){
-    this.board = [];
-    this.board.push(null);
+    this.fields = [];
+    this.fields.push(null);
 
     this.init = function(){
         for(var i = 1; i <= Svsg.global.maxFields; i++){
             var field = new Svsg.field().setId(i);
-            this.board.push(field);
+            this.fields.push(field);
         }
         return this;
     };
@@ -379,8 +384,8 @@ Svsg.board = function(){
             for(var column = 1; column <= Svsg.global.size; column++){
                 var id = Svsg.ColumnLineToId(column, line);
 
-                if(!this.board[id].piece){
-                    output += '.'.repeat(Svsg.getSizeLength()) + "|";
+                if(!this.fields[id].piece){
+                    output += '_'.repeat(Svsg.getSizeLength()) + "|";
                 }
                 else {
                     output += 'd'.repeat(Svsg.getSizeLength()) + "|"; 
@@ -391,8 +396,8 @@ Svsg.board = function(){
         output += '_'.repeat(repeat); 
         output += "<br>"; 
         output += 'x'.repeat(Svsg.getSizeLength())  + "|"; 
-        for(var column = 1; column <= Svsg.global.size; column++){
-            output += Svsg.formatNumberLength(column, Svsg.getSizeLength())  + "|";            
+        for(var _column = 1; _column <= Svsg.global.size; _column++){
+            output += Svsg.formatNumberLength(_column, Svsg.getSizeLength())  + "|";            
         }
         output += "</div>"; 
         return output;
@@ -406,6 +411,7 @@ Svsg.init = function(size, outputFieldname) {
     var fields = Svsg.global.maxFields;
 
     var queens = [];
+    queens.push(null);
     var output = "";
     var progres = document.getElementById("progres");
 
@@ -418,23 +424,24 @@ Svsg.init = function(size, outputFieldname) {
             queen.setFieldIds();
             queens.push(queen);
             //output += queen.displayFields();
-            progres.value = id;
-            Svsg.sleep(1000);
-            
+            progres.value = id;         
         }
         Svsg.global.queens = queens;
        output += "ok";
     Svsg.setOutput(outputFieldname, output);
 };
 
-Svsg.goShadok = function(outputFieldname) {
-    var board = new Svsg.board().init();
-    var line = 1;
+Svsg.goShadok = function(outputFieldname, checkShadokOutput) {
 
-    for(var i = 1; i <= Svsg.global.size; i++){
+    Svsg.setOutput(outputFieldname, "");
+    Svsg.setOutput(checkShadokOutput, "?");
+
+    var board = new Svsg.board().init();
+    for(var i = 1, line = 1; i <= Svsg.global.size; i++, line++){
         var column = Math.floor(Math.random() * Svsg.global.size) + 1;
         var id = ((line - 1) * Svsg.global.size) + column;
-        board[id] = Svsg.global.queens[id];
+        board.fields[id].piece = Svsg.global.queens[id];
+        //board[id].setPiece(Svsg.global.queens[id]);
     }
 
     var output = board.display();

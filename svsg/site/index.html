@@ -4,19 +4,19 @@
     <script type="text/javascript" src="js/svsg.js" defer></script>
 </html>
 <body>
-    <script type="text/javascript">
-        setTimeout(function(){
-        location = ''
-        },60000)
-    </script>
-    <h2>
-        Square size: 
-    </h2>
+    <h1>Shadoc vs Gibis</h1>
+
+    <label></label> Square size</label>
     <input id="input_square_size" type="number" value="10">
     <button onclick="Svsg.init(document.getElementById('input_square_size').value, 'output')">Init</button>
     <progress id="progres" value="0" max="100"></progress>
-    <button onclick="Svsg.goShadok('output')">Go Shadok</button>
-   
+    <br>
+    <button onclick="Svsg.goShadok('output', 'checkShadokOutput')">Go Shadok</button>
+    <button onclick="Svsg.checkShadok('checkShadokOutput')">Check Shadok</button>
+    <div>
+            Output:
+            <div id="checkShadokOutput">?</div>
+        </div>
     <div>
         Output:
         <div id="output">?</div>
