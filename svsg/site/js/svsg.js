@@ -331,7 +331,7 @@ Svsg.queen = function(id) {
 
     this.setReaches = function(){ 
         var fields = [];
-        var currentField = new Svsg.field(this.column, this.line);
+        var currentField = new Svsg.field().ColumnLineToId(this.column, this.line);
         fields.push(currentField);
 
         for(var i = 0, direction = new Svsg.direction(Svsg.queenDirectionEnum);
