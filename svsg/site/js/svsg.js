@@ -6,7 +6,7 @@ Svsg.globalTemplate = function(){
     this.queens = [];
     this.queensTarget = [];
     this.boardTarget = null;
-    this.shadok = null;
+    this.shadok = undefined;
 
     this.init = function(){
         this.size = 1;
@@ -14,7 +14,7 @@ Svsg.globalTemplate = function(){
         this.queens = [];
         this.queensTarget = [];
         this.boardTarget = null;
-        this.shadok = null;
+        this.shadok = undefined;
         return this;
     };
 };
@@ -508,11 +508,20 @@ Svsg.init = function(size, outputFieldname, tryOutput) {
 };
 
 Svsg.goShadok = function(outputFieldname, checkShadokOutput, colisionOutput, tryOutput) {
-    Svsg.global.shadok = setInterval(Svsg.throwShadok(outputFieldname, checkShadokOutput, colisionOutput, tryOutput), 3000);
+    if (Svsg.global.shadok == undefined) {
+     Svsg.global.shadok = setInterval(function () { Svsg.throwShadok(outputFieldname, checkShadokOutput, colisionOutput, tryOutput)}, 1);
+    }
+    //Svsg.global.shadok = setInterval(Svsg.test(), 3000);
 };
 
 Svsg.stopShadok = function() {
     clearInterval(Svsg.global.shadok);
+};
+
+Svsg.test = function(){
+    var tryFied = document.getElementById(tryOutput);
+    var tryValue = Number(tryFied.innerHTML) + 1;
+    Svsg.setOutput(tryOutput, tryValue);
 };
 
 Svsg.throwShadok = function(outputFieldname, checkShadokOutput, colisionOutput, tryOutput) {
