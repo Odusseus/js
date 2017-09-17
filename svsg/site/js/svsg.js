@@ -1,6 +1,7 @@
 var Svsg = {};
 
 Svsg.globalTemplate = function(){
+    this.init = undefined;
     this.size = 1;
     this.maxFields = 1;
     this.queens = [];
@@ -151,7 +152,7 @@ Svsg.direction = function(directionEnum) {
 };
 
 Svsg.setOutput = function(outputFieldname, value) {
-    
+    //console.log(outputFieldname + value);
     var outputField = document.getElementById(outputFieldname);
     outputField.innerHTML = value;
 };
@@ -324,18 +325,18 @@ Svsg.queen = function() {
 
     this.addOthersFieldsIds = function(queen){
         // if(!queen){
-        //     console.log(" No queen ");
+        //     //console.log(" No queen ");
         //     return;
         // }
 
         if(queen.reaches){
             queen.reaches.forEach(function(field) {
-                //console.log(field.id);
+                ////console.log(field.id);
                 this.othersFieldsIds[field.id].piece = field.piece;
             }, this);
         } 
         else {
-            console.log(" No reaches " + queen.id);
+            //console.log(" No reaches " + queen.id);
         }
     };
 
@@ -474,16 +475,24 @@ Svsg.board = function(){
     };
 };
 
-Svsg.init = function(size, outputFieldname, tryOutput) {
+Svsg.initialization = function(size, outputFieldname, collisionOutput, tryOutput) {
 
     Svsg.global.init();
 
     Svsg.global.size = 1 * size;
     Svsg.global.maxFields = Svsg.global.size * Svsg.global.size;
     var fields = Svsg.global.maxFields;
+    
+    //console.log(1);
+    Svsg.setOutput(outputFieldname, "");
+    //console.log(2);
+    Svsg.setOutput(tryOutput, "");
+    //console.log(3);
+    Svsg.setOutput(collisionOutput, "");
 
     var queens = [];
     queens.push(null);
+
     var output = "";
     var progres = document.getElementById("progres");
 
@@ -494,44 +503,48 @@ Svsg.init = function(size, outputFieldname, tryOutput) {
          var queen = new Svsg.queen().setId(id);
             queen.setReaches();
             queen.setFieldIds();
-            // if(id > 5) {
-            //     queen.reaches=[]; // TODO test
-            // }
             queens.push(queen);
             //output += queen.displayFields();
-            progres.value = id;         
-        }
-        Svsg.global.queens = queens;
-       output += "ok";
+
+            var progressValue = (id / Svsg.global.maxFields) * 100;
+
+            progres.value = progressValue;
+    }
+    Svsg.global.queens = queens;
+
+    //console.log(4);
     Svsg.setOutput(outputFieldname, output);
-    Svsg.setOutput(tryOutput, "");    
 };
 
-Svsg.goShadok = function(outputFieldname, checkShadokOutput, colisionOutput, tryOutput) {
-    if (Svsg.global.shadok == undefined) {
-     Svsg.global.shadok = setInterval(function () { Svsg.throwShadok(outputFieldname, checkShadokOutput, colisionOutput, tryOutput)}, 1);
+Svsg.goShadok = function(outputFieldname, checkShadokOutput, collisionOutput, tryOutput) {
+    if (!Svsg.global.initialization) {
+        Svsg.initialization(document.getElementById('input_square_size').value, 'output', 'collisionOutput','tryOutput');
+        Svsg.global.initialization = true;
+    }
+   
+    if (!Svsg.global.shadok) {
+     Svsg.global.shadok = setInterval(function () { Svsg.throwShadok(outputFieldname, checkShadokOutput, collisionOutput, tryOutput); }, 1);
     }
     //Svsg.global.shadok = setInterval(Svsg.test(), 3000);
 };
 
 Svsg.stopShadok = function() {
     clearInterval(Svsg.global.shadok);
+    Svsg.global.shadok = undefined;
 };
 
-Svsg.test = function(){
-    var tryFied = document.getElementById(tryOutput);
-    var tryValue = Number(tryFied.innerHTML) + 1;
-    Svsg.setOutput(tryOutput, tryValue);
-};
+Svsg.throwShadok = function(outputFieldname, checkShadokOutput, collisionOutput, tryOutput) {
 
-Svsg.throwShadok = function(outputFieldname, checkShadokOutput, colisionOutput, tryOutput) {
-
+    //console.log(5);
     Svsg.setOutput(outputFieldname, "");
+    //console.log(6);
     Svsg.setOutput(checkShadokOutput, "?");
-    Svsg.setOutput(colisionOutput, "?");
+    //console.log(7);
+    Svsg.setOutput(collisionOutput, "?");
 
     var tryFied = document.getElementById(tryOutput);
     var tryValue = Number(tryFied.innerHTML) + 1;
+    //console.log(8);
     Svsg.setOutput(tryOutput, tryValue);
 
     var queensTarget = [];
@@ -545,17 +558,20 @@ Svsg.throwShadok = function(outputFieldname, checkShadokOutput, colisionOutput, 
     }
 
     var output = boardTarget.display();
+    //console.log(9);
     Svsg.setOutput(outputFieldname, output);
 
     Svsg.global.queenTarget = queensTarget;
     Svsg.global.boardTarget = boardTarget;
 
-    Svsg.checkShadok(colisionOutput, checkShadokOutput);
+    Svsg.checkShadok(collisionOutput, checkShadokOutput);
 };
 
 Svsg.checkShadok = function(outputFieldname, checkShadokOutput) {
     
+        //console.log(10);
         Svsg.setOutput(outputFieldname, "");
+        //console.log(11);
         Svsg.setOutput(checkShadokOutput, "?");
     
         for(var i = 1; i <= Svsg.global.size; i++){
@@ -574,13 +590,15 @@ Svsg.checkShadok = function(outputFieldname, checkShadokOutput) {
             }
         }
         
-        checkShadok = "NOK";
+        checkShadok = "<span style='color:red'>Not found!!!</span>";
         if( output == ""){
-            checkShadok = "OK";
+            checkShadok = "<span style='color:green'>FOUND !!!</span>";
             Svsg.stopShadok();
         }
 
+        //console.log(12);
         Svsg.setOutput(outputFieldname, output);
+        //console.log(13);
         Svsg.setOutput(checkShadokOutput, checkShadok);
         
     };
