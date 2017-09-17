@@ -8,11 +8,12 @@
 
     <label>Square size</label>
     <input id="input_square_size" type="number" value="10">
-    <button onclick="Svsg.init(document.getElementById('input_square_size').value, 'output')">Init</button>
+    <button onclick="Svsg.init(document.getElementById('input_square_size').value, 'output', 'tryOutput')">Init</button>
     <progress id="progres" value="0" max="100"></progress>
     <br>
-    <button onclick="Svsg.goShadok('output', 'checkShadokOutput', 'colisionOutput')">Go Shadok</button>
-    <button onclick="Svsg.checkShadok('colisionOutput','checkShadokOutput')">Check Shadok</button>
+    <button onclick="Svsg.goShadok('output', 'checkShadokOutput', 'colisionOutput', 'tryOutput')">Go Shadok</button>
+    <!-- <button onclick="Svsg.checkShadok('colisionOutput','checkShadokOutput')">Check Shadok</button> -->
+    <button onclick="Svsg.stopShadok()">Stop Shadok</button>
     <div>
         Check:
         <div id="checkShadokOutput">?</div>
@@ -20,6 +21,10 @@
     <div>
         Colision:
         <div id="colisionOutput">?</div>
+    </div>
+    <div>
+        Try:
+        <div id="tryOutput">0</div>
     </div>
     <div>
         Output:

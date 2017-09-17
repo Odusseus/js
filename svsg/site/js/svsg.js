@@ -6,6 +6,7 @@ Svsg.globalTemplate = function(){
     this.queens = [];
     this.queensTarget = [];
     this.boardTarget = null;
+    this.shadok = null;
 
     this.init = function(){
         this.size = 1;
@@ -13,6 +14,7 @@ Svsg.globalTemplate = function(){
         this.queens = [];
         this.queensTarget = [];
         this.boardTarget = null;
+        this.shadok = null;
         return this;
     };
 };
@@ -113,7 +115,7 @@ Svsg.field = function(){
         return this;
     };
 
-    this.ColumnLineToId = function(column, line) {
+    this.setColumnLineToId = function(column, line) {
         this.column = column;
         this.line = line;
         this.id = Svsg.ColumnLineToId(column, line); 
@@ -154,8 +156,14 @@ Svsg.setOutput = function(outputFieldname, value) {
     outputField.innerHTML = value;
 };
 
-Svsg.queen = function(id) {
-    this.id = id;
+Svsg.queen = function() {
+    this.id = 0;
+
+    this.setId = function(id) {
+        this.id = id;
+        this.idToColumnAndLine();
+        return this;
+    };
 
     this.idToColumn = function(){
         var columns = this.id;
@@ -200,10 +208,10 @@ Svsg.queen = function(id) {
 
     this.getUpFields = function(){
         var fields = [];
-        for(var line = this.line;
+        for(var line = this.line + 1 ;
             line <= Svsg.global.size;
             line++) {
-            var field = new Svsg.field().ColumnLineToId(this.column, line);
+            var field = new Svsg.field().setColumnLineToId(this.column, line).setPiece(this);
             fields.push(field);
         }
         return fields;
@@ -211,12 +219,12 @@ Svsg.queen = function(id) {
 
     this.getUpRightFields = function(){
         var fields = [];
-        for(var column = this.column,
-            line = this.line;
+        for(var column = this.column + 1,
+            line = this.line + 1;
             column <= Svsg.global.size && line <= Svsg.global.size;
             column++,
             line++) {
-            var field = new Svsg.field().ColumnLineToId(column, line);
+            var field = new Svsg.field().setColumnLineToId(column, line).setPiece(this);
             fields.push(field);
         }
         return fields;
@@ -224,8 +232,10 @@ Svsg.queen = function(id) {
 
     this.getRightFields = function(){
         var fields = [];        
-        for(var column = this.column;column <= Svsg.global.size; column++) {
-            var field = new Svsg.field().ColumnLineToId(column, this.line);
+        for(var column = this.column + 1;
+            column <= Svsg.global.size; 
+            column++) {
+            var field = new Svsg.field().setColumnLineToId(column, this.line).setPiece(this);
             fields.push(field);
         }
         return fields;
@@ -233,11 +243,11 @@ Svsg.queen = function(id) {
 
     this.getDownRightFields = function(){
         var fields = [];
-        for( var column = this.column, line = this.line;
+        for( var column = this.column + 1, line = this.line - 1;
              column <= Svsg.global.size && line >= 1;
              column ++, 
              line--) {
-            var field = new Svsg.field().ColumnLineToId(column, line);
+            var field = new Svsg.field().setColumnLineToId(column, line).setPiece(this);
             fields.push(field);
         }
         return fields;
@@ -245,10 +255,10 @@ Svsg.queen = function(id) {
 
     this.getDownFields = function(){
         var fields = [];
-        for( var line = this.line;
+        for( var line = this.line - 1;
              line >= 1;
              line--) {
-            var field = new Svsg.field().ColumnLineToId(this.column, line);
+            var field = new Svsg.field().setColumnLineToId(this.column, line).setPiece(this);
             fields.push(field);
         }
         return fields;
@@ -256,12 +266,12 @@ Svsg.queen = function(id) {
 
     this.getDownLeftFields = function(){
         var fields = [];
-        for( var column = this.column, 
-             line = this.line;
+        for( var column = this.column - 1,  
+             line = this.line - 1;
              column >= 1 && line >= 1;
              column--,
              line--) {
-            var field = new Svsg.field().ColumnLineToId(column, line);
+            var field = new Svsg.field().setColumnLineToId(column, line).setPiece(this);
             fields.push(field);
         }
         return fields;
@@ -269,10 +279,10 @@ Svsg.queen = function(id) {
 
     this.getLeftFields = function(){
         var fields = [];
-        for(var column = this.column;
+        for(var column = this.column - 1;
             column >= 1;
             column--) {
-            var field = new Svsg.field().ColumnLineToId(column, this.line);
+            var field = new Svsg.field().setColumnLineToId(column, this.line).setPiece(this);
             fields.push(field);
         }
         return fields;
@@ -280,12 +290,12 @@ Svsg.queen = function(id) {
 
     this.getUpLeftFields = function(){
         var fields = [];
-        for( var column = this.column, 
-             line = this.line;
+        for( var column = this.column - 1, 
+             line = this.line + 1;
              column >= 1 && line <= Svsg.global.size;
              column--,
              line++) {
-            var field = new Svsg.field().ColumnLineToId(column, line);
+            var field = new Svsg.field().setColumnLineToId(column, line).setPiece(this);
             fields.push(field);
         }
         return fields;
@@ -319,9 +329,9 @@ Svsg.queen = function(id) {
         // }
 
         if(queen.reaches){
-            queen.reaches.forEach(function(queen) {
-                console.log(queen.id);
-                this.othersFieldsIds[queen.id].piece = queen;
+            queen.reaches.forEach(function(field) {
+                //console.log(field.id);
+                this.othersFieldsIds[field.id].piece = field.piece;
             }, this);
         } 
         else {
@@ -331,7 +341,7 @@ Svsg.queen = function(id) {
 
     this.setReaches = function(){ 
         var fields = [];
-        var currentField = new Svsg.field().ColumnLineToId(this.column, this.line);
+        var currentField = new Svsg.field().setColumnLineToId(this.column, this.line).setPiece(this);
         fields.push(currentField);
 
         for(var i = 0, direction = new Svsg.direction(Svsg.queenDirectionEnum);
@@ -382,8 +392,8 @@ Svsg.queen = function(id) {
     };
 
     this.getOtherFieldPiece = function(){
-        if(this.othersFieldsIds[id].piece){
-            return this.othersFieldsIds[id].piece;
+        if(this.othersFieldsIds[this.id].piece){
+            return this.othersFieldsIds[this.id].piece;
         }
         return null; 
     };
@@ -464,7 +474,7 @@ Svsg.board = function(){
     };
 };
 
-Svsg.init = function(size, outputFieldname) {
+Svsg.init = function(size, outputFieldname, tryOutput) {
 
     Svsg.global.init();
 
@@ -481,7 +491,7 @@ Svsg.init = function(size, outputFieldname) {
          id = 1;
          id <= maxColumn;
          id++ ) {
-         var queen = new Svsg.queen(id);
+         var queen = new Svsg.queen().setId(id);
             queen.setReaches();
             queen.setFieldIds();
             // if(id > 5) {
@@ -494,13 +504,26 @@ Svsg.init = function(size, outputFieldname) {
         Svsg.global.queens = queens;
        output += "ok";
     Svsg.setOutput(outputFieldname, output);
+    Svsg.setOutput(tryOutput, "");    
 };
 
-Svsg.goShadok = function(outputFieldname, checkShadokOutput, colisionOutput) {
+Svsg.goShadok = function(outputFieldname, checkShadokOutput, colisionOutput, tryOutput) {
+    Svsg.global.shadok = setInterval(Svsg.throwShadok(outputFieldname, checkShadokOutput, colisionOutput, tryOutput), 3000);
+};
+
+Svsg.stopShadok = function() {
+    clearInterval(Svsg.global.shadok);
+};
+
+Svsg.throwShadok = function(outputFieldname, checkShadokOutput, colisionOutput, tryOutput) {
 
     Svsg.setOutput(outputFieldname, "");
     Svsg.setOutput(checkShadokOutput, "?");
     Svsg.setOutput(colisionOutput, "?");
+
+    var tryFied = document.getElementById(tryOutput);
+    var tryValue = Number(tryFied.innerHTML) + 1;
+    Svsg.setOutput(tryOutput, tryValue);
 
     var queensTarget = [];
     queensTarget.push(null);
@@ -517,6 +540,8 @@ Svsg.goShadok = function(outputFieldname, checkShadokOutput, colisionOutput) {
 
     Svsg.global.queenTarget = queensTarget;
     Svsg.global.boardTarget = boardTarget;
+
+    Svsg.checkShadok(colisionOutput, checkShadokOutput);
 };
 
 Svsg.checkShadok = function(outputFieldname, checkShadokOutput) {
@@ -543,6 +568,7 @@ Svsg.checkShadok = function(outputFieldname, checkShadokOutput) {
         checkShadok = "NOK";
         if( output == ""){
             checkShadok = "OK";
+            Svsg.stopShadok();
         }
 
         Svsg.setOutput(outputFieldname, output);
