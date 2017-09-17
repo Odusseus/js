@@ -8,6 +8,9 @@ Svsg.globalTemplate = function(){
     this.queensTarget = [];
     this.boardTarget = null;
     this.shadok = undefined;
+    this.try = 0;
+    this.isRequestToStop = false;
+    this.modulusOutput = 200;
 
     this.init = function(){
         this.size = 1;
@@ -16,6 +19,7 @@ Svsg.globalTemplate = function(){
         this.queensTarget = [];
         this.boardTarget = null;
         this.shadok = undefined;
+        this.try = 0;
         return this;
     };
 };
@@ -39,14 +43,10 @@ Svsg.colorEnum = {
 };
 
 Svsg.pad = function(num, size) {
-    var s = num+"";
+    var s = num + "";
     while (s.length < size) s = "0" + s;
     return s;
 };
-
-// Svsg.sleep = function(ms) {
-//     return new Promise(resolve >= setTimeout(resolve, ms));
-// };
 
 Svsg.formatNumberLength = function(num, length) {
     var r = "" + num;
@@ -62,7 +62,12 @@ Svsg.sortNumber = function(a,b) {
 
 Svsg.getSizeLength = function(){
             var string = "" + Svsg.global.size;
-            return string.length;
+
+            length = string.length;
+            if(length < 2){
+                length = 2;
+            }
+            return length;
         };
 
 Svsg.ColumnLineToId = function(column, line){
@@ -72,13 +77,6 @@ Svsg.ColumnLineToId = function(column, line){
     var id = Svsg.global.size * (line - 1) + column; 
     return id;
 };
-
-// Svsg.field = function(column, line){
-//     this.column = column;
-//     this.line = line;
-  
-//     this.id = Svsg.ColumnLineToId(column, line); 
-// };
 
 Svsg.field = function(){
     this.column = 1;
@@ -401,7 +399,7 @@ Svsg.queen = function() {
 
     this.displayFields = function(){
         var output = "";
-        var repeat = (Svsg.global.size * Svsg.getSizeLength()) + Svsg.getSizeLength() + (Svsg.global.size * 0.5);
+        var repeat = (Svsg.global.size * Svsg.getSizeLength()) + Svsg.getSizeLength();
         output += "<div>"; 
         for(var line = Svsg.global.size; line > 0; line--){
             output += '_'.repeat(repeat); 
@@ -445,28 +443,27 @@ Svsg.board = function(){
 
     this.display = function(){
         var output = "";
-        var repeat = (Svsg.global.size * Svsg.getSizeLength()) + Svsg.getSizeLength() + (Svsg.global.size * 1);
+        var repeat = (Svsg.global.size * Svsg.getSizeLength());
         output += "<div>"; 
         for(var line = Svsg.global.size; line > 0; line--){
-            output += '_'.repeat(repeat); 
+            output += '--'.repeat(repeat); 
             output += "<br>"; 
             output += Svsg.formatNumberLength(line, Svsg.getSizeLength())  + "|";
             for(var column = 1; column <= Svsg.global.size; column++){
                 var id = Svsg.ColumnLineToId(column, line);
 
                 if(!this.fields[id].piece){
-                    output += '_'.repeat(Svsg.getSizeLength()) + "|";
+                    output += '&nbsp;&nbsp;'.repeat(Svsg.getSizeLength()) + "|";
                 }
                 else {
-                   // output += 'd'.repeat(Svsg.getSizeLength()) + "|"; 
                     output += Svsg.pad(Svsg.ColumnLineToId(column, line), Svsg.getSizeLength())  + "|"; 
                 }
             }
             output += "<br>"; 
         }
-        output += '_'.repeat(repeat); 
+        output += '--'.repeat(repeat); 
         output += "<br>"; 
-        output += 'x'.repeat(Svsg.getSizeLength())  + "|"; 
+        output += '&nbsp;&nbsp;'.repeat(Svsg.getSizeLength())  + "|"; 
         for(var _column = 1; _column <= Svsg.global.size; _column++){
             output += Svsg.formatNumberLength(_column, Svsg.getSizeLength())  + "|";            
         }
@@ -475,19 +472,19 @@ Svsg.board = function(){
     };
 };
 
-Svsg.initialization = function(size, outputFieldname, collisionOutput, tryOutput) {
+Svsg.initialization = function(size, modulusOutput, outputFieldname, checkShadokOutput, collisionOutput, tryOutput) {
 
     Svsg.global.init();
 
     Svsg.global.size = 1 * size;
     Svsg.global.maxFields = Svsg.global.size * Svsg.global.size;
     var fields = Svsg.global.maxFields;
+
+    Svsg.global.modulusOutput = 1 * modulusOutput;
     
-    //console.log(1);
     Svsg.setOutput(outputFieldname, "");
-    //console.log(2);
+    Svsg.setOutput(checkShadokOutput, "");
     Svsg.setOutput(tryOutput, "");
-    //console.log(3);
     Svsg.setOutput(collisionOutput, "");
 
     var queens = [];
@@ -518,34 +515,34 @@ Svsg.initialization = function(size, outputFieldname, collisionOutput, tryOutput
 
 Svsg.goShadok = function(outputFieldname, checkShadokOutput, collisionOutput, tryOutput) {
     if (!Svsg.global.initialization) {
-        Svsg.initialization(document.getElementById('input_square_size').value, 'output', 'collisionOutput','tryOutput');
+        Svsg.initialization(document.getElementById('input_square_size').value, document.getElementById('input_modulusOutput').value, 'output', 'checkShadokOutput', 'collisionOutput','tryOutput');
         Svsg.global.initialization = true;
     }
    
     if (!Svsg.global.shadok) {
      Svsg.global.shadok = setInterval(function () { Svsg.throwShadok(outputFieldname, checkShadokOutput, collisionOutput, tryOutput); }, 1);
     }
-    //Svsg.global.shadok = setInterval(Svsg.test(), 3000);
+};
+
+Svsg.requestStopShadok = function() {
+    Svsg.global.isRequestToStop = true;
 };
 
 Svsg.stopShadok = function() {
     clearInterval(Svsg.global.shadok);
     Svsg.global.shadok = undefined;
+    Svsg.global.isRequestToStop = false;
 };
 
 Svsg.throwShadok = function(outputFieldname, checkShadokOutput, collisionOutput, tryOutput) {
+    Svsg.global.try++;
 
-    //console.log(5);
-    Svsg.setOutput(outputFieldname, "");
-    //console.log(6);
-    Svsg.setOutput(checkShadokOutput, "?");
-    //console.log(7);
-    Svsg.setOutput(collisionOutput, "?");
-
-    var tryFied = document.getElementById(tryOutput);
-    var tryValue = Number(tryFied.innerHTML) + 1;
-    //console.log(8);
-    Svsg.setOutput(tryOutput, tryValue);
+    if(Svsg.global.try % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){
+        Svsg.setOutput(outputFieldname, "");
+        Svsg.setOutput(checkShadokOutput, "?");
+        Svsg.setOutput(collisionOutput, "?");
+        Svsg.setOutput(tryOutput, Svsg.global.try);
+    }
 
     var queensTarget = [];
     queensTarget.push(null);
@@ -557,22 +554,29 @@ Svsg.throwShadok = function(outputFieldname, checkShadokOutput, collisionOutput,
         queensTarget.push(Svsg.global.queens[id]);
     }
 
-    var output = boardTarget.display();
-    //console.log(9);
-    Svsg.setOutput(outputFieldname, output);
-
+    
     Svsg.global.queenTarget = queensTarget;
     Svsg.global.boardTarget = boardTarget;
+    
+    var found = Svsg.checkShadok(collisionOutput, checkShadokOutput);
+   
+    if( found || Svsg.global.try % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){
+        var output = boardTarget.display();
+        Svsg.setOutput(outputFieldname, output);
+        Svsg.setOutput(tryOutput, Svsg.global.try);
+    }
 
-    Svsg.checkShadok(collisionOutput, checkShadokOutput);
+    if(found || Svsg.global.isRequestToStop){
+        Svsg.stopShadok();
+    }
 };
 
 Svsg.checkShadok = function(outputFieldname, checkShadokOutput) {
     
         //console.log(10);
-        Svsg.setOutput(outputFieldname, "");
+        //Svsg.setOutput(outputFieldname, "");
         //console.log(11);
-        Svsg.setOutput(checkShadokOutput, "?");
+        //Svsg.setOutput(checkShadokOutput, "?");
     
         for(var i = 1; i <= Svsg.global.size; i++){
             for(var j = 1; j <= Svsg.global.size; j++){
@@ -583,22 +587,31 @@ Svsg.checkShadok = function(outputFieldname, checkShadokOutput) {
         }     
         
         var output = "";
+        var found = true;
         for( i = 1; i <= Svsg.global.size; i++){
             var piece = Svsg.global.queenTarget[i].getOtherFieldPiece();
             if(piece){
-                output += "( queen : " + Svsg.global.queenTarget[i].id + ", " + piece.id +") ";
+                found = false;
+                if(Svsg.global.try % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){
+                    output += "( " + Svsg.global.queenTarget[i].id + " and " + piece.id +") ";
+                }
             }
         }
+
+        //Test found
+        // if( Svsg.global.try == 350){
+        //     found = true;
+        // } 
         
         checkShadok = "<span style='color:red'>Not found!!!</span>";
-        if( output == ""){
+        if(found){
             checkShadok = "<span style='color:green'>FOUND !!!</span>";
-            Svsg.stopShadok();
         }
 
-        //console.log(12);
-        Svsg.setOutput(outputFieldname, output);
-        //console.log(13);
-        Svsg.setOutput(checkShadokOutput, checkShadok);
+        if( found || Svsg.global.try % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){
+            Svsg.setOutput(outputFieldname, output);
+            Svsg.setOutput(checkShadokOutput, checkShadok);
+        }
         
+        return found;
     };

@@ -4,28 +4,42 @@
     <script type="text/javascript" src="js/svsg.js" defer></script>
 </html>
 <body>
-    <h1>Shadok vs Gibis</h1>
+    <h1>Shadok vs Gibi</h1>
 
-    <label>Square size</label>
-    <input id="input_square_size" type="number" value="8">
-    <button onclick="Svsg.initialization(document.getElementById('input_square_size').value, 'output', 'collisionOutput',  'tryOutput')">initialization</button>
-    <progress id="progres" value="0" max="100"></progress>
-    <br>
-    <button onclick="Svsg.goShadok('output', 'checkShadokOutput', 'collisionOutput', 'tryOutput')">Go Shadok</button>
-    <!-- <button onclick="Svsg.checkShadok('collisionOutput','checkShadokOutput')">Check Shadok</button> -->
-    <button onclick="Svsg.stopShadok()">Stop Shadok</button>
-    <div>
-        Check:
-        <div id="checkShadokOutput">?</div>
-    </div>
-    <div>
-        collision:
-        <div id="collisionOutput">?</div>
-    </div>
-    <div>
-        Try:
-        <div id="tryOutput">0</div>
-    </div>
+    <table>
+        <tr>
+            <th>The Shadok tries to solve the n Queens problem.
+            <br>The Gibi is coming soon...</th>
+        </tr>
+        <tr>
+            <td><label>Board size and number of Queens </label></td>
+            <td><input id="input_square_size" type="number" value="8"></td> 
+        </tr>
+        <tr>
+            <td><label>Display modulus output</label></td>
+            <td><input id="input_modulusOutput" type="number" value="1"></td> 
+        </tr>
+        <tr>
+            <td><label> <button onclick="Svsg.initialization(document.getElementById('input_square_size').value, document.getElementById('input_modulusOutput').value, 'output', 'checkShadokOutput', 'collisionOutput',  'tryOutput')">initialization</button></label></td>
+            <td><progress id="progres" value="0" max="100"></progress></td> 
+          </tr>
+          <tr>
+            <td><button onclick="Svsg.goShadok('output', 'checkShadokOutput', 'collisionOutput', 'tryOutput')">Go Shadok</button></td>
+            <td><button onclick="Svsg.requestStopShadok()">Stop Shadok</button></td> 
+          </tr>
+          <tr>
+            <td>Try</td>
+            <td><div id="tryOutput">0</div></td> 
+          </tr>
+          <tr>
+            <td>Queens collision :</td>
+            <td><div id="collisionOutput">?</div></td> 
+          </tr>
+          <tr>
+            <td>Result :</td>
+            <td><div id="checkShadokOutput">?</div></td> 
+          </tr>
+      </table>       
     <div>
         Output:
         <div id="output">?</div>
