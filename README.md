@@ -2,14 +2,11 @@
 
 ## javascript experiments
 
-Preview : <https://rawgit.com/Odusseus/js/master/chessboard/cb.html>
+Chessboard : <https://rawgit.com/Odusseus/js/master/chessboard/cb.html>
 
-Preview : SvsG <https://rawgit.com/Odusseus/js/master/svsg/site/index.html>
+Shadok vs Gibis : SvsG <https://rawgit.com/Odusseus/js/master/svsg/site/index.html>
 
-Preview : SvsG tests <https://rawgit.com/Odusseus/js/master/svsg/test/index.html>
-
-Preview : if_Hemingway_Wrote_Javascript
-<https://rawgit.com/Odusseus/js/master/if_Hemingway_Wrote_Javascript/index.html>
+if_Hemingway_Wrote_Javascript : <https://rawgit.com/Odusseus/js/master/if_Hemingway_Wrote_Javascript/index.html>
 
 ## Documentation
 
