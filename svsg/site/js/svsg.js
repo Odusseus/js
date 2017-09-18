@@ -24,7 +24,59 @@ Svsg.globalTemplate = function(){
     };
 };
 
+Svsg.outputElement = function(id, value){
+    this.id = id;
+    this.value = value;
+};
+
 Svsg.global = new Svsg.globalTemplate().init();
+
+Svsg.outputTemplate = function(){
+    this.setOutput = function(id, value) {
+        var outputField = document.getElementById(id);
+        outputField.innerHTML = value;
+    };
+    this.setProgressBarValue = function(id, value) {
+        var outputField = document.getElementById(id);
+        outputField.value = value;
+    };
+    this.outputFieldname;
+    this.setOutputFieldname = function(id, value){
+        this.outputFieldname = new Svsg.outputElement(id, value);
+        this.setOutput(id, value);
+        return this;
+    };
+    this.progress;
+    this.setProgress = function(id, value){
+        this.progress = new Svsg.outputElement(id, value);
+        this.setProgressBarValue(id, value);
+        return this;
+    };
+    this.setProgressValue = function(value){
+        this.progress.value = value;
+        this.setProgressBarValue(this.progress.id, value);
+    };
+    this.checkShadokOutput;
+    this.setCheckShadokOutput = function(id, value){
+        this.checkShadokOutput = new Svsg.outputElement(id, value);
+        this.setOutput(id, value);
+        return this;
+    };
+    this.collisionOutput;
+    this.setCollisionOutput = function(id, value){
+        this.collisionOutput = new Svsg.outputElement(id, value);
+        this.setOutput(id, value);
+        return this;
+    };
+    this.tryOutput;
+    this.setTryOutput = function(id, value){
+        this.tryOutput = new Svsg.outputElement(id, value);
+        this.setOutput(id, value);
+        return this;
+    };
+};
+
+Svsg.output = new Svsg.outputTemplate();
 
 Svsg.queenDirectionEnum = {
     UP :        {value: 0, name: "Up", code: "UP"},
@@ -135,7 +187,7 @@ Svsg.direction = function(directionEnum) {
     this.setCurrentDirection = function(){
         for(var key in this.directionEnum){
             var element = this.directionEnum[key];
-            if(element.value == this.current){                
+            if(element.value == this.current){
                 return element;
             }
         }
@@ -150,7 +202,6 @@ Svsg.direction = function(directionEnum) {
 };
 
 Svsg.setOutput = function(outputFieldname, value) {
-    //console.log(outputFieldname + value);
     var outputField = document.getElementById(outputFieldname);
     outputField.innerHTML = value;
 };
@@ -382,7 +433,7 @@ Svsg.queen = function() {
         var ids = [];
 
         this.reaches.forEach(function(element) {
-            ids.push(element.id);            
+            ids.push(element.id);
         }, this);
 
         for(var i = 1; i <= Svsg.global.maxFields; i++){
@@ -472,26 +523,25 @@ Svsg.board = function(){
     };
 };
 
-Svsg.initialization = function(size, modulusOutput, outputFieldname, checkShadokOutput, collisionOutput, tryOutput) {
+Svsg.initialization = function(size, modulusOutput, outputFieldname, checkShadokOutput, collisionOutput, tryOutput, progress) {
 
     Svsg.global.init();
+    Svsg.output.setOutputFieldname(outputFieldname, "")
+    .setCheckShadokOutput(checkShadokOutput, "")
+    .setCollisionOutput(collisionOutput, "")
+    .setTryOutput(tryOutput, "")
+    .setProgress(progress,0);
 
     Svsg.global.size = 1 * size;
     Svsg.global.maxFields = Svsg.global.size * Svsg.global.size;
     var fields = Svsg.global.maxFields;
 
     Svsg.global.modulusOutput = 1 * modulusOutput;
-    
-    Svsg.setOutput(outputFieldname, "");
-    Svsg.setOutput(checkShadokOutput, "");
-    Svsg.setOutput(tryOutput, "");
-    Svsg.setOutput(collisionOutput, "");
 
     var queens = [];
     queens.push(null);
 
     var output = "";
-    var progres = document.getElementById("progres");
 
     for( var maxColumn = Svsg.global.maxFields,
          id = 1;
@@ -505,17 +555,16 @@ Svsg.initialization = function(size, modulusOutput, outputFieldname, checkShadok
 
             var progressValue = (id / Svsg.global.maxFields) * 100;
 
-            progres.value = progressValue;
+            Svsg.output.setProgressValue(progressValue);
     }
     Svsg.global.queens = queens;
 
-    //console.log(4);
-    Svsg.setOutput(outputFieldname, output);
+    Svsg.output.setOutputFieldname(outputFieldname, output);
 };
 
-Svsg.goShadok = function(outputFieldname, checkShadokOutput, collisionOutput, tryOutput) {
+Svsg.goShadok = function(size, modulusOutput, outputFieldname, checkShadokOutput, collisionOutput, tryOutput, progress) {
     if (!Svsg.global.initialization) {
-        Svsg.initialization(document.getElementById('input_square_size').value, document.getElementById('input_modulusOutput').value, 'output', 'checkShadokOutput', 'collisionOutput','tryOutput');
+        Svsg.initialization(size, modulusOutput, outputFieldname, checkShadokOutput, collisionOutput, tryOutput, progress);
         Svsg.global.initialization = true;
     }
    
@@ -537,11 +586,11 @@ Svsg.stopShadok = function() {
 Svsg.throwShadok = function(outputFieldname, checkShadokOutput, collisionOutput, tryOutput) {
     Svsg.global.try++;
 
-    if(Svsg.global.try % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){
-        Svsg.setOutput(outputFieldname, "");
-        Svsg.setOutput(checkShadokOutput, "?");
-        Svsg.setOutput(collisionOutput, "?");
-        Svsg.setOutput(tryOutput, Svsg.global.try);
+    if(Svsg.global.try % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){        
+        Svsg.output.setOutputFieldname(outputFieldname, "")
+        .setCheckShadokOutput(checkShadokOutput, "?")
+        .setCollisionOutput(collisionOutput, "?")
+        .setTryOutput(tryOutput, Svsg.global.try);
     }
 
     var queensTarget = [];
@@ -562,8 +611,9 @@ Svsg.throwShadok = function(outputFieldname, checkShadokOutput, collisionOutput,
    
     if( found || Svsg.global.try % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){
         var output = boardTarget.display();
-        Svsg.setOutput(outputFieldname, output);
-        Svsg.setOutput(tryOutput, Svsg.global.try);
+
+        Svsg.output.setOutputFieldname(outputFieldname, output)
+        .setTryOutput(tryOutput, Svsg.global.try);
     }
 
     if(found || Svsg.global.isRequestToStop){
@@ -572,12 +622,6 @@ Svsg.throwShadok = function(outputFieldname, checkShadokOutput, collisionOutput,
 };
 
 Svsg.checkShadok = function(outputFieldname, checkShadokOutput) {
-    
-        //console.log(10);
-        //Svsg.setOutput(outputFieldname, "");
-        //console.log(11);
-        //Svsg.setOutput(checkShadokOutput, "?");
-    
         for(var i = 1; i <= Svsg.global.size; i++){
             for(var j = 1; j <= Svsg.global.size; j++){
                 if( i != j) {
@@ -609,8 +653,8 @@ Svsg.checkShadok = function(outputFieldname, checkShadokOutput) {
         }
 
         if( found || Svsg.global.try % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){
-            Svsg.setOutput(outputFieldname, output);
-            Svsg.setOutput(checkShadokOutput, checkShadok);
+            Svsg.output.setOutputFieldname(outputFieldname, output)
+            .setCheckShadokOutput(checkShadokOutput, checkShadok);
         }
         
         return found;
