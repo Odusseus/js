@@ -201,11 +201,6 @@ Svsg.direction = function(directionEnum) {
     this.currentDirection = this.setCurrentDirection();
 };
 
-Svsg.setOutput = function(outputFieldname, value) {
-    var outputField = document.getElementById(outputFieldname);
-    outputField.innerHTML = value;
-};
-
 Svsg.queen = function() {
     this.id = 0;
 
@@ -602,8 +597,33 @@ Svsg.throwShadok = function(outputFieldname, checkShadokOutput, collisionOutput,
         boardTarget.fields[id].piece = Svsg.global.queens[id];
         queensTarget.push(Svsg.global.queens[id]);
     }
-
     
+    //#region 1 known solution
+    // boardTarget.fields[6].piece = Svsg.global.queens[6];
+    // queensTarget.push(Svsg.global.queens[6]);
+
+    // boardTarget.fields[9].piece = Svsg.global.queens[9];
+    // queensTarget.push(Svsg.global.queens[9]);
+
+    // boardTarget.fields[21].piece = Svsg.global.queens[21];
+    // queensTarget.push(Svsg.global.queens[21]);
+
+    // boardTarget.fields[26].piece = Svsg.global.queens[26];
+    // queensTarget.push(Svsg.global.queens[26]);
+
+    // boardTarget.fields[40].piece = Svsg.global.queens[40];
+    // queensTarget.push(Svsg.global.queens[40]);
+
+    // boardTarget.fields[43].piece = Svsg.global.queens[43];
+    // queensTarget.push(Svsg.global.queens[43]);
+
+    // boardTarget.fields[55].piece = Svsg.global.queens[55];
+    // queensTarget.push(Svsg.global.queens[55]);
+
+    // boardTarget.fields[60].piece = Svsg.global.queens[60];
+    // queensTarget.push(Svsg.global.queens[60]);
+    //#endregion 1 known solution
+
     Svsg.global.queenTarget = queensTarget;
     Svsg.global.boardTarget = boardTarget;
     
