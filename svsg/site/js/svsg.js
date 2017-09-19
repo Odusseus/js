@@ -6,10 +6,15 @@ Svsg.globalTemplate = function(){
     this.maxFields = 1;
     this.queens = [];
     this.queensTarget = [];
+    this.gibiQueensTarget = [];
     this.boardTarget = null;
+    this.gibiBoardTarget = null;
     this.shadok = undefined;
+    this.gibi = undefined;
     this.try = 0;
+    this.gibiTry = 0;
     this.isRequestToStop = false;
+    this.isGibiRequestToStop = false;
     this.modulusOutput = 200;
 
     this.init = function(){
@@ -19,7 +24,9 @@ Svsg.globalTemplate = function(){
         this.queensTarget = [];
         this.boardTarget = null;
         this.shadok = undefined;
+        this.gibi = undefined;
         this.try = 0;
+        this.gibiTry = 0;
         return this;
     };
 };
@@ -46,6 +53,12 @@ Svsg.outputTemplate = function(){
         this.setOutput(id, value);
         return this;
     };
+    this.gibiOutputFieldname;
+    this.setGibiOutputFieldname = function(id, value){
+        this.gibiOutputFieldname = new Svsg.outputElement(id, value);
+        this.setOutput(id, value);
+        return this;
+    };
     this.progress;
     this.setProgress = function(id, value){
         this.progress = new Svsg.outputElement(id, value);
@@ -62,15 +75,33 @@ Svsg.outputTemplate = function(){
         this.setOutput(id, value);
         return this;
     };
+    this.gibiCheckOutput;
+    this.setGibiCheckOutput = function(id, value){
+        this.gibiCheckOutput = new Svsg.outputElement(id, value);
+        this.setOutput(id, value);
+        return this;
+    };
     this.collisionOutput;
     this.setCollisionOutput = function(id, value){
         this.collisionOutput = new Svsg.outputElement(id, value);
         this.setOutput(id, value);
         return this;
     };
+    this.gibiCollisionOutput;
+    this.setGibiCollisionOutput = function(id, value){
+        this.gibiCollisionOutput = new Svsg.outputElement(id, value);
+        this.setOutput(id, value);
+        return this;
+    };
     this.tryOutput;
     this.setTryOutput = function(id, value){
         this.tryOutput = new Svsg.outputElement(id, value);
+        this.setOutput(id, value);
+        return this;
+    };
+    this.gibiTryOutput;
+    this.setGibiTryOutput = function(id, value){
+        this.gibiTryOutput = new Svsg.outputElement(id, value);
         this.setOutput(id, value);
         return this;
     };
@@ -518,13 +549,17 @@ Svsg.board = function(){
     };
 };
 
-Svsg.initialization = function(size, modulusOutput, outputFieldname, checkShadokOutput, collisionOutput, tryOutput, progress) {
+Svsg.initialization = function(size, modulusOutput, outputFieldname, gibiOutputFieldname, checkShadokOutput, gibiCheckOutput, collisionOutput, gibiCollisionOutput, tryOutput, gibiTryOutput, progress) {
 
     Svsg.global.init();
     Svsg.output.setOutputFieldname(outputFieldname, "")
+    .setGibiOutputFieldname(gibiOutputFieldname, "")
     .setCheckShadokOutput(checkShadokOutput, "")
+    .setGibiCheckOutput(gibiCheckOutput, "")
     .setCollisionOutput(collisionOutput, "")
+    .setGibiCollisionOutput(gibiCollisionOutput, "")
     .setTryOutput(tryOutput, "")
+    .setGibiTryOutput(gibiTryOutput, "")
     .setProgress(progress,0);
 
     Svsg.global.size = 1 * size;
@@ -557,19 +592,28 @@ Svsg.initialization = function(size, modulusOutput, outputFieldname, checkShadok
     Svsg.output.setOutputFieldname(outputFieldname, output);
 };
 
-Svsg.goShadok = function(size, modulusOutput, outputFieldname, checkShadokOutput, collisionOutput, tryOutput, progress) {
+Svsg.goShadok = function(size, modulusOutput, outputFieldname, gibiOutputFieldname, checkShadokOutput, gibiCheckOutput, collisionOutput, gibiCollisionOutput, tryOutput, gibiTryOutput, progress) {
     if (!Svsg.global.initialization) {
-        Svsg.initialization(size, modulusOutput, outputFieldname, checkShadokOutput, collisionOutput, tryOutput, progress);
+        Svsg.initialization(size, modulusOutput, outputFieldname, gibiOutputFieldname, checkShadokOutput, gibiCheckOutput, collisionOutput, gibiCollisionOutput, tryOutput, gibiTryOutput, progress);
         Svsg.global.initialization = true;
     }
    
     if (!Svsg.global.shadok) {
      Svsg.global.shadok = setInterval(function () { Svsg.throwShadok(outputFieldname, checkShadokOutput, collisionOutput, tryOutput); }, 1);
     }
+
+    if (!Svsg.global.gibi) {
+        Svsg.global.gibi = setInterval(function () { Svsg.searchGibi(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOutput, gibiTryOutput); }, 1);
+       }
 };
 
 Svsg.requestStopShadok = function() {
     Svsg.global.isRequestToStop = true;
+    Svsg.requestStopGibi();
+};
+
+Svsg.requestStopGibi = function() {
+    Svsg.global.isGibiRequestToStop = true;
 };
 
 Svsg.stopShadok = function() {
@@ -577,6 +621,13 @@ Svsg.stopShadok = function() {
     Svsg.global.shadok = undefined;
     Svsg.global.isRequestToStop = false;
 };
+
+Svsg.stopGibi = function() {
+    clearInterval(Svsg.global.gibi);
+    Svsg.global.gibi = undefined;
+    Svsg.global.isGibiRequestToStop = false;
+};
+
 
 Svsg.throwShadok = function(outputFieldname, checkShadokOutput, collisionOutput, tryOutput) {
     Svsg.global.try++;
@@ -624,10 +675,10 @@ Svsg.throwShadok = function(outputFieldname, checkShadokOutput, collisionOutput,
     // queensTarget.push(Svsg.global.queens[60]);
     //#endregion 1 known solution
 
-    Svsg.global.queenTarget = queensTarget;
-    Svsg.global.boardTarget = boardTarget;
+    //Svsg.global.queenTarget = queensTarget;
+    //Svsg.global.boardTarget = boardTarget;
     
-    var found = Svsg.checkShadok(collisionOutput, checkShadokOutput);
+    var found = Svsg.checkboard("shadok", boardTarget, queensTarget, Svsg.global.try, collisionOutput, checkShadokOutput);
    
     if( found || Svsg.global.try % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){
         var output = boardTarget.display();
@@ -641,11 +692,49 @@ Svsg.throwShadok = function(outputFieldname, checkShadokOutput, collisionOutput,
     }
 };
 
-Svsg.checkShadok = function(outputFieldname, checkShadokOutput) {
+Svsg.searchGibi = function(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOutput, gibiTryOutput) {
+    Svsg.global.gibiTry++;
+
+    if(Svsg.global.gibiTry % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){
+        Svsg.output.setGibiOutputFieldname(gibiOutputFieldname, "")
+        .setGibiCheckOutput(gibiCheckOutput, "?")
+        .setGibiCollisionOutput(gibiCollisionOutput, "?")
+        .setGibiTryOutput(gibiTryOutput, Svsg.global.gibiTry);
+    }
+
+    var queensTarget = [];
+    queensTarget.push(null);
+    var boardTarget = new Svsg.board().init();
+    for(var i = 1, line = 1; i <= Svsg.global.size; i++, line++){
+        var column = Math.floor(Math.random() * Svsg.global.size) + 1;
+        var id = ((line - 1) * Svsg.global.size) + column;
+        boardTarget.fields[id].piece = Svsg.global.queens[id];
+        queensTarget.push(Svsg.global.queens[id]);
+    }
+
+    //Svsg.global.gibiQueenTarget = queensTarget;
+    //Svsg.global.gibiBoardTarget = boardTarget;
+    
+    var found = Svsg.checkboard("gibi", boardTarget, queensTarget, Svsg.global.gibiTry, gibiCollisionOutput, gibiCheckOutput);
+   
+    if( found || Svsg.global.gibiTry % Svsg.global.modulusOutput == 0 || Svsg.global.isGibiRequestToStop){
+        var output = boardTarget.display();
+
+        Svsg.output.setGibiOutputFieldname(gibiOutputFieldname, output)
+        .setGibiTryOutput(gibiTryOutput, Svsg.global.gibiTry);
+    }
+
+    if(found || Svsg.global.isGibiRequestToStop){
+        Svsg.stopGibi();
+    }
+};
+
+
+Svsg.checkboard = function(typePlayer, boardTarget, queensTarget, trycount, outputFieldname, checkOutput) {
         for(var i = 1; i <= Svsg.global.size; i++){
             for(var j = 1; j <= Svsg.global.size; j++){
                 if( i != j) {
-                    Svsg.global.queenTarget[i].addOthersFieldsIds(Svsg.global.queenTarget[j]);                
+                    queensTarget[i].addOthersFieldsIds(queensTarget[j]);
                 }
             }     
         }     
@@ -653,11 +742,11 @@ Svsg.checkShadok = function(outputFieldname, checkShadokOutput) {
         var output = "";
         var found = true;
         for( i = 1; i <= Svsg.global.size; i++){
-            var piece = Svsg.global.queenTarget[i].getOtherFieldPiece();
+            var piece = queensTarget[i].getOtherFieldPiece();
             if(piece){
                 found = false;
-                if(Svsg.global.try % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){
-                    output += "( " + Svsg.global.queenTarget[i].id + " and " + piece.id +") ";
+                if(trycount % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){
+                    output += "( " + queensTarget[i].id + " and " + piece.id +") ";
                 }
             }
         }
@@ -667,15 +756,24 @@ Svsg.checkShadok = function(outputFieldname, checkShadokOutput) {
         //     found = true;
         // } 
         
-        checkShadok = "<span style='color:red'>Not found!!!</span>";
+        check = "<span style='color:red'>Not found!!!</span>";
         if(found){
-            checkShadok = "<span style='color:green'>FOUND !!!</span>";
+            check = "<span style='color:green'>FOUND !!!</span>";
         }
 
-        if( found || Svsg.global.try % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){
-            Svsg.output.setOutputFieldname(outputFieldname, output)
-            .setCheckShadokOutput(checkShadokOutput, checkShadok);
+        if(typePlayer == "shadok"){
+            if( found || Svsg.global.try % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){
+                Svsg.output.setOutputFieldname(outputFieldname, output)
+                .setCheckShadokOutput(checkOutput, check);
+            }
+        } else{
+            if( found || Svsg.global.gibiTry % Svsg.global.modulusOutput == 0 || Svsg.global.isGibiRequestToStop){
+                Svsg.output.setGibiOutputFieldname(outputFieldname, output)
+                .setGibiCheckOutput(checkOutput, check);
+            }
         }
+
+        
         
         return found;
     };

@@ -20,28 +20,45 @@
             <td><input id="input_modulusOutput" type="number" value="1"></td> 
         </tr>
         <tr>
-            <td><label> <button onclick="Svsg.initialization(document.getElementById('input_square_size').value, document.getElementById('input_modulusOutput').value, 'output', 'checkShadokOutput', 'collisionOutput',  'tryOutput', 'progress')">initialization</button></label></td>
+            <td><label> <button onclick="Svsg.initialization(document.getElementById('input_square_size').value, document.getElementById('input_modulusOutput').value, 'output', 'gibiOutput','checkShadokOutput', 'gibiCheckOutput', 'collisionOutput', 'gibiCollisionOutput', 'tryOutput', 'gibiTryOutput', 'progress')">initialization</button></label></td>
             <td><progress id="progress" value="0" max="100"></progress></td> 
           </tr>
           <tr>
-            <td><button onclick="Svsg.goShadok(document.getElementById('input_square_size').value, document.getElementById('input_modulusOutput').value,'output', 'checkShadokOutput', 'collisionOutput', 'tryOutput', 'progress')">Go Shadok</button></td>
+            <td><button onclick="Svsg.goShadok(document.getElementById('input_square_size').value, document.getElementById('input_modulusOutput').value, 'output', 'gibiOutput','checkShadokOutput', 'gibiCheckOutput', 'collisionOutput', 'gibiCollisionOutput', 'tryOutput', 'gibiTryOutput', 'progress')">Go Shadok</button></td>
             <td><button onclick="Svsg.requestStopShadok()">Stop Shadok</button></td> 
           </tr>
           <tr>
-            <td>Try</td>
+            <td>Shadok try</td>
             <td><div id="tryOutput">0</div></td> 
           </tr>
           <tr>
-            <td>Queens collision :</td>
+            <td>Gibi try</td>
+            <td><div id="gibiTryOutput">0</div></td> 
+          </tr>
+          <tr>
+            <td>Shadok Queens collision :</td>
             <td><div id="collisionOutput">?</div></td> 
           </tr>
           <tr>
-            <td>Result :</td>
+            <td>Gibi Queens collision :</td>
+            <td><div id="gibiCollisionOutput">?</div></td> 
+          </tr>
+          <tr>
+            <td>Shadok result :</td>
             <td><div id="checkShadokOutput">?</div></td> 
           </tr>
           <tr>
-            <td>Output :</td>
-            <td><div id="output">?</div></td> 
+            <td>Gibi result :</td>
+            <td><div id="gibiCheckOutput">?</div></td> 
+          </tr>
+          <tr>
+            <td>Shadok vs Gibi</td>
+            <td>
+                <div>
+                    <div id="output">?</div>
+                    <div id="gibiOutput">?</div>
+                </div>
+            </td> 
           </tr>
       </table>
 </body>
