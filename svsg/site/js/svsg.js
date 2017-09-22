@@ -250,7 +250,6 @@ Svsg.queen = function() {
     };
     this.column = this.idToColumn();
 
-
     this.idToLine = function(){
         var columns = this.id;
         var line = 1;
@@ -602,9 +601,9 @@ Svsg.goShadok = function(size, modulusOutput, outputFieldname, gibiOutputFieldna
      Svsg.global.shadok = setInterval(function () { Svsg.throwShadok(outputFieldname, checkShadokOutput, collisionOutput, tryOutput); }, 1);
     }
 
-    if (!Svsg.global.gibi) {
-        Svsg.global.gibi = setInterval(function () { Svsg.searchGibi(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOutput, gibiTryOutput); }, 1);
-       }
+    // if (!Svsg.global.gibi) {
+    //     Svsg.global.gibi = setInterval(function () { Svsg.searchGibi(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOutput, gibiTryOutput); }, 1);
+    //    }
 };
 
 Svsg.requestStopShadok = function() {
@@ -692,6 +691,66 @@ Svsg.throwShadok = function(outputFieldname, checkShadokOutput, collisionOutput,
     }
 };
 
+// Svsg.searchGibi = function(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOutput, gibiTryOutput) {
+//     Svsg.global.gibiTry++;
+
+//     if(Svsg.global.gibiTry % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){
+//         Svsg.output.setGibiOutputFieldname(gibiOutputFieldname, "")
+//         .setGibiCheckOutput(gibiCheckOutput, "?")
+//         .setGibiCollisionOutput(gibiCollisionOutput, "?")
+//         .setGibiTryOutput(gibiTryOutput, Svsg.global.gibiTry);
+//     }
+
+//     var queensTarget = [];
+//     queensTarget.push(null);
+//     var boardTarget = new Svsg.board().init();
+//     for(var i = 1, line = 1; i <= Svsg.global.size; i++, line++){
+//         var column = Math.floor(Math.random() * Svsg.global.size) + 1;
+//         var id = ((line - 1) * Svsg.global.size) + column;
+//         boardTarget.fields[id].piece = Svsg.global.queens[id];
+//         queensTarget.push(Svsg.global.queens[id]);
+//     }
+
+//     //Svsg.global.gibiQueenTarget = queensTarget;
+//     //Svsg.global.gibiBoardTarget = boardTarget;
+    
+//     var found = Svsg.checkboard("gibi", boardTarget, queensTarget, Svsg.global.gibiTry, gibiCollisionOutput, gibiCheckOutput);
+   
+//     if( found || Svsg.global.gibiTry % Svsg.global.modulusOutput == 0 || Svsg.global.isGibiRequestToStop){
+//         var output = boardTarget.display();
+
+//         Svsg.output.setGibiOutputFieldname(gibiOutputFieldname, output)
+//         .setGibiTryOutput(gibiTryOutput, Svsg.global.gibiTry);
+//     }
+
+//     if(found || Svsg.global.isGibiRequestToStop){
+//         Svsg.stopGibi();
+//     }
+// };
+
+
+Svsg.chain = function(previous){
+    this.previous = previous;
+    this.next = undefined;
+    this.queen = undefined;
+    this.minId = 0;
+    this.maxId = 0;
+    this.currentId = 0;
+
+    this.setOthersFieldsIds = function(){
+        var previous = this.previous;
+        while(previous){
+            var chain = previous;
+            this.queen.addOthersFieldsIds(chain.queen);
+            previous = chain.previous;
+        }
+    };
+
+    this.setMinId = function(){
+        // TODO
+    }
+};
+
 Svsg.searchGibi = function(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOutput, gibiTryOutput) {
     Svsg.global.gibiTry++;
 
@@ -701,6 +760,31 @@ Svsg.searchGibi = function(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOu
         .setGibiCollisionOutput(gibiCollisionOutput, "?")
         .setGibiTryOutput(gibiTryOutput, Svsg.global.gibiTry);
     }
+
+    
+    var basisChain = new chain(); 
+    var id = 1;
+    basisChain.queen = new queen.setId(id);
+    basisChain.try = queen.id; 
+    basisChain.queen.reaches = Svsg.queen[id].reaches;
+    basisChain.queen.fieldIds = Svsg.queen[id].fieldIds;
+    basisChain.setOthersFieldsIds();
+    var piece = queensTarget[i].getOtherFieldPiece();
+    var search = true;
+    if(!piece){
+        search = false;       
+    }
+
+    while(search){
+        
+        var lastChain = basisChain;
+        while(lastChain.next){
+            lastChain = lastChain.next;
+        }
+
+
+    };
+
 
     var queensTarget = [];
     queensTarget.push(null);
