@@ -741,7 +741,7 @@ Svsg.chain = function(previous){
     this.maxFieldId = undefined;
     this.previous = previous;
     this.next = undefined;
-    this.cleanNext = false;
+    this.down = false;
 
     this.queen = undefined;
     this.othersFieldsIds = [];
@@ -803,12 +803,12 @@ Svsg.chain = function(previous){
     };
 
     this.setNext = function(){
-        if(this.id) {
-            if(this.id < Svsg.global.size){
-                this.id++;
-                this.queen = new Svsg.queen().setId(this.id);
+        if(this.id) {    
+            if(this.currentFieldId < this.maxFieldId){
+                this.currentFieldId++;
+                this.queen = new Svsg.queen().setId(this.currentFieldId);
             } else {
-                this.previous.cleanNext = true;
+                this.previous.down = true;
             }
         } else {
             this.setQueen().setOthersFieldsIds();
@@ -829,32 +829,61 @@ Svsg.searchGibi = function(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOu
     
     var basisChain = new Svsg.chain(undefined); 
     var searchTry = 0;   
+    var downCount = 0;
 
     search = true;   
   
     while(search){
         searchTry++;
         var chain = basisChain;
-        while(chain.next != undefined){
-            if(chain.cleanNext) {
-                chain.cleanNext = false;
-                chain.next = undefined;
-            } else {
-                chain = chain.next;
+        while(chain.next != undefined){  
+            chain = chain.next;
+        }        
+
+        while(chain.id > 0 && chain.down) {
+            downCount++;
+            chain.next = null;
+            chain.down = false;
+            if(chain.currentFieldId == chain.maxFieldId){
+                chain.previous.down = true;
+                chain = chain.previous;
             }
+        }
+
+        if(chain.id == 0 && chain.down){
+            break;
         }
         
         chain.setNext();    
-        var piece = chain.queen.getOtherFieldPiece();    
+        var piece = chain.getOtherFieldPiece();    
 
-        if(!piece){
-            if (chain.id == 8){
+        if(piece){
+            if(chain.currentFieldId == chain.maxFieldId){
+                chain.previous.next = undefined;
+                this.previous.down = true;
+            }
+        } else {
+            if (chain.id == Svsg.global.size){
                 search = false; 
             } else {
-                var newChain = new Svsg.chain(chain).setQueen().setOthersFieldsIds();; 
+                var newChain = new Svsg.chain(chain); 
                 chain.next = newChain;
             }
         }
+
+        if( !search || searchTry % Svsg.global.modulusOutput == 0 || Svsg.global.isGibiRequestToStop){
+            
+            var chainDisplay = basisChain;
+            var boardTarget = new Svsg.board().init();
+            while(chainDisplay.next != undefined && chain.id <= Svsg.global.size){  
+                boardTarget.fields[chainDisplay.currentFieldId].piece = chain.queen;
+                chainDisplay = chainDisplay.next;
+            }   
+            var output = boardTarget.display();
+
+         Svsg.output.setGibiOutputFieldname(gibiOutputFieldname, output)
+        .setGibiTryOutput(gibiTryOutput, Svsg.global.gibiTry);
+     }
     }
 
     // var found = Svsg.checkboard("gibi", boardTarget, queensTarget, Svsg.global.gibiTry, gibiCollisionOutput, gibiCheckOutput);
