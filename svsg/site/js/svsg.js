@@ -47,19 +47,19 @@ Svsg.outputTemplate = function(){
         var outputField = document.getElementById(id);
         outputField.value = value;
     };
-    this.outputFieldname;
+    this.outputFieldname = undefined;
     this.setOutputFieldname = function(id, value){
         this.outputFieldname = new Svsg.outputElement(id, value);
         this.setOutput(id, value);
         return this;
     };
-    this.gibiOutputFieldname;
+    this.gibiOutputFieldname = undefined;
     this.setGibiOutputFieldname = function(id, value){
         this.gibiOutputFieldname = new Svsg.outputElement(id, value);
         this.setOutput(id, value);
         return this;
     };
-    this.progress;
+    this.progress = undefined;
     this.setProgress = function(id, value){
         this.progress = new Svsg.outputElement(id, value);
         this.setProgressBarValue(id, value);
@@ -69,37 +69,37 @@ Svsg.outputTemplate = function(){
         this.progress.value = value;
         this.setProgressBarValue(this.progress.id, value);
     };
-    this.checkShadokOutput;
+    this.checkShadokOutput = undefined;
     this.setCheckShadokOutput = function(id, value){
         this.checkShadokOutput = new Svsg.outputElement(id, value);
         this.setOutput(id, value);
         return this;
     };
-    this.gibiCheckOutput;
+    this.gibiCheckOutput = undefined;
     this.setGibiCheckOutput = function(id, value){
         this.gibiCheckOutput = new Svsg.outputElement(id, value);
         this.setOutput(id, value);
         return this;
     };
-    this.collisionOutput;
+    this.collisionOutput = undefined;
     this.setCollisionOutput = function(id, value){
         this.collisionOutput = new Svsg.outputElement(id, value);
         this.setOutput(id, value);
         return this;
     };
-    this.gibiCollisionOutput;
+    this.gibiCollisionOutput = undefined;
     this.setGibiCollisionOutput = function(id, value){
         this.gibiCollisionOutput = new Svsg.outputElement(id, value);
         this.setOutput(id, value);
         return this;
     };
-    this.tryOutput;
+    this.tryOutput = undefined;
     this.setTryOutput = function(id, value){
         this.tryOutput = new Svsg.outputElement(id, value);
         this.setOutput(id, value);
         return this;
     };
-    this.gibiTryOutput;
+    this.gibiTryOutput = undefined;
     this.setGibiTryOutput = function(id, value){
         this.gibiTryOutput = new Svsg.outputElement(id, value);
         this.setOutput(id, value);
@@ -166,6 +166,7 @@ Svsg.field = function(){
     this.line = 1; 
     this.id = 1;
     this.piece = null;
+    this.pieces = [];
 
     this.setColumn = function(column){
         this.column = column;
@@ -238,6 +239,9 @@ Svsg.queen = function() {
     this.setId = function(id) {
         this.id = id;
         this.idToColumnAndLine();
+        this.setReaches();
+        this.setFieldIds();
+        this.initOthersFieldsIds();
         return this;
     };
 
@@ -388,8 +392,8 @@ Svsg.queen = function() {
 
     this.reaches = [];
     this.othersFieldsIds = [];
-    this.othersFieldsIds.push(null);
     this.initOthersFieldsIds = function(){
+        this.othersFieldsIds.push(null);
         for(var i = 1; i <= Svsg.global.maxFields; i++){
             var field = new Svsg.field().setId(i);
             this.othersFieldsIds.push(field);
@@ -407,6 +411,7 @@ Svsg.queen = function() {
             queen.reaches.forEach(function(field) {
                 ////console.log(field.id);
                 this.othersFieldsIds[field.id].piece = field.piece;
+                this.othersFieldsIds[field.id].pieces.push.apply(field.piece);
             }, this);
         } 
         else {
@@ -467,7 +472,7 @@ Svsg.queen = function() {
     };
 
     this.getOtherFieldPiece = function(){
-        if(this.othersFieldsIds[this.id].piece){
+        if(this.othersFieldsIds[this.id].piece ){
             return this.othersFieldsIds[this.id].piece;
         }
         return null; 
@@ -502,7 +507,7 @@ Svsg.queen = function() {
         output += "<div><br></div>";
 
         return output;
-    };
+    };   
 };
 
 Svsg.board = function(){
@@ -730,25 +735,86 @@ Svsg.throwShadok = function(outputFieldname, checkShadokOutput, collisionOutput,
 
 
 Svsg.chain = function(previous){
+    this.id = undefined;
+    this.currentFieldId = undefined;
+    this.minFieldId = undefined;
+    this.maxFieldId = undefined;
     this.previous = previous;
     this.next = undefined;
+    this.cleanNext = false;
+
     this.queen = undefined;
-    this.minId = 0;
-    this.maxId = 0;
-    this.currentId = 0;
+    this.othersFieldsIds = [];
+
+    this.initOthersFieldsIds = function(){
+        this.othersFieldsIds.push(null);
+        for(var i = 1; i <= Svsg.global.maxFields; i++){
+            var field = new Svsg.field().setId(i);
+            this.othersFieldsIds.push(field);
+        }
+        return this;
+    };
+
+    this.addOthersFieldsIds = function(){
+
+        var previous = this.previous;
+        previous.queen.reaches.forEach(function(field) {
+            this.othersFieldsIds[field.id].piece = field.piece;
+            this.othersFieldsIds[field.id].pieces.push.apply(field.piece);
+        }, this);
+            
+        return this;
+    };
 
     this.setOthersFieldsIds = function(){
         var previous = this.previous;
-        while(previous){
+        while(previous != undefined){
             var chain = previous;
-            this.queen.addOthersFieldsIds(chain.queen);
+            this.addOthersFieldsIds(chain.queen);
             previous = chain.previous;
         }
+        return this;
     };
 
-    this.setMinId = function(){
-        // TODO
-    }
+    this.resetId = function(){
+        if(this.previous){
+            this.id = this.previous.id + 1;
+            this.minFieldId = this.previous.queen.id + Svsg.global.size;
+        } else {
+            this.id = 1;
+            this.minFieldId = 1;
+        }
+
+        this.currentFieldId = this.minFieldId;
+        this.maxFieldId = this.minFieldId + Svsg.global.size - 1;
+        return this;
+    };
+
+    this.setQueen = function(){
+        this.resetId();
+        this.queen = new Svsg.queen().setId(this.id);
+        this.initOthersFieldsIds();
+        return this;
+    };
+
+    this.getOtherFieldPiece = function(){
+        this.queen.othersFieldsIds = this.othersFieldsIds;
+        return this.queen.getOtherFieldPiece();
+    };
+
+    this.setNext = function(){
+        if(this.id) {
+            if(this.id < Svsg.global.size){
+                this.id++;
+                this.queen = new Svsg.queen().setId(this.id);
+            } else {
+                this.previous.cleanNext = true;
+            }
+        } else {
+            this.setQueen().setOthersFieldsIds();
+        }
+        return this;
+    };
 };
 
 Svsg.searchGibi = function(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOutput, gibiTryOutput) {
@@ -760,57 +826,49 @@ Svsg.searchGibi = function(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOu
         .setGibiCollisionOutput(gibiCollisionOutput, "?")
         .setGibiTryOutput(gibiTryOutput, Svsg.global.gibiTry);
     }
-
     
-    var basisChain = new chain(); 
-    var id = 1;
-    basisChain.queen = new queen.setId(id);
-    basisChain.try = queen.id; 
-    basisChain.queen.reaches = Svsg.queen[id].reaches;
-    basisChain.queen.fieldIds = Svsg.queen[id].fieldIds;
-    basisChain.setOthersFieldsIds();
-    var piece = queensTarget[i].getOtherFieldPiece();
-    var search = true;
-    if(!piece){
-        search = false;       
-    }
+    var basisChain = new Svsg.chain(undefined); 
+    var searchTry = 0;   
 
+    search = true;   
+  
     while(search){
-        
-        var lastChain = basisChain;
-        while(lastChain.next){
-            lastChain = lastChain.next;
+        searchTry++;
+        var chain = basisChain;
+        while(chain.next != undefined){
+            if(chain.cleanNext) {
+                chain.cleanNext = false;
+                chain.next = undefined;
+            } else {
+                chain = chain.next;
+            }
         }
+        
+        chain.setNext();    
+        var piece = chain.queen.getOtherFieldPiece();    
 
-
-    };
-
-
-    var queensTarget = [];
-    queensTarget.push(null);
-    var boardTarget = new Svsg.board().init();
-    for(var i = 1, line = 1; i <= Svsg.global.size; i++, line++){
-        var column = Math.floor(Math.random() * Svsg.global.size) + 1;
-        var id = ((line - 1) * Svsg.global.size) + column;
-        boardTarget.fields[id].piece = Svsg.global.queens[id];
-        queensTarget.push(Svsg.global.queens[id]);
+        if(!piece){
+            if (chain.id == 8){
+                search = false; 
+            } else {
+                var newChain = new Svsg.chain(chain).setQueen().setOthersFieldsIds();; 
+                chain.next = newChain;
+            }
+        }
     }
 
-    //Svsg.global.gibiQueenTarget = queensTarget;
-    //Svsg.global.gibiBoardTarget = boardTarget;
-    
-    var found = Svsg.checkboard("gibi", boardTarget, queensTarget, Svsg.global.gibiTry, gibiCollisionOutput, gibiCheckOutput);
+    // var found = Svsg.checkboard("gibi", boardTarget, queensTarget, Svsg.global.gibiTry, gibiCollisionOutput, gibiCheckOutput);
    
-    if( found || Svsg.global.gibiTry % Svsg.global.modulusOutput == 0 || Svsg.global.isGibiRequestToStop){
-        var output = boardTarget.display();
+    // if( found || Svsg.global.gibiTry % Svsg.global.modulusOutput == 0 || Svsg.global.isGibiRequestToStop){
+    //     var output = boardTarget.display();
 
-        Svsg.output.setGibiOutputFieldname(gibiOutputFieldname, output)
-        .setGibiTryOutput(gibiTryOutput, Svsg.global.gibiTry);
-    }
+    //     Svsg.output.setGibiOutputFieldname(gibiOutputFieldname, output)
+    //     .setGibiTryOutput(gibiTryOutput, Svsg.global.gibiTry);
+    // }
 
-    if(found || Svsg.global.isGibiRequestToStop){
-        Svsg.stopGibi();
-    }
+    // if(found || Svsg.global.isGibiRequestToStop){
+    //     Svsg.stopGibi();
+    // }
 };
 
 
