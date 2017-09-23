@@ -1,22 +1,31 @@
 var Svsg = {};
 
+Svsg.status = {
+    NOTFOUND : {text: "Solution noy yet found. :|"},
+    FOUND  : {text: "Bravo solution is found! :)"},
+    NOSOLUTION  : {text: "No solution found. :("}
+};
+
 Svsg.globalTemplate = function(){
     this.init = undefined;
     this.size = 1;
     this.maxFields = 1;
     this.queens = [];
     this.queensTarget = [];
-    this.gibiQueensTarget = [];
     this.boardTarget = null;
-    this.gibiBoardTarget = null;
     this.shadok = undefined;
-    this.gibi = undefined;
     this.try = 0;
-    this.gibiTry = 0;
     this.isRequestToStop = false;
-    this.isGibiRequestToStop = false;
     this.modulusOutput = 200;
-
+    
+    // Gibi
+    this.gibi = undefined;
+    this.basisChain = [];
+    this.gibiTry = 0;
+    this.isGibiRequestToStop = false;
+    this.statusGibi = Svsg.status.NOTFOUND;
+    //this.gibiBoardTarget = null;
+    
     this.init = function(){
         this.size = 1;
         this.maxFields = this.size * this.size;
@@ -24,9 +33,13 @@ Svsg.globalTemplate = function(){
         this.queensTarget = [];
         this.boardTarget = null;
         this.shadok = undefined;
-        this.gibi = undefined;
         this.try = 0;
-        this.gibiTry = 0;
+        
+        this.gibi = undefined;
+        this.basisChain =  undefined; 
+        this.gibiTry = 0;        
+        this.statusGibi = Svsg.status.NOTFOUND;
+ 
         return this;
     };
 };
@@ -607,8 +620,12 @@ Svsg.goShadok = function(size, modulusOutput, outputFieldname, gibiOutputFieldna
     }
 
     // if (!Svsg.global.gibi) {
-    //     Svsg.global.gibi = setInterval(function () { Svsg.searchGibi(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOutput, gibiTryOutput); }, 1);
+    //     Svsg.global.gibi = setInterval(function () { Svsg.goGibi(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOutput, gibiTryOutput); }, 1);
     //    }
+};
+
+Svsg.requestStopGibi = function() {
+    Svsg.global.isGibiRequestToStop = true;
 };
 
 Svsg.requestStopShadok = function() {
@@ -616,9 +633,6 @@ Svsg.requestStopShadok = function() {
     Svsg.requestStopGibi();
 };
 
-Svsg.requestStopGibi = function() {
-    Svsg.global.isGibiRequestToStop = true;
-};
 
 Svsg.stopShadok = function() {
     clearInterval(Svsg.global.shadok);
@@ -682,7 +696,7 @@ Svsg.throwShadok = function(outputFieldname, checkShadokOutput, collisionOutput,
     //Svsg.global.queenTarget = queensTarget;
     //Svsg.global.boardTarget = boardTarget;
     
-    var found = Svsg.checkboard("shadok", boardTarget, queensTarget, Svsg.global.try, collisionOutput, checkShadokOutput);
+    var found = Svsg.checkboard(boardTarget, queensTarget, Svsg.global.try, collisionOutput, checkShadokOutput);
    
     if( found || Svsg.global.try % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){
         var output = boardTarget.display();
@@ -696,42 +710,42 @@ Svsg.throwShadok = function(outputFieldname, checkShadokOutput, collisionOutput,
     }
 };
 
-// Svsg.searchGibi = function(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOutput, gibiTryOutput) {
-//     Svsg.global.gibiTry++;
+Svsg.goGibi = function(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOutput, gibiTryOutput) {
+     Svsg.global.gibiTry++;
 
-//     if(Svsg.global.gibiTry % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){
-//         Svsg.output.setGibiOutputFieldname(gibiOutputFieldname, "")
-//         .setGibiCheckOutput(gibiCheckOutput, "?")
-//         .setGibiCollisionOutput(gibiCollisionOutput, "?")
-//         .setGibiTryOutput(gibiTryOutput, Svsg.global.gibiTry);
-//     }
-
-//     var queensTarget = [];
-//     queensTarget.push(null);
-//     var boardTarget = new Svsg.board().init();
-//     for(var i = 1, line = 1; i <= Svsg.global.size; i++, line++){
-//         var column = Math.floor(Math.random() * Svsg.global.size) + 1;
-//         var id = ((line - 1) * Svsg.global.size) + column;
-//         boardTarget.fields[id].piece = Svsg.global.queens[id];
-//         queensTarget.push(Svsg.global.queens[id]);
-//     }
-
-//     //Svsg.global.gibiQueenTarget = queensTarget;
-//     //Svsg.global.gibiBoardTarget = boardTarget;
+     if(Svsg.global.gibiTry % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){
+         Svsg.output.setGibiOutputFieldname(gibiOutputFieldname, "")
+         .setGibiCheckOutput(gibiCheckOutput, "?")
+         .setGibiCollisionOutput(gibiCollisionOutput, "?")
+         .setGibiTryOutput(gibiTryOutput, Svsg.global.gibiTry);
+     }
     
-//     var found = Svsg.checkboard("gibi", boardTarget, queensTarget, Svsg.global.gibiTry, gibiCollisionOutput, gibiCheckOutput);
+     Svsg.searchGibi();
    
-//     if( found || Svsg.global.gibiTry % Svsg.global.modulusOutput == 0 || Svsg.global.isGibiRequestToStop){
-//         var output = boardTarget.display();
+     if( Svsg.global.statusGibi != Svsg.status.NOTFOUND
+        || Svsg.global.gibiTry % Svsg.global.modulusOutput == 0
+        || Svsg.global.isGibiRequestToStop){
 
-//         Svsg.output.setGibiOutputFieldname(gibiOutputFieldname, output)
-//         .setGibiTryOutput(gibiTryOutput, Svsg.global.gibiTry);
-//     }
+            var chainDisplay = Svsg.global.basisChain;
+            var boardTarget = new Svsg.board().init();
+        
+            while(chainDisplay.next != undefined && chainDisplay.id <= Svsg.global.size){  
+                boardTarget.fields[chainDisplay.currentFieldId].piece = chainDisplay.queen;
+                chainDisplay = chainDisplay.next;
+            }   
+        
+            var output = boardTarget.display();
+        
+            Svsg.output.setGibiOutputFieldname(gibiOutputFieldname, output)
+            .setGibiTryOutput(gibiTryOutput, Svsg.global.gibiTry);
 
-//     if(found || Svsg.global.isGibiRequestToStop){
-//         Svsg.stopGibi();
-//     }
-// };
+        }
+
+        if(Svsg.global.statusGibi != Svsg.status.NOTFOUND
+           || Svsg.global.isGibiRequestToStop){
+            Svsg.stopGibi();
+        }
+ };
 
 
 Svsg.chain = function(previous){
@@ -755,12 +769,11 @@ Svsg.chain = function(previous){
         return this;
     };
 
-    this.addOthersFieldsIds = function(){
+    this.addOthersFieldsIds = function(previous){
 
-        var previous = this.previous;
         previous.queen.reaches.forEach(function(field) {
             this.othersFieldsIds[field.id].piece = field.piece;
-            this.othersFieldsIds[field.id].pieces.push.apply(field.piece);
+            //this.othersFieldsIds[field.id].pieces.push.apply(field.piece);
         }, this);
             
         return this;
@@ -770,7 +783,7 @@ Svsg.chain = function(previous){
         var previous = this.previous;
         while(previous != undefined){
             var chain = previous;
-            this.addOthersFieldsIds(chain.queen);
+            this.addOthersFieldsIds(chain);
             previous = chain.previous;
         }
         return this;
@@ -779,7 +792,7 @@ Svsg.chain = function(previous){
     this.resetId = function(){
         if(this.previous){
             this.id = this.previous.id + 1;
-            this.minFieldId = this.previous.queen.id + Svsg.global.size;
+            this.minFieldId = this.previous.minFieldId + Svsg.global.size;
         } else {
             this.id = 1;
             this.minFieldId = 1;
@@ -817,91 +830,55 @@ Svsg.chain = function(previous){
     };
 };
 
-Svsg.searchGibi = function(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOutput, gibiTryOutput) {
-    Svsg.global.gibiTry++;
+Svsg.searchGibi = function() {
+    Svsg.global.gibiTry++;   
 
-    if(Svsg.global.gibiTry % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){
-        Svsg.output.setGibiOutputFieldname(gibiOutputFieldname, "")
-        .setGibiCheckOutput(gibiCheckOutput, "?")
-        .setGibiCollisionOutput(gibiCollisionOutput, "?")
-        .setGibiTryOutput(gibiTryOutput, Svsg.global.gibiTry);
+    if(Svsg.global.basisChain == undefined) {
+        Svsg.global.basisChain = new Svsg.chain();
     }
-    
-    var basisChain = new Svsg.chain(undefined); 
-    var searchTry = 0;   
-    var downCount = 0;
 
-    search = true;   
-  
-    while(search){
-        searchTry++;
-        var chain = basisChain;
-        while(chain.next != undefined){  
-            chain = chain.next;
-        }        
+    var chain = Svsg.global.basisChain;
+    while(chain.next != undefined){  
+        chain = chain.next;
+    }        
 
-        while(chain.id > 0 && chain.down) {
-            downCount++;
-            chain.next = null;
-            chain.down = false;
-            if(chain.currentFieldId == chain.maxFieldId){
-                chain.previous.down = true;
-                chain = chain.previous;
-            }
+    while(chain.id > 0 && chain.down) {
+        downCount++;
+        chain.next = null;
+        chain.down = false;
+        if(chain.currentFieldId == chain.maxFieldId){
+            chain.previous.down = true;
+            chain = chain.previous;
         }
+    }
 
-        if(chain.id == 0 && chain.down){
-            break;
-        }
+    if(chain.id == 0 && chain.down){
+        Svsg.global.statusGibi = Svsg.status.NOSOLUTION;
+    } else {
+
         
         chain.setNext();    
         var piece = chain.getOtherFieldPiece();    
-
         if(piece){
             if(chain.currentFieldId == chain.maxFieldId){
                 chain.previous.next = undefined;
-                this.previous.down = true;
-            }
+            this.previous.down = true;
+        }
         } else {
             if (chain.id == Svsg.global.size){
-                search = false; 
+                Svsg.global.statusGibi = Svsg.status.FOUND;
             } else {
                 var newChain = new Svsg.chain(chain); 
                 chain.next = newChain;
             }
         }
-
-        if( !search || searchTry % Svsg.global.modulusOutput == 0 || Svsg.global.isGibiRequestToStop){
-            
-            var chainDisplay = basisChain;
-            var boardTarget = new Svsg.board().init();
-            while(chainDisplay.next != undefined && chain.id <= Svsg.global.size){  
-                boardTarget.fields[chainDisplay.currentFieldId].piece = chain.queen;
-                chainDisplay = chainDisplay.next;
-            }   
-            var output = boardTarget.display();
-
-         Svsg.output.setGibiOutputFieldname(gibiOutputFieldname, output)
-        .setGibiTryOutput(gibiTryOutput, Svsg.global.gibiTry);
-     }
     }
 
-    // var found = Svsg.checkboard("gibi", boardTarget, queensTarget, Svsg.global.gibiTry, gibiCollisionOutput, gibiCheckOutput);
-   
-    // if( found || Svsg.global.gibiTry % Svsg.global.modulusOutput == 0 || Svsg.global.isGibiRequestToStop){
-    //     var output = boardTarget.display();
-
-    //     Svsg.output.setGibiOutputFieldname(gibiOutputFieldname, output)
-    //     .setGibiTryOutput(gibiTryOutput, Svsg.global.gibiTry);
-    // }
-
-    // if(found || Svsg.global.isGibiRequestToStop){
-    //     Svsg.stopGibi();
-    // }
+    
 };
 
 
-Svsg.checkboard = function(typePlayer, boardTarget, queensTarget, trycount, outputFieldname, checkOutput) {
+Svsg.checkboard = function(boardTarget, queensTarget, trycount, outputFieldname, checkOutput) {
         for(var i = 1; i <= Svsg.global.size; i++){
             for(var j = 1; j <= Svsg.global.size; j++){
                 if( i != j) {
@@ -932,19 +909,9 @@ Svsg.checkboard = function(typePlayer, boardTarget, queensTarget, trycount, outp
             check = "<span style='color:green'>FOUND !!!</span>";
         }
 
-        if(typePlayer == "shadok"){
-            if( found || Svsg.global.try % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){
+        if( found || Svsg.global.try % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){
                 Svsg.output.setOutputFieldname(outputFieldname, output)
                 .setCheckShadokOutput(checkOutput, check);
-            }
-        } else{
-            if( found || Svsg.global.gibiTry % Svsg.global.modulusOutput == 0 || Svsg.global.isGibiRequestToStop){
-                Svsg.output.setGibiOutputFieldname(outputFieldname, output)
-                .setGibiCheckOutput(checkOutput, check);
-            }
-        }
-
-        
-        
+        }  
         return found;
     };
