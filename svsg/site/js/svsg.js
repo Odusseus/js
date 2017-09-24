@@ -1,5 +1,17 @@
 var Svsg = {};
 
+	
+Array.prototype.compare = function(testArr) {
+    if (this.length != testArr.length) return false;
+    for (var i = 0; i < testArr.length; i++) {
+        if (this[i].compare) { //To test values in nested arrays
+            if (!this[i].compare(testArr[i])) return false;
+        }
+        else if (this[i] !== testArr[i]) return false;
+    }
+    return true;
+};
+
 Svsg.status = {
     NOTFOUND : {text: "No solution yet found. :|"},
     FOUND  : {text: "Bravo solution is found! :)"},
@@ -20,7 +32,7 @@ Svsg.globalTemplate = function(){
     
     // Gibi
     this.gibi = undefined;
-    this.basisChain = [];
+    this.basisChain = undefined;
     this.gibiTry = 0;
     this.isGibiRequestToStop = false;
     this.statusGibi = Svsg.status.NOTFOUND;
@@ -38,7 +50,8 @@ Svsg.globalTemplate = function(){
         
         this.gibi = undefined;
         this.basisChain =  undefined; 
-        this.gibiTry = 0;        
+        this.gibiTry = 0;    
+        this.isGibiRequestToStop = false;    
         this.statusGibi = Svsg.status.NOTFOUND;
         this.downCount = 0;
  
@@ -408,6 +421,7 @@ Svsg.queen = function() {
     this.reaches = [];
     this.othersFieldsIds = [];
     this.initOthersFieldsIds = function(){
+        this.othersFieldsIds = [];
         this.othersFieldsIds.push(null);
         for(var i = 1; i <= Svsg.global.maxFields; i++){
             var field = new Svsg.field().setId(i);
@@ -550,6 +564,8 @@ Svsg.board = function(){
 
                 if(!this.fields[id].piece){
                     output += '&nbsp;&nbsp;'.repeat(Svsg.getSizeLength()) + "|";
+                    // TEST
+//                    output += Svsg.pad(Svsg.ColumnLineToId(column, line), Svsg.getSizeLength())  + "|"; 
                 }
                 else {
                     output += Svsg.pad(Svsg.ColumnLineToId(column, line), Svsg.getSizeLength())  + "|"; 
@@ -623,7 +639,7 @@ Svsg.goShadok = function(size, modulusOutput, outputFieldname, gibiOutputFieldna
 
     if (!Svsg.global.gibi) {
         Svsg.global.gibi = setInterval(function () { Svsg.goGibi(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOutput, gibiTryOutput); }, 1);
-       }
+    }
 };
 
 Svsg.requestStopGibi = function() {
@@ -663,45 +679,57 @@ Svsg.throwShadok = function(outputFieldname, checkShadokOutput, collisionOutput,
     queensTarget.push(null);
     var boardTarget = new Svsg.board().init();
 
-    if(Svsg.global.try < 10){
+    if(Svsg.global.try > 0){
 
         for(var i = 1, line = 1; i <= Svsg.global.size; i++, line++){
             var column = Math.floor(Math.random() * Svsg.global.size) + 1;
             var id = ((line - 1) * Svsg.global.size) + column;
+            Svsg.global.queens[id].initOthersFieldsIds();
+
             boardTarget.fields[id].piece = Svsg.global.queens[id];
             queensTarget.push(Svsg.global.queens[id]);
         }
+        
     } else {
 
         //#region 1 known solution
-        boardTarget.fields[1].piece = Svsg.global.queens[1];
-        queensTarget.push(Svsg.global.queens[1]);
-        
-        boardTarget.fields[13].piece = Svsg.global.queens[13];
-        queensTarget.push(Svsg.global.queens[13]);
-        
-        boardTarget.fields[24].piece = Svsg.global.queens[24];
-        queensTarget.push(Svsg.global.queens[24]);
-        
-        boardTarget.fields[30].piece = Svsg.global.queens[30];
-        queensTarget.push(Svsg.global.queens[30]);
-        
-        boardTarget.fields[35].piece = Svsg.global.queens[35];
-        queensTarget.push(Svsg.global.queens[35]);
-        
-        boardTarget.fields[47].piece = Svsg.global.queens[47];
-        queensTarget.push(Svsg.global.queens[47]);
-        
-        boardTarget.fields[50].piece = Svsg.global.queens[50];
-        queensTarget.push(Svsg.global.queens[50]);
-        
-        boardTarget.fields[60].piece = Svsg.global.queens[60];
-        queensTarget.push(Svsg.global.queens[60]);
+        var testList = [1, 13, 24, 30, 35, 47, 50, 60];
+
+        testList.forEach(function(id) {
+            Svsg.global.queens[id].initOthersFieldsIds();
+            boardTarget.fields[id].piece = Svsg.global.queens[id];
+            queensTarget.push(Svsg.global.queens[id]);            
+        }, this);       
         //#endregion 1 known solution             
     }      
     
     var found = Svsg.checkboard(boardTarget, queensTarget, Svsg.global.try, collisionOutput, checkShadokOutput);
-   
+
+    if(!found){
+        var queenIds = [];
+        queensTarget.forEach(function(queen) {
+            if(queen){
+                queenIds.push(queen.id);            
+            }
+        }, this);
+        queenIds.sort(Svsg.sortNumber());
+        var checkList = [
+                            [6, 9, 21, 26, 40, 43, 55, 60],
+                            [1, 14, 24, 27, 39, 44, 50, 61], 
+                            [1, 13, 24, 30, 35, 47, 50, 60],
+                            [2, 13, 23, 25, 35, 48, 54, 60],
+                            [2, 14, 17, 31, 36, 48, 51, 61]
+                        ];
+        checkList.forEach(function(solution) {
+            solution.sort(Svsg.sortNumber());
+            if(queenIds.compare(solution)){
+               Svsg.stopShadok();
+               throw solution + " is not found!";
+            }
+        }, this);
+    }
+
+
     if( found || Svsg.global.try % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){
         var output = boardTarget.display();
 
@@ -780,6 +808,7 @@ Svsg.chain = function(previous){
     this.othersFieldsIds = [];
 
     this.initOthersFieldsIds = function(){
+        this.othersFieldsIds = [];
         this.othersFieldsIds.push(null);
         for(var i = 1; i <= Svsg.global.maxFields; i++){
             var field = new Svsg.field().setId(i);
@@ -840,7 +869,9 @@ Svsg.chain = function(previous){
                 this.currentFieldId++;
                 this.queen = new Svsg.queen().setId(this.currentFieldId);
             } else {
-                this.previous.down = true;
+                if(this.previous){
+                    this.previous.down = true;
+                }
             }
         } else {
             this.setQueen().setOthersFieldsIds();
@@ -861,17 +892,21 @@ Svsg.searchGibi = function() {
         chain = chain.next;
     }        
 
-    while(chain.id > 0 && chain.down) {
+    while(chain && chain.down) {
         Svsg.global.downCount++;
         chain.next = undefined;
         chain.down = false;
         if(chain.currentFieldId == chain.maxFieldId){
-            chain.previous.down = true;
-            chain = chain.previous;
+            if(chain.previous){
+                chain.previous.down = true;
+                chain = chain.previous;
+            } else {
+                chain = undefined;
+            }
         }
     }
 
-    if(chain.id == 0 && chain.down){
+    if(chain == undefined || chain.down){
         Svsg.global.statusGibi = Svsg.status.NOSOLUTION;
     } else {
 
@@ -880,8 +915,12 @@ Svsg.searchGibi = function() {
         var piece = chain.getOtherFieldPiece();    
         if(piece){
             if(chain.currentFieldId == chain.maxFieldId){
-                chain.previous.next = undefined;
-                chain.previous.down = true;
+                if(chain.previous){
+                    chain.previous.next = undefined;
+                    chain.previous.down = true;
+                } else {
+                    Svsg.global.statusGibi = Svsg.status.NOSOLUTION;
+                }
         }
         } else {
             if (chain.id == Svsg.global.size){
@@ -895,7 +934,6 @@ Svsg.searchGibi = function() {
 
     
 };
-
 
 Svsg.checkboard = function(boardTarget, queensTarget, trycount, outputFieldname, checkOutput) {
         for(var i = 1; i <= Svsg.global.size; i++){
