@@ -1,9 +1,9 @@
 var Svsg = {};
 
 Svsg.status = {
-    NOTFOUND : {text: "Solution noy yet found. :|"},
+    NOTFOUND : {text: "No solution yet found. :|"},
     FOUND  : {text: "Bravo solution is found! :)"},
-    NOSOLUTION  : {text: "No solution found. :("}
+    NOSOLUTION  : {text: "No solution is found. :("}
 };
 
 Svsg.globalTemplate = function(){
@@ -24,6 +24,7 @@ Svsg.globalTemplate = function(){
     this.gibiTry = 0;
     this.isGibiRequestToStop = false;
     this.statusGibi = Svsg.status.NOTFOUND;
+    this.downCount = 0;
     //this.gibiBoardTarget = null;
     
     this.init = function(){
@@ -39,6 +40,7 @@ Svsg.globalTemplate = function(){
         this.basisChain =  undefined; 
         this.gibiTry = 0;        
         this.statusGibi = Svsg.status.NOTFOUND;
+        this.downCount = 0;
  
         return this;
     };
@@ -157,7 +159,7 @@ Svsg.sortNumber = function(a,b) {
 };
 
 Svsg.getSizeLength = function(){
-            var string = "" + Svsg.global.size;
+            var string = "" + (Svsg.global.size * Svsg.global.size);
 
             length = string.length;
             if(length < 2){
@@ -619,9 +621,9 @@ Svsg.goShadok = function(size, modulusOutput, outputFieldname, gibiOutputFieldna
      Svsg.global.shadok = setInterval(function () { Svsg.throwShadok(outputFieldname, checkShadokOutput, collisionOutput, tryOutput); }, 1);
     }
 
-    // if (!Svsg.global.gibi) {
-    //     Svsg.global.gibi = setInterval(function () { Svsg.goGibi(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOutput, gibiTryOutput); }, 1);
-    //    }
+    if (!Svsg.global.gibi) {
+        Svsg.global.gibi = setInterval(function () { Svsg.goGibi(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOutput, gibiTryOutput); }, 1);
+       }
 };
 
 Svsg.requestStopGibi = function() {
@@ -660,41 +662,43 @@ Svsg.throwShadok = function(outputFieldname, checkShadokOutput, collisionOutput,
     var queensTarget = [];
     queensTarget.push(null);
     var boardTarget = new Svsg.board().init();
-    for(var i = 1, line = 1; i <= Svsg.global.size; i++, line++){
-        var column = Math.floor(Math.random() * Svsg.global.size) + 1;
-        var id = ((line - 1) * Svsg.global.size) + column;
-        boardTarget.fields[id].piece = Svsg.global.queens[id];
-        queensTarget.push(Svsg.global.queens[id]);
-    }
-    
-    //#region 1 known solution
-    // boardTarget.fields[6].piece = Svsg.global.queens[6];
-    // queensTarget.push(Svsg.global.queens[6]);
 
-    // boardTarget.fields[9].piece = Svsg.global.queens[9];
-    // queensTarget.push(Svsg.global.queens[9]);
+    if(Svsg.global.try < 10){
 
-    // boardTarget.fields[21].piece = Svsg.global.queens[21];
-    // queensTarget.push(Svsg.global.queens[21]);
+        for(var i = 1, line = 1; i <= Svsg.global.size; i++, line++){
+            var column = Math.floor(Math.random() * Svsg.global.size) + 1;
+            var id = ((line - 1) * Svsg.global.size) + column;
+            boardTarget.fields[id].piece = Svsg.global.queens[id];
+            queensTarget.push(Svsg.global.queens[id]);
+        }
+    } else {
 
-    // boardTarget.fields[26].piece = Svsg.global.queens[26];
-    // queensTarget.push(Svsg.global.queens[26]);
-
-    // boardTarget.fields[40].piece = Svsg.global.queens[40];
-    // queensTarget.push(Svsg.global.queens[40]);
-
-    // boardTarget.fields[43].piece = Svsg.global.queens[43];
-    // queensTarget.push(Svsg.global.queens[43]);
-
-    // boardTarget.fields[55].piece = Svsg.global.queens[55];
-    // queensTarget.push(Svsg.global.queens[55]);
-
-    // boardTarget.fields[60].piece = Svsg.global.queens[60];
-    // queensTarget.push(Svsg.global.queens[60]);
-    //#endregion 1 known solution
-
-    //Svsg.global.queenTarget = queensTarget;
-    //Svsg.global.boardTarget = boardTarget;
+        //#region 1 known solution
+        boardTarget.fields[1].piece = Svsg.global.queens[1];
+        queensTarget.push(Svsg.global.queens[1]);
+        
+        boardTarget.fields[13].piece = Svsg.global.queens[13];
+        queensTarget.push(Svsg.global.queens[13]);
+        
+        boardTarget.fields[24].piece = Svsg.global.queens[24];
+        queensTarget.push(Svsg.global.queens[24]);
+        
+        boardTarget.fields[30].piece = Svsg.global.queens[30];
+        queensTarget.push(Svsg.global.queens[30]);
+        
+        boardTarget.fields[35].piece = Svsg.global.queens[35];
+        queensTarget.push(Svsg.global.queens[35]);
+        
+        boardTarget.fields[47].piece = Svsg.global.queens[47];
+        queensTarget.push(Svsg.global.queens[47]);
+        
+        boardTarget.fields[50].piece = Svsg.global.queens[50];
+        queensTarget.push(Svsg.global.queens[50]);
+        
+        boardTarget.fields[60].piece = Svsg.global.queens[60];
+        queensTarget.push(Svsg.global.queens[60]);
+        //#endregion 1 known solution             
+    }      
     
     var found = Svsg.checkboard(boardTarget, queensTarget, Svsg.global.try, collisionOutput, checkShadokOutput);
    
@@ -713,12 +717,12 @@ Svsg.throwShadok = function(outputFieldname, checkShadokOutput, collisionOutput,
 Svsg.goGibi = function(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOutput, gibiTryOutput) {
      Svsg.global.gibiTry++;
 
-     if(Svsg.global.gibiTry % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){
-         Svsg.output.setGibiOutputFieldname(gibiOutputFieldname, "")
-         .setGibiCheckOutput(gibiCheckOutput, "?")
-         .setGibiCollisionOutput(gibiCollisionOutput, "?")
-         .setGibiTryOutput(gibiTryOutput, Svsg.global.gibiTry);
-     }
+    //  if(Svsg.global.gibiTry % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){
+    //      Svsg.output.setGibiOutputFieldname(gibiOutputFieldname, "")
+    //      .setGibiCheckOutput(gibiCheckOutput, "?")
+    //      .setGibiCollisionOutput(gibiCollisionOutput, "?")
+    //      .setGibiTryOutput(gibiTryOutput, Svsg.global.gibiTry);
+    //  }
     
      Svsg.searchGibi();
    
@@ -729,21 +733,36 @@ Svsg.goGibi = function(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOutput
             var chainDisplay = Svsg.global.basisChain;
             var boardTarget = new Svsg.board().init();
         
-            while(chainDisplay.next != undefined && chainDisplay.id <= Svsg.global.size){  
+            while(chainDisplay != undefined && chainDisplay.id <= Svsg.global.size){  
                 boardTarget.fields[chainDisplay.currentFieldId].piece = chainDisplay.queen;
                 chainDisplay = chainDisplay.next;
             }   
         
             var output = boardTarget.display();
+
+            var check = "";
+            if(Svsg.global.statusGibi == Svsg.status.NOTFOUND){
+                check = "<span style='color:red'>" + Svsg.status.NOTFOUND.text + "</span>";
+            }
+
+            if(Svsg.global.statusGibi == Svsg.status.NOSOLUTION){
+                check = "<span style='color:purple'>" + Svsg.status.NOSOLUTION.text + "</span>";
+            }
+
+            if(Svsg.global.statusGibi == Svsg.status.FOUND){
+                check = "<span style='color:green'>" + Svsg.status.FOUND.text + "</span>";
+            }
         
             Svsg.output.setGibiOutputFieldname(gibiOutputFieldname, output)
-            .setGibiTryOutput(gibiTryOutput, Svsg.global.gibiTry);
+            .setGibiTryOutput(gibiTryOutput, Svsg.global.gibiTry)
+            .setGibiCheckOutput(gibiCheckOutput, check);
 
         }
 
-        if(Svsg.global.statusGibi != Svsg.status.NOTFOUND
-           || Svsg.global.isGibiRequestToStop){
-            Svsg.stopGibi();
+        if(Svsg.global.statusGibi == Svsg.status.NOSOLUTION || 
+           Svsg.global.statusGibi == Svsg.status.FOUND || 
+           Svsg.global.isGibiRequestToStop){
+                Svsg.stopGibi();
         }
  };
 
@@ -843,8 +862,8 @@ Svsg.searchGibi = function() {
     }        
 
     while(chain.id > 0 && chain.down) {
-        downCount++;
-        chain.next = null;
+        Svsg.global.downCount++;
+        chain.next = undefined;
         chain.down = false;
         if(chain.currentFieldId == chain.maxFieldId){
             chain.previous.down = true;
@@ -862,7 +881,7 @@ Svsg.searchGibi = function() {
         if(piece){
             if(chain.currentFieldId == chain.maxFieldId){
                 chain.previous.next = undefined;
-            this.previous.down = true;
+                chain.previous.down = true;
         }
         } else {
             if (chain.id == Svsg.global.size){
