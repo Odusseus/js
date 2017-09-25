@@ -633,9 +633,9 @@ Svsg.goShadok = function(size, modulusOutput, outputFieldname, gibiOutputFieldna
         Svsg.global.initialization = true;
     }
    
-    // if (!Svsg.global.shadok) {
-    //  Svsg.global.shadok = setInterval(function () { Svsg.throwShadok(outputFieldname, checkShadokOutput, collisionOutput, tryOutput); }, 1);
-    // }
+    if (!Svsg.global.shadok) {
+     Svsg.global.shadok = setInterval(function () { Svsg.throwShadok(outputFieldname, checkShadokOutput, collisionOutput, tryOutput); }, 1);
+    }
 
     if (!Svsg.global.gibi) {
         Svsg.global.gibi = setInterval(function () { Svsg.goGibi(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOutput, gibiTryOutput); }, 1);
