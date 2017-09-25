@@ -1,22 +1,4 @@
-var Svsg = {};
-
-	
-Array.prototype.compare = function(testArr) {
-    if (this.length != testArr.length) return false;
-    for (var i = 0; i < testArr.length; i++) {
-        if (this[i].compare) { //To test values in nested arrays
-            if (!this[i].compare(testArr[i])) return false;
-        }
-        else if (this[i] !== testArr[i]) return false;
-    }
-    return true;
-};
-
-Svsg.status = {
-    NOTFOUND : {text: "No solution yet found. :|"},
-    FOUND  : {text: "Bravo solution is found! :)"},
-    NOSOLUTION  : {text: "No solution is found. :("}
-};
+var Svsg = Svsg || {};
 
 Svsg.globalTemplate = function(){
     this.init = undefined;
@@ -35,7 +17,7 @@ Svsg.globalTemplate = function(){
     this.basisChain = undefined;
     this.gibiTry = 0;
     this.isGibiRequestToStop = false;
-    this.statusGibi = Svsg.status.NOTFOUND;
+    this.statusGibi = SvsgEnum.status.NOTFOUND;
     this.downCount = 0;
     //this.gibiBoardTarget = null;
     
@@ -52,16 +34,11 @@ Svsg.globalTemplate = function(){
         this.basisChain =  undefined; 
         this.gibiTry = 0;    
         this.isGibiRequestToStop = false;    
-        this.statusGibi = Svsg.status.NOTFOUND;
+        this.statusGibi = SvsgEnum.status.NOTFOUND;
         this.downCount = 0;
  
         return this;
     };
-};
-
-Svsg.outputElement = function(id, value){
-    this.id = id;
-    this.value = value;
 };
 
 Svsg.global = new Svsg.globalTemplate().init();
@@ -77,19 +54,19 @@ Svsg.outputTemplate = function(){
     };
     this.outputFieldname = undefined;
     this.setOutputFieldname = function(id, value){
-        this.outputFieldname = new Svsg.outputElement(id, value);
+        this.outputFieldname = new SvsgUtil.outputElement(id, value);
         this.setOutput(id, value);
         return this;
     };
     this.gibiOutputFieldname = undefined;
     this.setGibiOutputFieldname = function(id, value){
-        this.gibiOutputFieldname = new Svsg.outputElement(id, value);
+        this.gibiOutputFieldname = new SvsgUtil.outputElement(id, value);
         this.setOutput(id, value);
         return this;
     };
     this.progress = undefined;
     this.setProgress = function(id, value){
-        this.progress = new Svsg.outputElement(id, value);
+        this.progress = new SvsgUtil.outputElement(id, value);
         this.setProgressBarValue(id, value);
         return this;
     };
@@ -99,95 +76,43 @@ Svsg.outputTemplate = function(){
     };
     this.checkShadokOutput = undefined;
     this.setCheckShadokOutput = function(id, value){
-        this.checkShadokOutput = new Svsg.outputElement(id, value);
+        this.checkShadokOutput = new SvsgUtil.outputElement(id, value);
         this.setOutput(id, value);
         return this;
     };
     this.gibiCheckOutput = undefined;
     this.setGibiCheckOutput = function(id, value){
-        this.gibiCheckOutput = new Svsg.outputElement(id, value);
+        this.gibiCheckOutput = new SvsgUtil.outputElement(id, value);
         this.setOutput(id, value);
         return this;
     };
     this.collisionOutput = undefined;
     this.setCollisionOutput = function(id, value){
-        this.collisionOutput = new Svsg.outputElement(id, value);
+        this.collisionOutput = new SvsgUtil.outputElement(id, value);
         this.setOutput(id, value);
         return this;
     };
     this.gibiCollisionOutput = undefined;
     this.setGibiCollisionOutput = function(id, value){
-        this.gibiCollisionOutput = new Svsg.outputElement(id, value);
+        this.gibiCollisionOutput = new SvsgUtil.outputElement(id, value);
         this.setOutput(id, value);
         return this;
     };
     this.tryOutput = undefined;
     this.setTryOutput = function(id, value){
-        this.tryOutput = new Svsg.outputElement(id, value);
+        this.tryOutput = new SvsgUtil.outputElement(id, value);
         this.setOutput(id, value);
         return this;
     };
     this.gibiTryOutput = undefined;
     this.setGibiTryOutput = function(id, value){
-        this.gibiTryOutput = new Svsg.outputElement(id, value);
+        this.gibiTryOutput = new SvsgUtil.outputElement(id, value);
         this.setOutput(id, value);
         return this;
     };
 };
 
 Svsg.output = new Svsg.outputTemplate();
-
-Svsg.queenDirectionEnum = {
-    UP :        {value: 0, name: "Up", code: "UP"},
-    UPRIGHT :   {value: 1, name: "Up-Right", code: "UR"},
-    RIGHT :     {value: 2, name: "Right", code: "RI"},
-    DOWNRIGHT : {value: 3, name: "Down-Right", code: "DR"},
-    DOWN :      {value: 4, name: "Down", code: "DO"},
-    DOWNLEFT :  {value: 5, name: "Down-Left", code: "DL"},
-    LEFT :      {value: 6, name: "Left", code: "LE"},
-    UPLEFT :    {value: 7, name: "Up-Left", code: "UL"},
-};
-
-Svsg.colorEnum = {
- BLACK :  {value: 0, name: "Black", code: "B"},
- WHITE :  {value: 1, name: "White", code: "W"},
-};
-
-Svsg.pad = function(num, size) {
-    var s = num + "";
-    while (s.length < size) s = "0" + s;
-    return s;
-};
-
-Svsg.formatNumberLength = function(num, length) {
-    var r = "" + num;
-    while (r.length < length) {
-        r = "0" + r;
-    }
-    return r;
-};
-
-Svsg.sortNumber = function(a,b) {
-    return a - b;
-};
-
-Svsg.getSizeLength = function(){
-            var string = "" + (Svsg.global.size * Svsg.global.size);
-
-            length = string.length;
-            if(length < 2){
-                length = 2;
-            }
-            return length;
-        };
-
-Svsg.ColumnLineToId = function(column, line){
-    if(!Svsg.global.size){
-        Svsg.global.size = 1;
-    }
-    var id = Svsg.global.size * (line - 1) + column; 
-    return id;
-};
 
 Svsg.field = function(){
     this.column = 1;
@@ -229,15 +154,15 @@ Svsg.field = function(){
     this.setColumnLineToId = function(column, line) {
         this.column = column;
         this.line = line;
-        this.id = Svsg.ColumnLineToId(column, line); 
+        this.id = SvsgUtil.getColumnLineToId(column, line, Svsg.global.size); 
         return this;
     };
 
     this.getColor = function(){
         if((id % 2) == 0){
-            return Svsg.colorEnum.BLACK;
+            return SvsgEnum.colorEnum.BLACK;
         }
-        return Svsg.colorEnum.WHITE;
+        return SvsgEnum.colorEnum.WHITE;
     };
 };
 
@@ -453,32 +378,32 @@ Svsg.queen = function() {
         var currentField = new Svsg.field().setColumnLineToId(this.column, this.line).setPiece(this);
         fields.push(currentField);
 
-        for(var i = 0, direction = new Svsg.direction(Svsg.queenDirectionEnum);
-            i < Object.keys(Svsg.queenDirectionEnum).length;
+        for(var i = 0, direction = new Svsg.direction(SvsgEnum.queenDirectionEnum);
+            i < Object.keys(SvsgEnum.queenDirectionEnum).length;
             i++,
             direction.next()){
-                if(direction.currentDirection == Svsg.queenDirectionEnum.UP) {
+                if(direction.currentDirection == SvsgEnum.queenDirectionEnum.UP) {
                     fields.push.apply(fields,this.getUpFields());
                 } else
-                if(direction.currentDirection == Svsg.queenDirectionEnum.UPRIGHT) {
+                if(direction.currentDirection == SvsgEnum.queenDirectionEnum.UPRIGHT) {
                     fields.push.apply(fields,this.getUpRightFields());
                 } else
-                if(direction.currentDirection == Svsg.queenDirectionEnum.RIGHT) {
+                if(direction.currentDirection == SvsgEnum.queenDirectionEnum.RIGHT) {
                     fields.push.apply(fields,this.getRightFields());
                 } else
-                if(direction.currentDirection == Svsg.queenDirectionEnum.DOWNRIGHT) {
+                if(direction.currentDirection == SvsgEnum.queenDirectionEnum.DOWNRIGHT) {
                     fields.push.apply(fields,this.getDownRightFields());
                 } else
-                if(direction.currentDirection == Svsg.queenDirectionEnum.DOWN) {
+                if(direction.currentDirection == SvsgEnum.queenDirectionEnum.DOWN) {
                     fields.push.apply(fields,this.getDownFields());
                 } else
-                if(direction.currentDirection == Svsg.queenDirectionEnum.DOWNLEFT) {
+                if(direction.currentDirection == SvsgEnum.queenDirectionEnum.DOWNLEFT) {
                     fields.push.apply(fields,this.getDownLeftFields());
                 } else
-                if(direction.currentDirection == Svsg.queenDirectionEnum.LEFT) {
+                if(direction.currentDirection == SvsgEnum.queenDirectionEnum.LEFT) {
                     fields.push.apply(fields,this.getLeftFields());
                 } else
-                if(direction.currentDirection == Svsg.queenDirectionEnum.UPLEFT) {
+                if(direction.currentDirection == SvsgEnum.queenDirectionEnum.UPLEFT) {
                     fields.push.apply(fields,this.getUpLeftFields());
                 }                
          }        
@@ -509,28 +434,28 @@ Svsg.queen = function() {
 
     this.displayFields = function(){
         var output = "";
-        var repeat = (Svsg.global.size * Svsg.getSizeLength()) + Svsg.getSizeLength();
+        var repeat = (Svsg.global.size * SvsgUtil.getSizeLength(Svsg.global.size)) + SvsgUtil.getSizeLength(Svsg.global.size);
         output += "<div>"; 
         for(var line = Svsg.global.size; line > 0; line--){
             output += '_'.repeat(repeat); 
             output += "<br>"; 
-            output += Svsg.formatNumberLength(line, Svsg.getSizeLength())  + "|";
+            output += SvsgUtil.formatNumberLength(line, SvsgUtil.getSizeLength(Svsg.global.size))  + "|";
             for(var column = 1; column <= Svsg.global.size; column++){
-                var id = Svsg.ColumnLineToId(column, line);
+                var id = SvsgUtil.getColumnLineToId(column, line, Svsg.global.size);
               if(this.fieldIds[id]){
-                output += '*'.repeat(Svsg.getSizeLength()) + "|";
+                output += '*'.repeat(SvsgUtil.getSizeLength(Svsg.global.size)) + "|";
                 }
                 else {
-                    output += '_'.repeat(Svsg.getSizeLength()) + "|"; 
+                    output += '_'.repeat(SvsgUtil.getSizeLength(Svsg.global.size)) + "|"; 
                 }
             }
             output += "<br>"; 
         }
         output += '_'.repeat(repeat); 
         output += "<br>"; 
-        output += Svsg.formatNumberLength(this.id, Svsg.getSizeLength())  + "|"; 
+        output += SvsgUtil.formatNumberLength(this.id, SvsgUtil.getSizeLength(Svsg.global.size))  + "|";
         for(var _column = 1; _column <= Svsg.global.size; _column++){
-            output += Svsg.formatNumberLength(_column, Svsg.getSizeLength())  + "|";            
+            output += SvsgUtil.formatNumberLength(_column, SvsgUtil.getSizeLength(Svsg.global.size))  + "|";
         }
         output += "</div>";
         output += "<div><br></div>";
@@ -553,31 +478,31 @@ Svsg.board = function(){
 
     this.display = function(){
         var output = "";
-        var repeat = (Svsg.global.size * Svsg.getSizeLength());
+        var repeat = (Svsg.global.size * SvsgUtil.getSizeLength(Svsg.global.size));
         output += "<div>"; 
         for(var line = Svsg.global.size; line > 0; line--){
             output += '--'.repeat(repeat); 
             output += "<br>"; 
-            output += Svsg.formatNumberLength(line, Svsg.getSizeLength())  + "|";
+            output += SvsgUtil.formatNumberLength(line, SvsgUtil.getSizeLength(Svsg.global.size))  + "|";
             for(var column = 1; column <= Svsg.global.size; column++){
-                var id = Svsg.ColumnLineToId(column, line);
+                var id = SvsgUtil.getColumnLineToId(column, line, Svsg.global.size);
 
                 if(!this.fields[id].piece){
-                    output += '&nbsp;&nbsp;'.repeat(Svsg.getSizeLength()) + "|";
+                    output += '&nbsp;&nbsp;'.repeat(SvsgUtil.getSizeLength(Svsg.global.size)) + "|";
                     // TEST
-//                    output += Svsg.pad(Svsg.ColumnLineToId(column, line), Svsg.getSizeLength())  + "|"; 
+//                    output += SvsgUtil.pad(SvsgUtil.getColumnLineToId(column, line, Svsg.global.size), SvsgUtil.getSizeLength(Svsg.global.size))  + "|"; 
                 }
                 else {
-                    output += Svsg.pad(Svsg.ColumnLineToId(column, line), Svsg.getSizeLength())  + "|"; 
+                    output += SvsgUtil.pad(SvsgUtil.getColumnLineToId(column, line, Svsg.global.size), SvsgUtil.getSizeLength(Svsg.global.size))  + "|"; 
                 }
             }
             output += "<br>"; 
         }
         output += '--'.repeat(repeat); 
         output += "<br>"; 
-        output += '&nbsp;&nbsp;'.repeat(Svsg.getSizeLength())  + "|"; 
+        output += '&nbsp;&nbsp;'.repeat(SvsgUtil.getSizeLength(Svsg.global.size))  + "|"; 
         for(var _column = 1; _column <= Svsg.global.size; _column++){
-            output += Svsg.formatNumberLength(_column, Svsg.getSizeLength())  + "|";            
+            output += SvsgUtil.formatNumberLength(_column, SvsgUtil.getSizeLength(Svsg.global.size))  + "|";            
         }
         output += "</div>"; 
         return output;
@@ -712,7 +637,7 @@ Svsg.throwShadok = function(outputFieldname, checkShadokOutput, collisionOutput,
                 queenIds.push(queen.id);            
             }
         }, this);
-        queenIds.sort(Svsg.sortNumber());
+        queenIds.sort(SvsgUtil.sortNumber());
         var checkList = [
                             [6, 9, 21, 26, 40, 43, 55, 60],
                             [1, 14, 24, 27, 39, 44, 50, 61], 
@@ -721,7 +646,7 @@ Svsg.throwShadok = function(outputFieldname, checkShadokOutput, collisionOutput,
                             [2, 14, 17, 31, 36, 48, 51, 61]
                         ];
         checkList.forEach(function(solution) {
-            solution.sort(Svsg.sortNumber());
+            solution.sort(SvsgUtil.sortNumber());
             if(queenIds.compare(solution)){
                Svsg.stopShadok();
                throw solution + " is not found!";
@@ -754,7 +679,7 @@ Svsg.goGibi = function(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOutput
     
      Svsg.searchGibi();
    
-     if( Svsg.global.statusGibi != Svsg.status.NOTFOUND ||
+     if( Svsg.global.statusGibi != SvsgEnum.status.NOTFOUND ||
          Svsg.global.gibiTry % Svsg.global.modulusOutput == 0 ||
          Svsg.global.isGibiRequestToStop){
 
@@ -769,16 +694,16 @@ Svsg.goGibi = function(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOutput
             var output = boardTarget.display();
 
             var check = "";
-            if(Svsg.global.statusGibi == Svsg.status.NOTFOUND){
-                check = "<span style='color:red'>" + Svsg.status.NOTFOUND.text + "</span>";
+            if(Svsg.global.statusGibi == SvsgEnum.status.NOTFOUND){
+                check = "<span style='color:red'>" + SvsgEnum.status.NOTFOUND.text + "</span>";
             }
 
-            if(Svsg.global.statusGibi == Svsg.status.NOSOLUTION){
-                check = "<span style='color:purple'>" + Svsg.status.NOSOLUTION.text + "</span>";
+            if(Svsg.global.statusGibi == SvsgEnum.status.NOSOLUTION){
+                check = "<span style='color:purple'>" + SvsgEnum.status.NOSOLUTION.text + "</span>";
             }
 
-            if(Svsg.global.statusGibi == Svsg.status.FOUND){
-                check = "<span style='color:green'>" + Svsg.status.FOUND.text + "</span>";
+            if(Svsg.global.statusGibi == SvsgEnum.status.FOUND){
+                check = "<span style='color:green'>" + SvsgEnum.status.FOUND.text + "</span>";
             }
         
             Svsg.output.setGibiOutputFieldname(gibiOutputFieldname, output)
@@ -787,8 +712,8 @@ Svsg.goGibi = function(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOutput
 
         }
 
-        if(Svsg.global.statusGibi == Svsg.status.NOSOLUTION || 
-           Svsg.global.statusGibi == Svsg.status.FOUND || 
+        if(Svsg.global.statusGibi == SvsgEnum.status.NOSOLUTION || 
+           Svsg.global.statusGibi == SvsgEnum.status.FOUND || 
            Svsg.global.isGibiRequestToStop){
                 Svsg.stopGibi();
         }
@@ -953,7 +878,7 @@ Svsg.searchGibi = function() {
     }
 
     if(chain == undefined || chain.down){
-        Svsg.global.statusGibi = Svsg.status.NOSOLUTION;
+        Svsg.global.statusGibi = SvsgEnum.status.NOSOLUTION;
     } else {
 
         
@@ -965,12 +890,12 @@ Svsg.searchGibi = function() {
                     chain.previous.next = undefined;
                     chain.previous.down = true;
                 } else {
-                    Svsg.global.statusGibi = Svsg.status.NOSOLUTION;
+                    Svsg.global.statusGibi = SvsgEnum.status.NOSOLUTION;
                 }
         }
         } else {
             if (chain.id == Svsg.global.size){
-                Svsg.global.statusGibi = Svsg.status.FOUND;
+                Svsg.global.statusGibi = SvsgEnum.status.FOUND;
             } else {
                 var newChain = new Svsg.chain(chain); 
                 chain.next = newChain;
