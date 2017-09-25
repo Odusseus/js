@@ -633,9 +633,9 @@ Svsg.goShadok = function(size, modulusOutput, outputFieldname, gibiOutputFieldna
         Svsg.global.initialization = true;
     }
    
-    if (!Svsg.global.shadok) {
-     Svsg.global.shadok = setInterval(function () { Svsg.throwShadok(outputFieldname, checkShadokOutput, collisionOutput, tryOutput); }, 1);
-    }
+    // if (!Svsg.global.shadok) {
+    //  Svsg.global.shadok = setInterval(function () { Svsg.throwShadok(outputFieldname, checkShadokOutput, collisionOutput, tryOutput); }, 1);
+    // }
 
     if (!Svsg.global.gibi) {
         Svsg.global.gibi = setInterval(function () { Svsg.goGibi(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOutput, gibiTryOutput); }, 1);
@@ -853,7 +853,7 @@ Svsg.chain = function(previous){
 
     this.setQueen = function(){
         this.resetId();
-        this.queen = new Svsg.queen().setId(this.id);
+        this.queen = new Svsg.queen().setId(this.currentFieldId);
         this.initOthersFieldsIds();
         return this;
     };
@@ -887,11 +887,56 @@ Svsg.searchGibi = function() {
         Svsg.global.basisChain = new Svsg.chain();
     }
 
+    var s1 = false;
+    var s2 = false;
+    var s3 = false;
+    var s4 = false;
+    var s5 = false;
+    var s6 = false;
+
     var chain = Svsg.global.basisChain;
+
+    if (chain.id == 1 && chain.currentFieldId == 2){
+        s1 = true;
+    }
+
     while(chain.next != undefined){  
         chain = chain.next;
+       
+        if (chain.id == 2 && chain.currentFieldId == 10){
+            s2 = true;
+        }
+        if (chain.id == 3 && chain.currentFieldId == 18){
+            s3 = true;
+        }
+        if (chain.id == 4 && chain.currentFieldId == 19){
+            s4 = true;
+        }
+        if (chain.id == 5 && chain.currentFieldId == 27){
+            s5 = true;
+        }
+        if (chain.id == 5 && chain.currentFieldId == 27){
+            s5 = true;
+        }
+        if (chain.id == 6 && chain.currentFieldId == 35){
+            s6 = true;
+        }
+        if(s1){
+            if(s2){
+                if(s3){
+                    if(s4){
+                        if(s5){
+                            if(s6){
+                                var t = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }        
 
+    
     while(chain && chain.down) {
         Svsg.global.downCount++;
         chain.next = undefined;
@@ -904,6 +949,7 @@ Svsg.searchGibi = function() {
                 chain = undefined;
             }
         }
+
     }
 
     if(chain == undefined || chain.down){
