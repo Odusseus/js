@@ -703,7 +703,7 @@ Svsg.throwShadok = function(outputFieldname, checkShadokOutput, collisionOutput,
         //#endregion 1 known solution             
     }      
     
-    var found = Svsg.checkboard(boardTarget, queensTarget, Svsg.global.try, collisionOutput, checkShadokOutput);
+    var found = Svsg.checkBoard(boardTarget, queensTarget, Svsg.global.try, collisionOutput, checkShadokOutput);
 
     if(!found){
         var queenIds = [];
@@ -754,9 +754,9 @@ Svsg.goGibi = function(gibiOutputFieldname, gibiCheckOutput, gibiCollisionOutput
     
      Svsg.searchGibi();
    
-     if( Svsg.global.statusGibi != Svsg.status.NOTFOUND
-        || Svsg.global.gibiTry % Svsg.global.modulusOutput == 0
-        || Svsg.global.isGibiRequestToStop){
+     if( Svsg.global.statusGibi != Svsg.status.NOTFOUND ||
+         Svsg.global.gibiTry % Svsg.global.modulusOutput == 0 ||
+         Svsg.global.isGibiRequestToStop){
 
             var chainDisplay = Svsg.global.basisChain;
             var boardTarget = new Svsg.board().init();
@@ -935,7 +935,7 @@ Svsg.searchGibi = function() {
     
 };
 
-Svsg.checkboard = function(boardTarget, queensTarget, trycount, outputFieldname, checkOutput) {
+Svsg.checkBoard = function(boardTarget, queensTarget, tryCount, outputFieldname, checkOutput) {
         for(var i = 1; i <= Svsg.global.size; i++){
             for(var j = 1; j <= Svsg.global.size; j++){
                 if( i != j) {
@@ -950,7 +950,7 @@ Svsg.checkboard = function(boardTarget, queensTarget, trycount, outputFieldname,
             var piece = queensTarget[i].getOtherFieldPiece();
             if(piece){
                 found = false;
-                if(trycount % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){
+                if(tryCount % Svsg.global.modulusOutput == 0 || Svsg.global.isRequestToStop){
                     output += "( " + queensTarget[i].id + " and " + piece.id +") ";
                 }
             }
