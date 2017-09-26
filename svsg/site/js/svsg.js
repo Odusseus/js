@@ -80,11 +80,11 @@ Svsg.goInitialization = function(){
     Svsg.global.initializationField++;
 };
     
-    Svsg.goShadok = function(size, modulusOutput, outputFieldname, gibiOutputFieldname, checkShadokOutput, gibiCheckOutput, collisionOutput, gibiCollisionOutput, tryOutput, gibiTryOutput, progress) {
-        if (!Svsg.global.initialization) {
-            Svsg.initialization(size, modulusOutput, outputFieldname, gibiOutputFieldname, checkShadokOutput, gibiCheckOutput, collisionOutput, gibiCollisionOutput, tryOutput, gibiTryOutput, progress);
-                    Svsg.global.initialization = true;
-    }
+Svsg.goShadok = function(size, modulusOutput, outputFieldname, gibiOutputFieldname, checkShadokOutput, gibiCheckOutput, collisionOutput, gibiCollisionOutput, tryOutput, gibiTryOutput, progress) {
+    // if (!Svsg.global.initialization) {
+    //     Svsg.initialization(size, modulusOutput, outputFieldname, gibiOutputFieldname, checkShadokOutput, gibiCheckOutput, collisionOutput, gibiCollisionOutput, tryOutput, gibiTryOutput, progress);
+    //     Svsg.global.initialization = true;
+    // }
    
     if (Svsg.global.initializationReady && !Svsg.global.shadok) {
      Svsg.global.shadok = setInterval(function () { Svsg.throwShadok(outputFieldname, checkShadokOutput, collisionOutput, tryOutput); }, 1);
@@ -372,61 +372,16 @@ Svsg.chain = function(previous){
 };
 
 Svsg.searchGibi = function() {
-    Svsg.global.gibiTry++;   
+    Svsg.global.gibiTry++;
 
     if(Svsg.global.basisChain == undefined) {
         Svsg.global.basisChain = new Svsg.chain();
     }
 
-    var s1 = false;
-    var s2 = false;
-    var s3 = false;
-    var s4 = false;
-    var s5 = false;
-    var s6 = false;
-
     var chain = Svsg.global.basisChain;
-
-    if (chain.id == 1 && chain.currentFieldId == 2){
-        s1 = true;
-    }
-
     while(chain.next != undefined){  
         chain = chain.next;
-       
-        if (chain.id == 2 && chain.currentFieldId == 10){
-            s2 = true;
-        }
-        if (chain.id == 3 && chain.currentFieldId == 18){
-            s3 = true;
-        }
-        if (chain.id == 4 && chain.currentFieldId == 19){
-            s4 = true;
-        }
-        if (chain.id == 5 && chain.currentFieldId == 27){
-            s5 = true;
-        }
-        if (chain.id == 5 && chain.currentFieldId == 27){
-            s5 = true;
-        }
-        if (chain.id == 6 && chain.currentFieldId == 35){
-            s6 = true;
-        }
-        if(s1){
-            if(s2){
-                if(s3){
-                    if(s4){
-                        if(s5){
-                            if(s6){
-                                var t = true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }        
-
+    }
     
     while(chain && chain.down) {
         Svsg.global.downCount++;
@@ -440,7 +395,6 @@ Svsg.searchGibi = function() {
                 chain = undefined;
             }
         }
-
     }
 
     if(chain == undefined || chain.down){
