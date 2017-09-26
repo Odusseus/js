@@ -10,7 +10,9 @@ Array.prototype.compare = function(testArr) {
     return true;
 };
 
-var SvsgUtil = {
+var Svsg = Svsg || {};
+
+Svsg.Util = {
     outputElement : function(id, value){
         this.id = id;
         this.value = value;
@@ -50,6 +52,75 @@ var SvsgUtil = {
         }
         var id = size * (line - 1) + column; 
         return id;
+    },
+
+    outputTemplate : function(){
+        this.setOutput = function(id, value) {
+            var outputField = document.getElementById(id);
+            outputField.innerHTML = value;
+        };
+        this.setProgressBarValue = function(id, value) {
+            var outputField = document.getElementById(id);
+            outputField.value = value;
+        };
+        this.outputFieldname = undefined;
+        this.setOutputFieldname = function(id, value){
+            this.outputFieldname = new Svsg.Util.outputElement(id, value);
+            this.setOutput(id, value);
+            return this;
+        };
+        this.gibiOutputFieldname = undefined;
+        this.setGibiOutputFieldname = function(id, value){
+            this.gibiOutputFieldname = new Svsg.Util.outputElement(id, value);
+            this.setOutput(id, value);
+            return this;
+        };
+        this.progress = undefined;
+        this.setProgress = function(id, value){
+            this.progress = new Svsg.Util.outputElement(id, value);
+            this.setProgressBarValue(id, value);
+            return this;
+        };
+        this.setProgressValue = function(value){
+            this.progress.value = value;
+            this.setProgressBarValue(this.progress.id, value);
+        };
+        this.checkShadokOutput = undefined;
+        this.setCheckShadokOutput = function(id, value){
+            this.checkShadokOutput = new Svsg.Util.outputElement(id, value);
+            this.setOutput(id, value);
+            return this;
+        };
+        this.gibiCheckOutput = undefined;
+        this.setGibiCheckOutput = function(id, value){
+            this.gibiCheckOutput = new Svsg.Util.outputElement(id, value);
+            this.setOutput(id, value);
+            return this;
+        };
+        this.collisionOutput = undefined;
+        this.setCollisionOutput = function(id, value){
+            this.collisionOutput = new Svsg.Util.outputElement(id, value);
+            this.setOutput(id, value);
+            return this;
+        };
+        this.gibiCollisionOutput = undefined;
+        this.setGibiCollisionOutput = function(id, value){
+            this.gibiCollisionOutput = new Svsg.Util.outputElement(id, value);
+            this.setOutput(id, value);
+            return this;
+        };
+        this.tryOutput = undefined;
+        this.setTryOutput = function(id, value){
+            this.tryOutput = new Svsg.Util.outputElement(id, value);
+            this.setOutput(id, value);
+            return this;
+        };
+        this.gibiTryOutput = undefined;
+        this.setGibiTryOutput = function(id, value){
+            this.gibiTryOutput = new Svsg.Util.outputElement(id, value);
+            this.setOutput(id, value);
+            return this;
+        };
     },
 };
 

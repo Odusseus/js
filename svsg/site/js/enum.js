@@ -1,4 +1,6 @@
-var SvsgEnum = {
+var Svsg = Svsg || {};
+
+Svsg.Enum = {
     status : {
         NOTFOUND : {text: "No solution yet found. :|"},
         FOUND  : {text: "Bravo solution is found! :)"},
