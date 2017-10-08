@@ -1,5 +1,10 @@
 var size = 100;
 
+function output(result){
+    var _output = document.getElementById("output");
+    _output.innerHTML = result.join();
+}
+
 function fibonacci(size) {
 
     var first = 0,
@@ -21,12 +26,8 @@ function fibonacci(size) {
 }
 
 function GoHemingway() {
-
-    
-    var output = document.getElementById("output");
-    
     var result = fibonacci(size);
-    output.innerHTML = result;
+    output(result);
 }
 
 function theSeriesOfFIBONACCI(theSize){
@@ -62,10 +63,26 @@ function theSeriesOfFIBONACCI(theSize){
 }
 
 function GoShakespeare() {
-    
-        
-        var output = document.getElementById("output");
-        
-        var result = theSeriesOfFIBONACCI(size);
-        output.innerHTML = result;
+    var result = theSeriesOfFIBONACCI(size);
+    output(result);
+}
+
+function Colette(umbrella) {
+    var staircase = 0, galleons = 0, brigantines = 1;
+    var armada = [galleons, brigantines], bassoon;
+    Array.prototype.embrace = [].push;
+
+    while (2 + staircase++ < umbrella){
+        bassoon = galleons  + brigantines;
+        armada.embrace(brigantines = (galleons = brigantines, bassoon));
     }
+
+    return armada;
+
+
+}
+
+function GoBreton() {
+    var result = Colette(size);
+    output(result);
+}
