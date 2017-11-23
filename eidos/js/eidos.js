@@ -65,11 +65,13 @@ function GoEidos() {
     var wordNumber = 0;
     for(i = 0; i < lines; i++){
         for(j = 0; j < columns; j++, wordNumber++){
-            result += j + ":" + newWords[wordNumber]+" ";
+            result += j + ":" + newWords[wordNumber]+"|";
+            if(j == Math.floor((columns-1)/2)){
+                result += " |";
+            }
         }
-        result += " X ";
-    };
+    }
 
-    var output = document.getElementById("output");  
+    output = document.getElementById("output");  
     output.innerHTML = result;
 }
