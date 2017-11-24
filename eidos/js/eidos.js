@@ -13,7 +13,7 @@ var words = ["aan", "aanbod", "aanraken", "aanval", "aap", "aardappel", "aarde",
     "maag", "maal", "maaltijd", "maan", "maand", "maar", "maat", "machine", "maken", "makkelijk", "mama", "man", "mand", "manier", "map", "markeren", "markt", "me", "medicijn", "meel", "meer", "meerdere", "meest", "meisje", "melk", "meneer", "mengsel", "mensen", "mes", "met", "meubel", "mevrouw", "middel", "midden", "mij", "mijn ", "miljoen", "min", "minder", "minuut", "mis", "missen", "mits", "model", "modern", "moeder", "moeilijk", "moeten", "mogelijk", "mogen", "moment", "mond", "mooi", "moord", "moorden", "morgen", "munt", "muziek",
     "na", "naald", "naam", "naar", "naast", "nacht", "nat", "natuur", "natuurlijk", "nee", "neer", "negen", "nek", "nemen", "net", "netjes", "neus", "niet", "niets", "nieuw", "nieuws", "nobel", "noch", "nodig", "noemen", "nog", "nood", "nooit", "noord", "noot", "normaal", "nu", "nul", "nummer",
     "object", "oceaan", "ochtend", "oefening", "of", "offer", "olie", "olifant", "om", "oma", "onder", "onderwerp", "onderzoek", "oneven", "ongeluk", "ons", "ontsnappen", "ontbijt", "ontdekken", "ontmoeten", "ontvangen", "ontwikkelen", "onze", "oog", "ooit", "ook", "oom", "oor", "oorlog", "oorzaak", "oost", "op", "opa", "opeens", "open", "openlijk", "opleiding", "opnemen", "oranje", "orde", "oud", "ouder", "over", "overal", "overeenkomen", "overleden", "overvallen",
-    "paar", "paard", "pad", "pagina", "pan", "papa", "papier", "park", "partner", "pas", "passeren", "pen", "peper", "per", "perfect", "periode", "persoon", "piano", "pijn", "pistool", "plaat", "plaatje", "plaats", "plafond", "plank", "plant", "plastic", "plat", "plattegrond", "plein", "plus", "poes", "politie", "poort", "populair", "positie", "postzegel", "potlood", "praten", "presenteren", "prijs", "prins", "prinses", "privé", "proberen", "probleem", "product", "provincie", "publiek", "punt",
+    "paar", "paard", "pad", "pagina", "pan", "papa", "papier", "park", "partner", "pas", "passeren", "pen", "peper", "per", "perfect", "periode", "persoon", "piano", "pijn", "pistool", "plaat", "plaatje", "plaats", "plafond", "plank", "plant", "plastic", "plat", "plattegrond", "plein", "plus", "poes", "politie", "poort", "populair", "positie", "postzegel", "potlood", "praten", "presenteren", "prijs", "prins", "prinses", "priv&eacute;", "proberen", "probleem", "product", "provincie", "publiek", "punt",
     "raak", "raam", "radio", "raken", "rapport", "recht", "rechtdoor", "rechts", "rechtvaardig", "redden", "reeds", "regen", "reiken", "reizen", "rekenmachine", "rennen", "repareren", "rest", "restaurant", "resultaat", "richting", "rijk", "rijst", "rijzen", "ring", "rok", "rond", "rood", "rook", "rots", "roze", "rubber", "ruiken", "ruimte",
     "samen", "sap", "schaap", "schaar", "schaduw", "scheiden", "scherp", "schetsen", "schieten", "schijnen", "schip", "school", "schoon", "schouder", "schreeuw", "schreeuwen", "schrijven", "schudden", "seconde", "sex", "signaal", "simpel", "sinds", "slaapkamer", "slapen", "slecht", "sleutel", "slim", "slot", "sluiten", "smaak", "smal", "sneeuw", "snel", "snelheid", "snijden", "soep", "sok", "soms", "soort", "sorry", "speciaal", "spel", "spelen", "sport", "spreken", "springen", "staal", "stad", "stap", "start", "station", "steen", "stelen", "stem", "stempel", "ster", "sterk", "steun", "stil", "stilte", "stoel", "stof", "stoffig", "stom", "stop", "storm", "straat", "straffen", "structuur", "student", "studie", "stuk", "succes", "suiker",
     "taal", "taart", "tafel", "tak", "tamelijk", "tand", "tante", "tas", "taxi", "te", "team", "teen", "tegen", "teken", "tekenen", "telefoon", "televisie", "tellen", "tennis", "terug", "terugkomst", "terwijl", "test", "tevreden", "thee", "thuis", "tien", "tijd", "titel", "toekomst", "toen", "toename", "totaal", "traan", "tram", "trein", "trekken", "trouwen", "trui", "tuin", "tussen", "tweede",
@@ -24,6 +24,9 @@ var words = ["aan", "aanbod", "aanraken", "aanval", "aap", "aardappel", "aarde",
 ];
 
 function romanize(num) {
+    if(num == 0){
+        return ".";
+    }
     var lookup = {M:1000,CM:900,D:500,CD:400,C:100,XC:90,L:50,XL:40,X:10,IX:9,V:5,IV:4,I:1},roman = '',i;
     for ( i in lookup ) {
       while ( num >= lookup[i] ) {
@@ -45,14 +48,34 @@ function GoEidos() {
     
     var newWords = [];
     var i = 0;
+    var coundWords = 0;
+    var fiveWords = "";
+    var isLeghtOk = true;
     while(i < maxWords){
         wordNumber = Math.floor(Math.random() * words.length);
         
         var newWord = words[wordNumber];
+        
+        isLeghtOk = true;
 
         if(newWords.indexOf(newWord) < 0){
-            newWords.push(words[wordNumber]);
-            i++;
+            if(coundWords == Math.floor((columns-1)/2)){
+                if((fiveWords.length < 30 && newWord.length + fiveWords.length > 32) || newWord.length + fiveWords.length > 36){
+                    isLeghtOk = false;
+                } else{
+                    isLeghtOk = true;
+                    coundWords = 0;
+                    fiveWords = "";
+                }
+            } else{
+                fiveWords += newWord;
+                coundWords++;
+            }
+
+            if(isLeghtOk){
+                newWords.push(newWord);
+                i++;
+            }
         } else {
             // Try one time more
         }
@@ -64,10 +87,24 @@ function GoEidos() {
     var result = "";
     var wordNumber = 0;
     for(i = 0; i < lines; i++){
-        for(j = 0; j < columns; j++, wordNumber++){
-            result += j + ":" + newWords[wordNumber]+"|";
+        var part = 1;
+        for(j = 0, k = Math.floor(columns/2); j < columns; j++, wordNumber++){
+            if(part == 1){
+                k--;
+            } else {
+                k++;
+            }
+            if(k < 0){
+                part++;
+                k = Math.floor((columns)/2);
+            }
+            if(part==1){
+                result += " " + newWords[wordNumber] + " " + k;
+            } else {
+                result += k + " " + newWords[wordNumber] + " ";
+            }
             if(j == Math.floor((columns-1)/2)){
-                result += " |";
+                 result += " ";
             }
         }
     }
@@ -75,3 +112,5 @@ function GoEidos() {
     output = document.getElementById("output");  
     output.innerHTML = result;
 }
+
+//wachtengrootvaderbegrijpennietsenthousiast
