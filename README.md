@@ -2,6 +2,9 @@
 
 ## javascript experiments
 
+Space invaders :
+https://cdn.rawgit.com/Odusseus/js/e7273e3c/si/si.html
+
 Chessboard : <https://rawgit.com/Odusseus/js/master/chessboard/cb.html>
 
 Shadok vs Gibis : SvsG <https://rawgit.com/Odusseus/js/master/svsg/site/index.html>
