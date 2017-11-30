@@ -2,8 +2,7 @@
 
 ## javascript experiments
 
-Space invaders :
-https://cdn.rawgit.com/Odusseus/js/e7273e3c/si/si.html
+Space invaders : https://rawgit.com/Odusseus/js/master/si/si.html
 
 Chessboard : <https://rawgit.com/Odusseus/js/master/chessboard/cb.html>
 
