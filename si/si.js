@@ -1,8 +1,15 @@
-// Auteur Pascal Boittin
+// Author Pascal Boittin
 // 25-10-2014
 // chessmachine@odusseus.org
 
 var si = si || {};
+
+si.Constant = {
+    LEFTBOARD : 20,
+    RIGHTBOARD : 500,
+    TOPBOARD : 10,
+    FLOORBOARD : 300
+};
 
 si.Sequence = function() {
     this.id = undefined;
@@ -133,10 +140,10 @@ si.Vehicle = function (id, width, height, centerX, centerY, fireDirection, numbe
 
 si.Page = function () {
 
-    this.leftBoard = 150;
-    this.rightBoard = 700;
-    this.topBoard = 5;
-    this.downBoard = 500;
+    this.leftBoard = si.Constant.LEFTBOARD;
+    this.rightBoard = si.Constant.RIGHTBOARD;
+    this.topBoard = si.Constant.TOPBOARD;
+    this.floorBoard = si.Constant.FLOORBOARD;
 
     this.createDiv = function (vehicle) {
         var div = document.createElement("div");
@@ -154,14 +161,10 @@ si.Page = function () {
         div.innerHTML = vehicle.forms[vehicle.currentForm];
     };
 
-
-
     this.setForm = function (vehicle) {
         var div = document.getElementById(vehicle.id);
         div.innerHTML = vehicle.forms[vehicle.currentForm];
-    }
-
-    
+    };
 };
 
 page = new si.Page();
@@ -171,7 +174,8 @@ si.Bullet = function (id, width, height, x, y, fireDirection, forms) {
     //this.id = id;
     //this.centerName = "center" + this.id.toString();
     this.vehicle = new si.Vehicle(id, width, height, x, y, fireDirection, undefined, forms);
-    this.actief = true;
+    this.active = true;
+    this.explosionState = 2;
     this.move = true;
     
     this.moveUp = function () {
@@ -182,16 +186,16 @@ si.Bullet = function (id, width, height, x, y, fireDirection, forms) {
 
             if (y < page.topBoard) {
                 this.move = false;
-                this.actief = false;
+                this.active = false;
                 this.vehicle.currentForm = 0;
                 this.setForm();
             }
             
             this.checkCollision();
 
-            if (y > page.downBoard) {
+            if (y > page.floorBoard) {
                 this.move = false;
-                this.actief = false;
+                this.active = false;
                 this.vehicle.currentForm = 0;
                 this.setForm();
             }
@@ -212,7 +216,7 @@ si.Bullet = function (id, width, height, x, y, fireDirection, forms) {
             noCollision = false;
             player.lives -= 10;
 
-            this.actief = false;
+            this.active = false;
             this.move = false;
             this.vehicle.currentForm = 0;
             this.setForm();
@@ -223,7 +227,7 @@ si.Bullet = function (id, width, height, x, y, fireDirection, forms) {
             
             for (var i = 0; i < theInvaders.invaders.length; i++) {
 
-                if (theInvaders.invaders[i].actief) {
+                if (theInvaders.invaders[i].active) {
 
                     var invader = theInvaders.invaders[i];
 
@@ -231,12 +235,12 @@ si.Bullet = function (id, width, height, x, y, fireDirection, forms) {
                             (this.vehicle.rightUp.x <= invader.vehicle.rightDown.x && this.vehicle.rightUp.x >= invader.vehicle.leftDown.x)
                         ) && (this.vehicle.leftUp.y <= invader.vehicle.leftDown.y && this.vehicle.leftUp.y >= invader.vehicle.leftUp.y)
                     ) {
-                        this.actief = false;
+                        this.active = false;
                         this.move = false;
-                        this.vehicle.currentForm = 0;
+                        this.vehicle.currentForm = 1;
                         this.setForm();
-                        invader.actief = false;
-                        invader.vehicle.currentForm = 0;
+                        invader.active = false;
+                        invader.vehicle.currentForm = 1;
                         invader.setForm();
                         invader.move = false;
                         game.total += invader.lives;
@@ -249,7 +253,7 @@ si.Bullet = function (id, width, height, x, y, fireDirection, forms) {
 
     this.setForm = function () {        
         page.setForm(this.vehicle);
-    }
+    };
 };
 
 
@@ -276,10 +280,16 @@ si.Bullets = function () {
 
         for (var ii = 0; ii < this.bullets.length; ii++) {
 
-            if (this.bullets[ii].actief == true) {
+            if (this.bullets[ii].active == true) {
                 this.bullets[ii].moveUp();
                 page.setDiv(this.bullets[ii].vehicle);
                 this.bullets[ii].checkCollision();
+            } else if(this.bullets[ii].explosionState > 0){
+                this.bullets[ii].explosionState--;
+                if(this.bullets[ii].explosionState == 0){
+                    this.bullets[ii].vehicle.currentForm = 0;
+                }
+                page.setDiv(this.bullets[ii].vehicle);
             }
         }
 
@@ -292,7 +302,8 @@ theBullets = new si.Bullets();
 
 si.Player = function (id, width, height, x, y, forms) {
 
-    this.actief = true;
+    this.active = true;
+    this.explosionState = 3;
     this.lives = 100;
     this.vehicle = new si.Vehicle(id, width, height, x, y, -1, 2, forms);
     this.lastKeyPress = undefined;
@@ -331,9 +342,10 @@ si.Player = function (id, width, height, x, y, forms) {
         var x = this.vehicle.center.x + this.vehicle.halfWidth;
         var y = this.vehicle.center.y;
 
-        this.vehicle.setCenterUpAndDown(x, y);
-
-        this.moveNow();
+        if(x < page.rightBoard){
+            this.vehicle.setCenterUpAndDown(x, y);
+            this.moveNow();
+        }
         this.checkCollision();
     };
 
@@ -342,9 +354,10 @@ si.Player = function (id, width, height, x, y, forms) {
         var x = this.vehicle.center.x - this.vehicle.halfWidth;
         var y = this.vehicle.center.y;
 
-        this.vehicle.setCenterUpAndDown(x, y);
-
-        this.moveNow();
+        if(x > page.leftBoard){
+            this.vehicle.setCenterUpAndDown(x, y);
+            this.moveNow();
+        }
         this.checkCollision();
     };
 
@@ -374,7 +387,7 @@ si.Player = function (id, width, height, x, y, forms) {
 
         for (var i = 0; i < theInvaders.invaders.length; i++) {
 
-            if (theInvaders.invaders[i].actief) {
+            if (theInvaders.invaders[i].active) {
 
                 var invader = theInvaders.invaders[i];
 
@@ -382,9 +395,9 @@ si.Player = function (id, width, height, x, y, forms) {
                         (this.vehicle.rightUp.x >= invader.vehicle.rightDown.x && this.vehicle.rightUp.x <= invader.vehicle.center.x)
                     ) && (this.vehicle.leftUp.y >= invader.vehicle.leftDown.y && this.vehicle.leftUp.y <= invader.vehicle.center.y)
                 ) {
-                    invader.actief = false;
+                    invader.active = false;
                     invader.move = false;
-                    invader.vehicle.currentForm = 0;
+                    invader.vehicle.currentForm = 1;
                     invader.setForm();
                     game.total += invader.lives;
                 }
@@ -402,18 +415,18 @@ si.Player = function (id, width, height, x, y, forms) {
 
     this.setForm = function () {        
         page.setForm(this.vehicle);
-    }
+    };
 };
 
 var playerForms = [];
 
-playerForms[0] = "XXX<br>xx<br>+<br>xx<br>XXX";
-playerForms[1] = "";
+playerForms[0] = "";
+playerForms[1] = "X * X<br>x x<br>+<br>x x<br>X * X";
 playerForms[2] = "/ \\<br>[..]";
 playerForms[3] = "/ \\<br>[**]";
 
 
-var player = new si.Player(sequence.next(), 20, 20, Math.ceil(page.rightBoard / 2), page.downBoard, playerForms);
+var player = new si.Player(sequence.next(), 20, 20, Math.ceil(page.rightBoard / 2), page.floorBoard, playerForms);
 
 
 
@@ -423,12 +436,13 @@ si.Invader = function (id, width, height, x, y, lives, forms ) {
     //this.centerName = "center" + this.id.toString();
     this.vehicle = new si.Vehicle(id, width, height, x, y, 1, 1, forms);
     this.direction = 1;
-    this.actief = true;
+    this.explosionState = 3;
+    this.active = true;
     this.move = true;
     this.lives = lives;
     this.switchDirection = function() {
         this.direction = this.direction * -1;
-    }
+    };
 
     this.moveLeftAndRight = function () {
         if (this.move == true) {
@@ -456,7 +470,7 @@ si.Invader = function (id, width, height, x, y, lives, forms ) {
             var y = this.vehicle.center.y + this.vehicle.halfHeight;
             this.vehicle.setCenterUpAndDown(x, y);
 
-            if (y > page.downBoard) {
+            if (y > page.floorBoard) {
                 return true;
             }
 
@@ -467,7 +481,7 @@ si.Invader = function (id, width, height, x, y, lives, forms ) {
 
     this.setForm = function() {        
         page.setForm(this.vehicle);
-    }
+    };
 
     this.checkCollision = function () {
 
@@ -475,7 +489,7 @@ si.Invader = function (id, width, height, x, y, lives, forms ) {
                         (this.vehicle.rightDown.x <= player.vehicle.rightUp.x && this.vehicle.rightDown.x >= player.vehicle.leftUp.x)
                     ) && (this.vehicle.leftDown.y >= player.vehicle.leftUp.y && this.vehicle.leftDown.y <= player.vehicle.leftDown.y)
                 ) {
-                    player.actief = false;
+                    player.active = false;
                     player.lives -= 10;
                 }
     };
@@ -491,8 +505,7 @@ si.Invader = function (id, width, height, x, y, lives, forms ) {
                 if (this.id != theInvaders.invaders[i]) {
                     if (this.vehicle.leftDown.y <= theInvaders.invaders[i].vehicle.leftUp.y) {
                         if ((this.vehicle.leftDown.x >= theInvaders.invaders[i].vehicle.leftUp.x &&
-                            this.vehicle.leftDown.x <= theInvaders.invaders[i].vehicle.rightUp.x)
-                            ||
+                            this.vehicle.leftDown.x <= theInvaders.invaders[i].vehicle.rightUp.x) ||
                            (this.vehicle.rightDown.x <= theInvaders.invaders[i].vehicle.rightUp.x &&
                             this.vehicle.rightDown.x >= theInvaders.invaders[i].vehicle.leftUp.x)
                            ) {
@@ -516,14 +529,13 @@ si.Invaders = function() {
     this.invaders = [];
     this.forms = [];
 
-    this.forms[0] = "+++";
-    this.forms[1] = "";
+    this.forms[0] = "";
+    this.forms[1] = "+ * + * <br> +*+ <br> + * + *";
     this.forms[2] = "{x}";
     this.forms[3] = "{XX}";
-
-
-    for (var i = 0, x = page.leftBoard, y = 0, width = 20, height = 10; i < 4; i++, x = page.leftBoard) {
-        for (var j = 0; j < 10; j++, this.numberOfInvaders++) {
+    
+    for (var i = 0, x = page.leftBoard, y = page.topBoard, width = 20, height = 10; i < 4; i++, x = page.leftBoard) {
+        for (var j = 0; j < height; j++, this.numberOfInvaders++) {
             this.invaders[this.numberOfInvaders] = new si.Invader(sequence.next(), width, height, x, y, 10, this.forms);
             page.createDiv(this.invaders[this.numberOfInvaders].vehicle);
                  
@@ -534,6 +546,13 @@ si.Invaders = function() {
         y = y + (2 * height);
     }
 
+    // this.invaders[0] = new si.Invader(sequence.next(), 20, 10, 0, 0, 10, this.forms);
+    // page.createDiv(this.invaders[this.numberOfInvaders].vehicle);
+    // this.invaders[1] = new si.Invader(sequence.next(), 20, 10, 50, 0, 10, this.forms);
+    // page.createDiv(this.invaders[this.numberOfInvaders].vehicle);
+                 
+
+
     this.move = function () {
 
         var switchdirection = false;
@@ -541,15 +560,21 @@ si.Invaders = function() {
 
         for (var i = 0; i < this.invaders.length; i++) {
 
-            if (this.invaders[i].actief == true) {
+            if (this.invaders[i].active == true) {
                 this.invaders[i].fire();
                 switchdirection = this.invaders[i].moveLeftAndRight() || switchdirection;
                 page.setDiv(this.invaders[i].vehicle);
-            }
+            } else if (this.invaders[i].explosionState > 0) {
+                    this.invaders[i].explosionState--;
+                    if(this.invaders[i].explosionState == 0){
+                        this.invaders[i].vehicle.currentForm = 0;
+                    }
+                    page.setDiv(this.invaders[i].vehicle);
+                }
         }
             if (switchdirection) {
                 for (j = 0; j < this.invaders.length; j++) {
-                    if (this.invaders[j].actief == true) {
+                    if (this.invaders[j].active == true) {
                         this.invaders[j].switchDirection();
                         stopMove = this.invaders[j].moveDown() || stopMove;
                     }
@@ -559,7 +584,7 @@ si.Invaders = function() {
 
             if (stopMove) {
                 for (j = 0; j < this.invaders.length; j++) {
-                    if (this.invaders[j].actief == true) {
+                    if (this.invaders[j].active == true) {
                         this.invaders[j].move = false;
                     }
                 }
@@ -605,10 +630,13 @@ si.Game = function () {
 
         this.info++;
         //this.infoDiv.innerHTML = this.info;
+        if(player.lives < 0){
+            player.lives = 0;
+        }
         this.livesDiv.innerHTML = player.lives;
         this.totalDiv.innerHTML = this.total;
 
-        if (player.lives < 0) {
+        if (player.lives <= 0) {
             player.vehicle.currentForm = 1;
             player.setForm();
             si.Stop();
@@ -618,20 +646,19 @@ si.Game = function () {
 
         var isInvader = false;
         for (var i = 0; i < theInvaders.invaders.length; i++) {
-            if (theInvaders.invaders[i].actief) {
+            if (theInvaders.invaders[i].active) {
                 isInvader = true;
                 break;
             }
         }
 
-        for (var i = 0; i < theInvaders.invaders.length; i++) {
-            if (theInvaders.invaders[i].actief == false &&
-                theInvaders.invaders[i].vehicle.currentForm == 0) {
-                theInvaders.invaders[i].vehicle.currentForm = 1;
-                theInvaders.invaders[i].setForm();
-
-            }
-        }
+        // for (i = 0; i < theInvaders.invaders.length; i++) {
+        //     if (theInvaders.invaders[i].active == false &&
+        //         theInvaders.invaders[i].vehicle.currentForm == 0) {
+        //         theInvaders.invaders[i].vehicle.currentForm = 1;
+        //         theInvaders.invaders[i].setForm();
+        //     }
+        // }
 
         if (isInvader == false) {
             si.Stop();
@@ -646,7 +673,7 @@ var game = new si.Game();
 si.Start = function () {
     document.activeElement.blur();
     if (game.runnerInterval == undefined) {
-        game.runnerInterval = setInterval(function () { game.Runner() }, 10);
+        game.runnerInterval = setInterval(function () { game.Runner(); }, 10);
     }
 };
 
@@ -657,4 +684,16 @@ si.Stop = function () {
 
 document.onkeydown = function (e) {
     player.lastKeyPress = e.keyCode;
+};
+
+si.Left = function(){
+    player.lastKeyPress = 37;
+};
+
+si.Right = function(){
+    player.lastKeyPress = 39;
+};
+
+si.Space = function(){
+    player.lastKeyPress = 32;
 };

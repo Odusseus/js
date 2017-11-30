@@ -15,7 +15,7 @@
     <script language="Javascript" src="si.js" defer> </script>
 </head>
 <body>
-    <div>
+    <div id="board">
         <button onclick="location.reload(true)">New game</button>
         <br>
         <button onclick="si.Start()">Start</button>
@@ -23,7 +23,6 @@
         <button onclick="si.Stop()">Stop</button>
         <br>
         <div>
-
             <div id="info"></div>
             <br />
             <div>
@@ -37,6 +36,11 @@
             <div>
                 <h1>Result</h1>
                 <div id="result"></div>
+            </div>
+            <div id="keypadArrows">
+                <button onclick="si.Left()">&larr;</button>
+                <button onclick="si.Space()">Space</button>
+                <button onclick="si.Right()">&rarr;</button>
             </div>
         </div>
     </div>
