@@ -1,6 +1,4 @@
-﻿body { -ms-touch-action: manipulation; } 
-
-/* The navigation bar */
+﻿/* The navigation bar */
 #navbarTop {
     overflow: hidden;
     color: white;
@@ -30,7 +28,6 @@
 button.controle {
     width: 100px;
     margin: 5px;
-    -ms-touch-action: none;
 }
 
 
