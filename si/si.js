@@ -8,7 +8,7 @@ si.Constant = {
     LEFTBOARD : 20,
     RIGHTBOARD : 500,
     TOPBOARD : 30,
-    FLOORBOARD : 300
+    FLOORBOARD : 250
 };
 
 // (function() {
