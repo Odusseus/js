@@ -7,31 +7,31 @@
     background-color: #333;
     position: fixed; /* Set the navbar to fixed position */
     top: 0; /* Position the navbar at the top of the page */
-    width: 100%; /* Full width */
+    width: 550px; /* Full width */
 }
 
 #navbarFloor {
     position: fixed;
-    top: 330px;
-    width: 100%; /* Full width */
-}
-
-button.controle {
-    
+    top: 360px;
+    width: 500px; /* Full width */
 }
 
 #keypadArrows{
-    /* position: absolute;
+    position: absolute;
     margin: auto;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    width: 200px;
-    height: 50px;
-    background-color: #ccc;
-    border-radius: 3px; */
+    width: 350px;
+    height: 25px;
 }
+
+button.controle {
+    width: 100px;
+    margin: 5px;
+}
+
 
 .topInfo {
     float: left;
@@ -46,5 +46,12 @@ button.controle {
 
 #buttonsRight {
     position: absolute;
-    left: 550px;
+    left: 560px;
+    width: 100px;
+}
+
+#buttonsRight button {
+    display: block;
+    margin: 10px;
+    width: 100px;
 }

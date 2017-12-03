@@ -164,7 +164,7 @@ si.Vehicle = function (id, width, height, centerX, centerY, fireDirection, numbe
 
 si.Page = function () {
 
-    this.leftBoard = si.Constant.LEFTBOARD;
+    this.leftBoard = si.Constant.LEFTBOARD + 70;
     this.rightBoard = si.Constant.RIGHTBOARD;
     this.topBoard = si.Constant.TOPBOARD;
     this.floorBoard = si.Constant.FLOORBOARD;
