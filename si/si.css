@@ -1,4 +1,6 @@
-﻿#board {
+﻿body { -ms-touch-action: manipulation; } 
+
+#board {
     position: absolute;
     left: 550px;
 }
