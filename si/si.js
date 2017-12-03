@@ -5,10 +5,19 @@
 var si = si || {};
 
 si.Constant = {
-    LEFTBOARD : 10,
-    RIGHTBOARD : 300,
+    LEFTBOARD : 20,
+    RIGHTBOARD : 320,
     TOPBOARD : 30,
-    FLOORBOARD : 250
+    FLOORBOARD : 350,
+    VERSION : "1.0.2",
+    DEFAULTTYPE : 0,
+    DEFENDER : 1,
+    INVADERTYPE : 2
+};
+
+si.Load = function() {
+    this.infoDiv = document.getElementById("version");
+    this.infoDiv.innerHTML = si.Constant.VERSION;
 };
 
 // (function() {
@@ -164,7 +173,7 @@ si.Vehicle = function (id, width, height, centerX, centerY, fireDirection, numbe
 
 si.Page = function () {
 
-    this.leftBoard = si.Constant.LEFTBOARD + 50;
+    this.leftBoard = si.Constant.LEFTBOARD;
     this.rightBoard = si.Constant.RIGHTBOARD;
     this.topBoard = si.Constant.TOPBOARD;
     this.floorBoard = si.Constant.FLOORBOARD;
@@ -193,11 +202,18 @@ si.Page = function () {
 
 page = new si.Page();
 
-si.Bullet = function (id, width, height, x, y, fireDirection, forms) {
-
-    //this.id = id;
-    //this.centerName = "center" + this.id.toString();
-    this.vehicle = new si.Vehicle(id, width, height, x, y, fireDirection, undefined, forms);
+si.Bullet = function (id, width, height, x, y, fireDirection) {
+    this.forms = [];
+    this.forms[0] = "";
+    this.forms[1] = "*.*<br>*.*";
+    this.forms[2] = "*";
+    
+    if(fireDirection < 0) {
+       this.forms[0] = "";
+       this.forms[1] = "+.+<br>+.+";
+       this.forms[2] = "+";
+       }
+    this.vehicle = new si.Vehicle(id, width, height, x, y, fireDirection, undefined, this.forms);
     this.active = true;
     this.explosionState = 2;
     this.move = true;
@@ -242,7 +258,7 @@ si.Bullet = function (id, width, height, x, y, fireDirection, forms) {
 
             this.active = false;
             this.move = false;
-            this.vehicle.currentForm = 0;
+            this.vehicle.currentForm = 1;
             this.setForm();
 
         }
@@ -282,16 +298,10 @@ si.Bullet = function (id, width, height, x, y, fireDirection, forms) {
 
 
 si.Bullets = function () {
-
     this.numberOfBullets = 0;
     this.bullets = [];
-    this.forms = [];
-    this.forms[0] = "";
-    this.forms[1] = "*.*<br>*.*";
-    this.forms[2] = "*";
 
     this.fire = function(vehicle) {
-
         for (var i = 0, x = vehicle.center.x, y = vehicle.center.y + (vehicle.fireDirection * vehicle.height), width = 2, height = 2; i < vehicle.numberOfBullets; i++, this.numberOfBullets++) {
             this.bullets[this.numberOfBullets] = new si.Bullet(sequence.next(), width, height, x, y, vehicle.fireDirection, this.forms);
             page.createDiv(this.bullets[this.numberOfBullets].vehicle);
@@ -722,3 +732,4 @@ si.Right = function(){
 si.Fire = function(){
     player.lastKeyPress = 32;
 };
+

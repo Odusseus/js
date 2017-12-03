@@ -10,7 +10,7 @@
 
 #navbarFloor {
     position: fixed;
-    top: 290px;
+    top: 390px;
     width: 350px; /* Full width */
 }
 
@@ -44,12 +44,12 @@ button.controle {
 
 #buttonsRight {
     position: absolute;
-    left: 360px;
-    width: 100px;
+    left: 350px;
+    /* width: 100px; */
 }
 
 #buttonsRight button {
     display: block;
     margin: 10px;
-    width: 100px;
+    width: 60px;
 }
