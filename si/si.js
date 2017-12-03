@@ -5,8 +5,8 @@
 var si = si || {};
 
 si.Constant = {
-    LEFTBOARD : 20,
-    RIGHTBOARD : 500,
+    LEFTBOARD : 10,
+    RIGHTBOARD : 300,
     TOPBOARD : 30,
     FLOORBOARD : 250
 };
@@ -164,7 +164,7 @@ si.Vehicle = function (id, width, height, centerX, centerY, fireDirection, numbe
 
 si.Page = function () {
 
-    this.leftBoard = si.Constant.LEFTBOARD + 70;
+    this.leftBoard = si.Constant.LEFTBOARD + 50;
     this.rightBoard = si.Constant.RIGHTBOARD;
     this.topBoard = si.Constant.TOPBOARD;
     this.floorBoard = si.Constant.FLOORBOARD;
@@ -558,7 +558,7 @@ si.Invaders = function() {
     this.forms[2] = "{x}";
     this.forms[3] = "{XX}";
     
-    for (var i = 0, x = page.leftBoard, y = page.topBoard, width = 20, height = 10; i < 4; i++, x = page.leftBoard) {
+    for (var i = 0, x = page.leftBoard, y = page.topBoard, width = 20, height = 7; i < 4; i++, x = page.leftBoard) {
         for (var j = 0; j < height; j++, this.numberOfInvaders++) {
             this.invaders[this.numberOfInvaders] = new si.Invader(sequence.next(), width, height, x, y, 10, this.forms);
             page.createDiv(this.invaders[this.numberOfInvaders].vehicle);

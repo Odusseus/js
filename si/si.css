@@ -5,13 +5,13 @@
     background-color: #333;
     position: fixed; /* Set the navbar to fixed position */
     top: 0; /* Position the navbar at the top of the page */
-    width: 550px; /* Full width */
+    width: 350px; /* Full width */
 }
 
 #navbarFloor {
     position: fixed;
-    top: 310px;
-    width: 500px; /* Full width */
+    top: 290px;
+    width: 350px; /* Full width */
 }
 
 #keypadArrows{
@@ -44,7 +44,7 @@ button.controle {
 
 #buttonsRight {
     position: absolute;
-    left: 560px;
+    left: 360px;
     width: 100px;
 }
 
