@@ -7,7 +7,7 @@ var si = si || {};
 si.Constant = {
     LEFTBOARD : 20,
     RIGHTBOARD : 500,
-    TOPBOARD : 10,
+    TOPBOARD : 30,
     FLOORBOARD : 300
 };
 
@@ -432,7 +432,7 @@ si.Player = function (id, width, height, x, y, forms) {
     this.fire = function () {
 
         //var fireTime = Math.floor(Math.random() * 2) + 1;
-        if (game.info % 3 == 0) {
+        if (game.run % 3 == 0) {
             theBullets.fire(this.vehicle);
         }
     };
@@ -623,8 +623,8 @@ si.Game = function () {
     this.runnerInterval = undefined;
     this.velocity = 50;
 
-    this.info = 0;
-    this.infoDiv = document.getElementById("info");
+    this.run = 0;
+    
 
     this.total = 0;
     this.totalDiv = document.getElementById("total");
@@ -636,24 +636,25 @@ si.Game = function () {
     {
         player.move();
 
-        if (this.velocity > 5 && this.info % 100 == 0)
+        if (this.velocity > 5 && this.run % 100 == 0)
         {
             this.velocity -= 1;
         }
 
-
-        if (this.info % this.velocity == 0) {
+        if (this.run % this.velocity == 0) {
             theInvaders.move();
         }
-
-
          
-        if (this.info % 7 == 0) {
+        if (this.run % 7 == 0) {
             theBullets.move();
         }
 
-        this.info++;
-        //this.infoDiv.innerHTML = this.info;
+        this.run++;
+
+        // Info message
+        //this.infoDiv = document.getElementById("info");
+        //this.infoDiv.innerHTML = this.run;
+
         if(player.lives < 0){
             player.lives = 0;
         }
@@ -718,6 +719,6 @@ si.Right = function(){
     player.lastKeyPress = 39;
 };
 
-si.Space = function(){
+si.Fire = function(){
     player.lastKeyPress = 32;
 };

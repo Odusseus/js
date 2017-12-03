@@ -1,6 +1,50 @@
 ﻿body { -ms-touch-action: manipulation; } 
 
-#board {
+/* The navigation bar */
+#navbarTop {
+    overflow: hidden;
+    color: white;
+    background-color: #333;
+    position: fixed; /* Set the navbar to fixed position */
+    top: 0; /* Position the navbar at the top of the page */
+    width: 100%; /* Full width */
+}
+
+#navbarFloor {
+    position: fixed;
+    top: 330px;
+    width: 100%; /* Full width */
+}
+
+button.controle {
+    
+}
+
+#keypadArrows{
+    /* position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 200px;
+    height: 50px;
+    background-color: #ccc;
+    border-radius: 3px; */
+}
+
+.topInfo {
+    float: left;
+    margin: 10px,0,0,10px;
+}
+
+.labelRight {
+    float: right;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#buttonsRight {
     position: absolute;
     left: 550px;
 }
