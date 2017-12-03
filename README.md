@@ -2,11 +2,11 @@
 
 ## javascript experiments
 
-Space invaders : https://rawgit.com/Odusseus/js/master/si/si.html
+Space invaders : <https://rawgit.com/Odusseus/js/master/si/si.html>
 
 Chessboard : <https://rawgit.com/Odusseus/js/master/chessboard/cb.html>
 
-Shadok vs Gibis : SvsG <https://rawgit.com/Odusseus/js/master/svsg/site/index.html>
+Shadok vs Gibi : SvsG <https://rawgit.com/Odusseus/js/master/svsg/site/index.html>
 
 if_Hemingway_Wrote_Javascript : <https://rawgit.com/Odusseus/js/master/if_Hemingway_Wrote_Javascript/index.html>
 
