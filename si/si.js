@@ -328,7 +328,6 @@ si.Bullets = function () {
         }
 
     };
-
     };
 
 theBullets = new si.Bullets();
@@ -656,7 +655,10 @@ si.Game = function () {
         }
          
         if (this.run % 7 == 0) {
+            // theBullets.cleanStopped();
             theBullets.move();
+        } else {
+            // theBullets.stopped();
         }
 
         this.run++;
