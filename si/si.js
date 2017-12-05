@@ -9,7 +9,7 @@ si.Constant = {
     RIGHTBOARD : 320,
     TOPBOARD : 30,
     FLOORBOARD : 350,
-    VERSION : "1.0.5",
+    VERSION : "1.0.6",
     DEFAULTTYPE : 0,
     DEFENDER : 1,
     INVADERTYPE : 2
@@ -332,6 +332,67 @@ si.Bullets = function () {
 
 theBullets = new si.Bullets();
 
+si.Message = function (id, x, y, message) {
+    this.id = id;
+    this.x = x;
+    this.y = y;
+    this.message = message;
+    this.state = 30;
+
+    this.createDiv = function () {
+        var div = document.createElement("div");
+        div.style.position = 'absolute';
+        div.style.textAlign = "center";
+        div.id = this.id;
+        div.style.left = x + 10 + "px";
+        div.style.top = y + "px";
+        div.innerHTML = message;
+        document.body.appendChild(div);
+    };
+
+    this.cleanDiv = function(){
+        if(this.state > 0){
+            this.state--;
+            return false;
+        } else {
+            var div = document.getElementById(this.id);
+            document.body.removeChild( div );
+            return true;
+        }
+    };
+};
+
+si.Messages = function () {
+    this.numberOfMessages = 0;
+    this.messages = [];
+
+    this.new = function(vehicle, message) {
+        this.messages[this.numberOfMessages] = new si.Message(sequence.next(), vehicle.center.x, vehicle.center.y, message);
+        this.messages[this.numberOfMessages].createDiv();
+        this.numberOfMessages++;
+    };
+
+    this.cleanDiv = function(){
+        newMessages = [];
+        this.messages.forEach(element => {
+            if(!element.cleanDiv()){
+                newMessages.push(element);
+            }
+        });
+        this.messages = newMessages;
+    };
+
+    // this.cleanDiv = function(){
+    //     this.messages.forEach(element => {
+    //         if(element.state >= 0){
+    //             element.cleanDiv();
+    //         }
+    //     });
+        
+    // };
+};
+
+theMessages = new si.Messages();
 
 si.Player = function (id, width, height, x, y, forms) {
 
@@ -443,6 +504,8 @@ si.Player = function (id, width, height, x, y, forms) {
         //var fireTime = Math.floor(Math.random() * 2) + 1;
         if (game.run % 3 == 0) {
             theBullets.fire(this.vehicle);
+        } else {
+            theMessages.new(player.vehicle, "===========<br> | gun to warm! |<br>===========<br>");
         }
     };
 
@@ -655,11 +718,10 @@ si.Game = function () {
         }
          
         if (this.run % 7 == 0) {
-            // theBullets.cleanStopped();
             theBullets.move();
-        } else {
-            // theBullets.stopped();
         }
+
+        theMessages.cleanDiv();
 
         this.run++;
 
