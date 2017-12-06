@@ -44,6 +44,34 @@ si.Load = function() {
 //     document.addEventListener('touchmove', resetPreventZoom, false);
 // })();
 
+si.MessageText = function(text, topOn, sideOn, topOff, sideOff ){
+    
+    this.text = text;
+    this.topOn = topOn;
+    this.sideOn = sideOn;
+    this.topOff = topOff;
+    this.sideOff = sideOff;
+
+    this.messages = [];
+    this.current = 0;
+
+    this.FormatMessage = function(top, side){
+        if(top == "" || side == ""){
+            this.messages.push(this.text);
+        } else{
+            var topBottom = Array(text.length).join(top);
+            var newText = topBottom + "<br>" + side + " " + text + " " + side + "<br>" + topBottom;
+            this.messages.push(newText);
+        }
+    };
+
+    this.FormatMessageOnOff = function(){
+        this.FormatMessage(this.topOn, this.sideOn);
+        this.FormatMessage(this.topOff, this.sideOff);
+        return this;
+    };
+}
+
 si.Sequence = function() {
     this.id = undefined;
     this.next = function() {
@@ -337,7 +365,7 @@ si.Message = function (id, x, y, message) {
     this.x = x;
     this.y = y;
     this.message = message;
-    this.state = 30;
+    this.state = 60;
 
     this.createDiv = function () {
         var div = document.createElement("div");
@@ -346,13 +374,22 @@ si.Message = function (id, x, y, message) {
         div.id = this.id;
         div.style.left = x + 10 + "px";
         div.style.top = y + "px";
-        div.innerHTML = message;
+        div.innerHTML = message.messages[message.current];
         document.body.appendChild(div);
     };
 
     this.cleanDiv = function(){
         if(this.state > 0){
             this.state--;
+            if( this.state % 20 == 0){
+
+                var div = document.getElementById(this.id);
+                message.current++;
+                if(message.current == message.messages.length){
+                    message.current = 0;
+                }
+                div.innerHTML = message.messages[message.current];
+            }
             return false;
         } else {
             var div = document.getElementById(this.id);
@@ -505,7 +542,8 @@ si.Player = function (id, width, height, x, y, forms) {
         if (game.run % 3 == 0) {
             theBullets.fire(this.vehicle);
         } else {
-            theMessages.new(player.vehicle, "===========<br> | gun to warm! |<br>===========<br>");
+            var message = new si.MessageText("Gun to warm!", "-","|", "*","+").FormatMessageOnOff();
+            theMessages.new(player.vehicle, message);
         }
     };
 
