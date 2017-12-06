@@ -9,7 +9,7 @@ si.Constant = {
     RIGHTBOARD : 320,
     TOPBOARD : 30,
     FLOORBOARD : 350,
-    VERSION : "1.0.6",
+    VERSION : "1.0.7",
     DEFAULTTYPE : 0,
     DEFENDER : 1,
     INVADERTYPE : 2
@@ -59,7 +59,7 @@ si.MessageText = function(text, topOn, sideOn, topOff, sideOff ){
         if(top == "" || side == ""){
             this.messages.push(this.text);
         } else{
-            var topBottom = Array(text.length).join(top);
+            var topBottom = Array(text.length + 4).join(top);
             var newText = topBottom + "<br>" + side + " " + text + " " + side + "<br>" + topBottom;
             this.messages.push(newText);
         }
@@ -274,8 +274,12 @@ si.Bullet = function (id, width, height, x, y, fireDirection) {
 
         var noCollision = true;
 
-       
-        if (((this.vehicle.leftDown.x >= player.vehicle.leftUp.x && this.vehicle.leftDown.x <= player.vehicle.rightUp.x) ||
+       if(!this.active){
+           return;
+       }
+
+        if (
+            ((this.vehicle.leftDown.x >= player.vehicle.leftUp.x && this.vehicle.leftDown.x <= player.vehicle.rightUp.x) ||
              (this.vehicle.rightDown.x <= player.vehicle.rightUp.x && this.vehicle.rightDown.x >= player.vehicle.leftUp.x)
              ) &&
              (this.vehicle.leftDown.y >= player.vehicle.leftUp.y && this.vehicle.leftDown.y <= player.vehicle.leftDown.y)
@@ -283,6 +287,9 @@ si.Bullet = function (id, width, height, x, y, fireDirection) {
         {
             noCollision = false;
             player.lives -= 10;
+
+            var message = new si.MessageText(player.getHitMessage(), "-","|", "*","+").FormatMessageOnOff();
+            theMessages.new(player.vehicle, message);
 
             this.active = false;
             this.move = false;
@@ -312,6 +319,8 @@ si.Bullet = function (id, width, height, x, y, fireDirection) {
                         invader.setForm();
                         invader.move = false;
                         game.total += invader.lives;
+                        var messageText = new si.MessageText(invader.getHitMessage(), "-","|", "*","+").FormatMessageOnOff();
+                        theMessages.new(invader.vehicle, messageText);
                         break;
                     }
                 }
@@ -319,7 +328,7 @@ si.Bullet = function (id, width, height, x, y, fireDirection) {
         }
     };
 
-    this.setForm = function () {        
+    this.setForm = function () {
         page.setForm(this.vehicle);
     };
 };
@@ -365,7 +374,7 @@ si.Message = function (id, x, y, message) {
     this.x = x;
     this.y = y;
     this.message = message;
-    this.state = 60;
+    this.state = 100;
 
     this.createDiv = function () {
         var div = document.createElement("div");
@@ -381,7 +390,7 @@ si.Message = function (id, x, y, message) {
     this.cleanDiv = function(){
         if(this.state > 0){
             this.state--;
-            if( this.state % 20 == 0){
+            if( this.state % 15 == 0){
 
                 var div = document.getElementById(this.id);
                 message.current++;
@@ -542,13 +551,23 @@ si.Player = function (id, width, height, x, y, forms) {
         if (game.run % 3 == 0) {
             theBullets.fire(this.vehicle);
         } else {
-            var message = new si.MessageText("Gun to warm!", "-","|", "*","+").FormatMessageOnOff();
-            theMessages.new(player.vehicle, message);
+            if(game.run % 5 == 0){
+                var message = new si.MessageText("Gun to warm!", "-","|", "*","+").FormatMessageOnOff();
+                theMessages.new(player.vehicle, message);
+            }
         }
     };
 
-    this.setForm = function () {        
+    this.setForm = function () {
         page.setForm(this.vehicle);
+    };
+
+    this.getHitMessage = function(){
+        var messages = ["Je suis touché!", "I am hit!", "Shit!", "Scheiße!","Bonzai!","Merdre!","A dieu.", "KxT???", "Maman?", "Vader?"];
+
+        var id = Math.floor(Math.random() * messages.length) ;
+
+        return messages[id];
     };
 };
 
@@ -654,6 +673,14 @@ si.Invader = function (id, width, height, x, y, lives, forms ) {
                 theBullets.fire(this.vehicle);
             }
         }
+    };
+
+    this.getHitMessage = function(){
+        var messages = ["Merdre!", "Shit!", "Scheiße!","Bonzai!","F*ck!","A dieu.", "KxT???", "Maman?", "Vader?"];
+
+        var id = Math.floor(Math.random() * messages.length) ;
+
+        return messages[id];
     };
 };
 
