@@ -12,7 +12,7 @@ si.Constant = {
     RIGHTBOARD : 320,
     TOPBOARD : 30,
     FLOORBOARD : 350,
-    VERSION : "1.0.8",
+    VERSION : "1.0.9",
     DEFAULTTYPE : 0,
     DEFENDER : 1,
     INVADERTYPE : 2,
@@ -60,8 +60,8 @@ si.MessageText = function(text, topOn, sideOn, topOff, sideOff ){
 
     this.FormatMessageSimple = function(){
         this.messages.push(this.text);
-        var text = this.text + " !!!";
-        this.messages.push(text);
+        //var text = this.text + " !!!";
+        //this.messages.push(text);
         return this;
     };
 };
@@ -91,12 +91,11 @@ si.Coordinate = function (x, y) {
 si.Vehicle = function (id, width, height, centerX, centerY, fireDirection, numberOfBullets, forms, typeOfBullets) {
 
     this.id = id;
-    this.width = width;
     this.fireDirection = fireDirection;
     this.numberOfBullets = numberOfBullets;
-    this.halfWidth = Math.ceil(width / 2);
     this.typeOfBullets = typeOfBullets;
-
+    this.width = width;
+    this.halfWidth = Math.ceil(width / 2);
     this.height = height;
     this.halfHeight = Math.ceil(height / 2);
 
@@ -208,6 +207,11 @@ si.Page = function () {
         div.style.left = vehicle.leftUp.x + "px";
         div.style.top = vehicle.leftUp.y + "px";
         div.innerHTML = vehicle.forms[vehicle.currentForm];
+    };
+
+    this.removeDiv = function (id) {
+        var div = document.getElementById(id);
+        document.body.removeChild( div );
     };
 
     this.setForm = function (vehicle) {
@@ -351,8 +355,6 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
                         var messageText = new si.MessageText(invader.getHitMessage(), "-","|", "*","+").FormatMessageSimple(); //.FormatMessageOnOff();
                         theMessages.new(invader.vehicle, messageText);
                         return;
-                        //break;
-
                     }
                 }
             }
@@ -376,7 +378,6 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
                             var messageText = new si.MessageText(bigVader.getHitMessage(), "-","|", "*","+").FormatMessageSimple(); //.FormatMessageOnOff();
                             theMessages.new(bigVader.vehicle, messageText);
                             return;
-                            //break;
                         }
                     }
                 });
@@ -391,13 +392,14 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
 
 
 si.Bullets = function () {
-    this.numberOfBullets = 0;
     this.bullets = [];
 
     this.fire = function(vehicle) {
-        for (var i = 0, x = vehicle.center.x, y = vehicle.center.y + (vehicle.fireDirection * vehicle.height), width = 2, height = 2; i < vehicle.numberOfBullets; i++, this.numberOfBullets++) {
-            this.bullets[this.numberOfBullets] = new si.Bullet(sequence.next(), width, height, x, y, vehicle.fireDirection, vehicle.typeOfBullets);
-            page.createDiv(this.bullets[this.numberOfBullets].vehicle);
+        for (var i = 0, x = vehicle.center.x, y = vehicle.center.y + (vehicle.fireDirection * vehicle.height), width = 2, height = 2; i < vehicle.numberOfBullets; i++) {
+        
+            var newBullet = new si.Bullet(sequence.next(), width, height, x, y, vehicle.fireDirection, vehicle.typeOfBullets)
+            this.bullets.push(newBullet);
+            page.createDiv(newBullet.vehicle);
 
             y = y + (vehicle.fireDirection * (3 + i) * height);
         }
@@ -466,11 +468,10 @@ si.Message = function (id, x, y, message) {
 };
 
 si.Messages = function () {
-    this.numberOfMessages = 0;
     this.messages = [];
 
     this.new = function(vehicle, message) {
-        var x = vehicle.center.x - si.Random(20,100);
+        var x = vehicle.center.x - si.Random(30,100);
         if( x < si.Constant.LEFTBOARD || x > si.Constant.RIGHTBOARD){
             x = vehicle.center.x;
         }
@@ -478,10 +479,11 @@ si.Messages = function () {
         if( y < si.Constant.FLOORBOARD || y > si.Constant.TOPBOARD){
             y = vehicle.center.y;
         }
+        
+        var newMessage = new si.Message(sequence.next(), x, y, message);
 
-        this.messages[this.numberOfMessages] = new si.Message(sequence.next(), x, y, message);
-        this.messages[this.numberOfMessages].createDiv();
-        this.numberOfMessages++;
+        this.messages.push(newMessage);
+        newMessage.createDiv();
     };
 
     this.cleanDiv = function(){
@@ -748,8 +750,6 @@ si.Invader = function (id, width, height, x, y, lives, forms ) {
 };
 
 si.Invaders = function() {
-
-    this.numberOfInvaders = 0;
     this.invaders = [];
     this.forms = [];
 
@@ -759,9 +759,10 @@ si.Invaders = function() {
     this.forms[3] = "{XX}";
     
     for (var i = 0, x = page.leftBoard, y = page.topBoard, width = 20, height = 7; i < 4; i++, x = page.leftBoard) {
-        for (var j = 0; j < height; j++, this.numberOfInvaders++) {
-            this.invaders[this.numberOfInvaders] = new si.Invader(sequence.next(), width, height, x, y, 10, this.forms);
-            page.createDiv(this.invaders[this.numberOfInvaders].vehicle);
+        for (var j = 0; j < height; j++) {
+            var newInvader = new si.Invader(sequence.next(), width, height, x, y, 10, this.forms);
+            this.invaders.push(newInvader);
+            page.createDiv(newInvader.vehicle);
                  
             x = x + (2 * width);
             //break;
@@ -826,15 +827,15 @@ si.BigVader = function (id, width, height, x, y, lives, forms ) {
     this.moveLeftAndRight = function () {
         if (this.move == true) {
 
-            var x = this.vehicle.center.x + (this.direction * 2);
+            var x = this.vehicle.center.x + (this.direction * 5);
             var y = this.vehicle.center.y;
             this.vehicle.setCenterUpAndDown(x, y);
 
-            if (x > page.rightBoard) {
+            if (x + this.vehicle.halfWidth > page.rightBoard) {
                 return true;
             }
 
-            if (x < page.leftBoard) {
+            if (x - this.vehicle.halfWidth < page.leftBoard) {
                 return true;
             }
             //this.checkCollision();
@@ -893,8 +894,6 @@ si.BigVader = function (id, width, height, x, y, lives, forms ) {
 };
 
 si.BigVaders = function() {
-
-    this.numberOfBigVaders = 0;
     this.bigVaders = [];
     this.forms = [];
 
@@ -908,9 +907,33 @@ si.BigVaders = function() {
     this.y = si.Constant.TOPBOARD;
     this.lives = 500;
 
-    this.bigVaders[this.numberOfBigVaders] = new si.BigVader(sequence.next(), this.width, this.height, this.x, this.y, this.lives, this.forms);
-    page.createDiv(this.bigVaders[this.numberOfBigVaders].vehicle);
-                 
+    this.new = function(){
+        this.clean();
+        if(this.bigVaders.length == 0){
+            this.lives = 500;
+            var newBigVader = new si.BigVader(sequence.next(), this.width, this.height, this.x, this.y, this.lives, this.forms);
+            this.bigVaders.push(newBigVader);
+            page.createDiv(newBigVader.vehicle);
+        }
+        return this;
+    };
+
+    this.clean = function(){
+        if(this.bigVaders.length == 0){
+            return;
+        }
+
+        var newBigVaders = [];
+        this.bigVaders.forEach(element => {
+            if(element.active){
+                newBigVaders.push(element);
+            } else {
+                page.removeDiv(element.vehicle.id);
+            }
+        });
+        this.bigVaders = newBigVaders;
+    };
+
     this.move = function () {
 
         var switchdirection = false;
@@ -952,10 +975,6 @@ si.BigVaders = function() {
 };
 
 theBigVaders = undefined;
-
-//*****************************************
-
-
 
 si.Bunker = function(id, width, height, centerX, centerY){
 
@@ -1007,8 +1026,6 @@ si.Bunker = function(id, width, height, centerX, centerY){
 };
 
 si.Bunkers = function(){
-
-    this.number = 0;
     this.bunkers = [];
     //id, width, height, centerX, centerY
     this.bunkers.push(new si.Bunker(sequence.next(), 40, 7, 50, 290));
@@ -1016,7 +1033,6 @@ si.Bunkers = function(){
     this.bunkers.push(new si.Bunker(sequence.next(), 40, 7, 250, 290));
 
     this.bunkers.forEach(element => {
-        
         page.createDiv(element.vehicle);
     });
     
@@ -1040,6 +1056,8 @@ si.Game = function () {
 
     this.Runner = function ()
     {
+        this.run++;
+
         player.move();
 
         if (this.velocity > 5 && this.run % 100 == 0)
@@ -1051,11 +1069,15 @@ si.Game = function () {
             theInvaders.move();
         }
 
-        if(this.run == 1000){
-            theBigVaders = new si.BigVaders();
+        if(this.run % 2000 == 0){
+            if(!theBigVaders){
+                theBigVaders = new si.BigVaders().new();
+            } else {
+                theBigVaders.new();
+            }
         }
 
-        if (this.run > 1000 && this.run % 20 == 0) {
+        if ( this.run % 20 == 0 && theBigVaders) {
             theBigVaders.move();
         }
 
@@ -1065,8 +1087,6 @@ si.Game = function () {
         }
 
         theMessages.cleanDiv();
-
-        this.run++;
 
         // Info message
         //this.infoDiv = document.getElementById("info");
@@ -1087,22 +1107,25 @@ si.Game = function () {
         }
 
         var isInvader = false;
-        for (var i = 0; i < theInvaders.invaders.length; i++) {
+        var i = 0;
+        for (i = 0; i < theInvaders.invaders.length; i++) {
             if (theInvaders.invaders[i].active) {
                 isInvader = true;
                 break;
             }
         }
 
-        // for (i = 0; i < theInvaders.invaders.length; i++) {
-        //     if (theInvaders.invaders[i].active == false &&
-        //         theInvaders.invaders[i].vehicle.currentForm == 0) {
-        //         theInvaders.invaders[i].vehicle.currentForm = 1;
-        //         theInvaders.invaders[i].setForm();
-        //     }
-        // }
+        var isBigVader = false;
+        if(theBigVaders){
+            for (i = 0; i < theBigVaders.bigVaders.length; i++) {
+                if (theBigVaders.bigVaders[i].active) {
+                    isBigVader = true;
+                    break;
+                }
+            }
+        }
 
-        if (isInvader == false) {
+        if (!isInvader && !isBigVader) {
             si.Stop();
             this.resultDiv = document.getElementById("result");
             this.resultDiv.innerHTML = "YOU WIN";
