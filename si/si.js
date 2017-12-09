@@ -227,12 +227,15 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
     this.typeOfBullets = typeOfBullets;
     this.forms = [];
     this.damage = -10;
+    this.width = width;
+    this.height = height;
 
     if(typeOfBullets == si.Constant.TYPEBULLET1){
        this.forms[0] = "";
        this.forms[1] = "+.+<br>+.+";
        this.forms[2] = "+";
        this.damage = -10;
+       this.width = 20;
        }
 
     if(typeOfBullets == si.Constant.TYPEBULLET2){
@@ -240,6 +243,7 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
         this.forms[1] = "*.*<br>*.*";
         this.forms[2] = "*";
         this.damage = -5;
+        this.width = 20;
     }
     
     if(typeOfBullets == si.Constant.TYPEBULLET3){
@@ -247,9 +251,10 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
         this.forms[1] = "@..@<br>$..$";
         this.forms[2] = "#$$#<br>$##$";
         this.damage = -20;
+        this.width = 40;
     }
 
-    this.vehicle = new si.Vehicle(id, width, height, x, y, fireDirection, undefined, this.forms, si.Constant.TYPENOBULLET);
+    this.vehicle = new si.Vehicle(id, this.width, this.height, x, y, fireDirection, undefined, this.forms, si.Constant.TYPENOBULLET);
     this.active = true;
     this.explosionState = 2;
     this.move = true;
@@ -316,9 +321,8 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
         
     if(noCollision){
         if (
-            ((this.vehicle.leftDown.x >= player.vehicle.leftUp.x && this.vehicle.leftDown.x <= player.vehicle.rightUp.x) ||
-             (this.vehicle.rightDown.x <= player.vehicle.rightUp.x && this.vehicle.rightDown.x >= player.vehicle.leftUp.x)) &&
-            (this.vehicle.leftDown.y >= player.vehicle.leftUp.y && this.vehicle.leftDown.y <= player.vehicle.leftDown.y)
+            (this.vehicle.center.x >= player.vehicle.leftUp.x && this.vehicle.center.x <= player.vehicle.rightUp.x) &&
+            (this.vehicle.center.y >= player.vehicle.leftUp.y && this.vehicle.center.y <= player.vehicle.leftDown.y)
            )
         {
             noCollision = false;
