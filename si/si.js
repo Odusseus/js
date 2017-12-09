@@ -12,7 +12,7 @@ si.Constant = {
     RIGHTBOARD : 320,
     TOPBOARD : 30,
     FLOORBOARD : 350,
-    VERSION : "1.0.10",
+    VERSION : "1.0.11",
     DEFAULTTYPE : 0,
     DEFENDER : 1,
     INVADERTYPE : 2,
@@ -849,7 +849,7 @@ si.BigVader = function (id, width, height, x, y, lives, forms ) {
 
     this.fire = function () {
 
-        var fireTime = si.Random(1, 50);
+        var fireTime = si.Random(1, 20);
         if (fireTime == 1) {
 
             var isPlaceToFire = true;
