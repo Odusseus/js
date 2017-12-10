@@ -401,7 +401,7 @@ si.Bullets = function () {
     this.fire = function(vehicle) {
         for (var i = 0, x = vehicle.center.x, y = vehicle.center.y + (vehicle.fireDirection * vehicle.height), width = 2, height = 2; i < vehicle.numberOfBullets; i++) {
         
-            var newBullet = new si.Bullet(sequence.next(), width, height, x, y, vehicle.fireDirection, vehicle.typeOfBullets)
+            var newBullet = new si.Bullet(sequence.next(), width, height, x, y, vehicle.fireDirection, vehicle.typeOfBullets);
             this.bullets.push(newBullet);
             page.createDiv(newBullet.vehicle);
 
