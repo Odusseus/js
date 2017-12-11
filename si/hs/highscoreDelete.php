@@ -1,6 +1,6 @@
 <?php
 
-include "classes.php";
+include "classe.php";
 
 $scores = new Scores();
 
