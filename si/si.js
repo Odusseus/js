@@ -376,8 +376,7 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
             this.vehicle.currentForm = 1;
             this.setForm();
             if(si.isSound()){
-                var sound = document.getElementById( this.collisionSound);
-                sound.play();
+                document.getElementById( this.collisionSound).play();
             }
             return;
         }
@@ -661,7 +660,7 @@ si.Player = function (id, width, height, x, y, forms) {
                 }
             }
         }
-    }
+    };
 
     this.fire = function () {
 
