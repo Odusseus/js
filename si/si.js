@@ -12,7 +12,7 @@ si.Constant = {
     RIGHTBOARD : 320,
     TOPBOARD : 30,
     FLOORBOARD : 370,
-    VERSION : "1.0.13",
+    VERSION : "1.0.14",
     DEFAULTTYPE : 0,
     DEFENDER : 1,
     INVADERTYPE : 2,
@@ -40,12 +40,13 @@ si.Load = function() {
     this.infoDiv.innerHTML = si.Constant.VERSION;
 
     si.CreateAudioElement("sound/shot/215438__taira-komori__shoot02.mp3", si.Constant.AUDIOSHOT1);
-    si.CreateAudioElement("sound/shot/28912__junggle__btn102.wav", si.Constant.AUDIOSHOT2);
+    si.CreateAudioElement("sound/shot/28912__junggle__btn102.mp3", si.Constant.AUDIOSHOT2);
     si.CreateAudioElement("sound/shot/221441__jalastram__shoot014.mp3", si.Constant.AUDIOSHOT3);
 
-    si.CreateAudioElement("sound/crash/12831__schluppipuppie__crash-03.wav", si.Constant.AUDIOCRASH1);
-    si.CreateAudioElement("sound/crash/369711__mrguff__hit-impact.wav", si.Constant.AUDIOCRASH2);
-    si.CreateAudioElement("sound/crash/12734__leady__dropping-a-gun.wav", si.Constant.AUDIOCRASH3);
+    si.CreateAudioElement("sound/crash/12831__schluppipuppie__crash-03.mp3", si.Constant.AUDIOCRASH1);
+    si.CreateAudioElement("sound/crash/369711__mrguff__hit-impact.mp3", si.Constant.AUDIOCRASH2);
+    si.CreateAudioElement("sound/crash/12734__leady__dropping-a-gun.mp3", si.Constant.AUDIOCRASH3);
+    
 };
 
 si.isSound = function(){
@@ -327,6 +328,7 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
         var noCollision = true;
         var message = "";
         var i = 0;
+        var messageText = "";
 
         if(noCollision){
             for ( i = 0; i < theBunkers.bunkers.length; i++) {
@@ -386,9 +388,9 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
         for ( i = 0; i < theInvaders.invaders.length; i++) {
             if (theInvaders.invaders[i].active) {
                 var invader = theInvaders.invaders[i];
-                    if (((this.vehicle.leftUp.x >= invader.vehicle.leftDown.x && this.vehicle.leftUp.x <= invader.vehicle.rightDown.x) ||
-                            (this.vehicle.rightUp.x <= invader.vehicle.rightDown.x && this.vehicle.rightUp.x >= invader.vehicle.leftDown.x)
-                        ) && (this.vehicle.leftUp.y <= invader.vehicle.leftDown.y && this.vehicle.leftUp.y >= invader.vehicle.leftUp.y)
+                if (((this.vehicle.leftUp.x >= invader.vehicle.leftDown.x && this.vehicle.leftUp.x <= invader.vehicle.rightDown.x) ||
+                    (this.vehicle.rightUp.x <= invader.vehicle.rightDown.x && this.vehicle.rightUp.x >= invader.vehicle.leftDown.x)
+                    ) && (this.vehicle.leftUp.y <= invader.vehicle.leftDown.y && this.vehicle.leftUp.y >= invader.vehicle.leftUp.y)
                     ) {
                         this.active = false;
                         this.move = false;
@@ -396,13 +398,13 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
                         this.setForm();
                         if(si.isSound()){
                             document.getElementById( this.collisionSound).play();
-                        }
+                            }
                         invader.active = false;
                         invader.vehicle.currentForm = 1;
                         invader.setForm();
                         invader.move = false;
                         game.total -= this.damage;
-                        var messageText = new si.MessageText(invader.getHitMessage(), "-","|", "*","+").FormatMessageSimple(); //.FormatMessageOnOff();
+                        messageText = new si.MessageText(invader.getHitMessage(), "-","|", "*","+").FormatMessageSimple(); //.FormatMessageOnOff();
                         theMessages.new(invader.vehicle, messageText);
                         return;
                     }
@@ -411,33 +413,59 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
         }
 
         if (noCollision) {
+            // if(theBigVaders){
+            //     theBigVaders.bigVaders.forEach(bigVader => {
+            //         if (bigVader.active) {
+            //             if (((this.vehicle.leftUp.x >= bigVader.vehicle.leftDown.x && this.vehicle.leftUp.x <= bigVader.vehicle.rightDown.x) ||
+            //                 (this.vehicle.rightUp.x <= bigVader.vehicle.rightDown.x && this.vehicle.rightUp.x >= bigVader.vehicle.leftDown.x)
+            //                 ) && (this.vehicle.leftUp.y <= bigVader.vehicle.leftDown.y && this.vehicle.leftUp.y >= bigVader.vehicle.leftUp.y)
+            //                ) {
+            //                     this.active = false;
+            //                     this.move = false;
+            //                     this.vehicle.currentForm = 1;
+            //                     this.setForm();
+            //                     if(si.isSound()){
+            //                         document.getElementById( this.collisionSound).play();
+            //                     }
+            //                     bigVader.setLives(this.damage);
+            //                     bigVader.setForm();
+            //                     game.total += - this.damage;
+            //                     var messageText = new si.MessageText(bigVader.getHitMessage(), "-","|", "*","+").FormatMessageSimple(); //.FormatMessageOnOff();
+            //                     theMessages.new(bigVader.vehicle, messageText);
+            //                 return;
+            //             }
+            //         }
+            //     });
+            // }
             if(theBigVaders){
-                theBigVaders.bigVaders.forEach(bigVader => {
+
+                for(i = 0; i < theBigVaders.bigVaders.length; i++){
+                    var bigVader = theBigVaders.bigVaders[i];
                     if (bigVader.active) {
                         if (((this.vehicle.leftUp.x >= bigVader.vehicle.leftDown.x && this.vehicle.leftUp.x <= bigVader.vehicle.rightDown.x) ||
-                            (this.vehicle.rightUp.x <= bigVader.vehicle.rightDown.x && this.vehicle.rightUp.x >= bigVader.vehicle.leftDown.x)
-                            ) && (this.vehicle.leftUp.y <= bigVader.vehicle.leftDown.y && this.vehicle.leftUp.y >= bigVader.vehicle.leftUp.y)
-                           )   {
-                            this.active = false;
-                            this.move = false;
-                            this.vehicle.currentForm = 1;
-                            this.setForm();
+                        (this.vehicle.rightUp.x <= bigVader.vehicle.rightDown.x && this.vehicle.rightUp.x >= bigVader.vehicle.leftDown.x)
+                    ) && (this.vehicle.leftUp.y <= bigVader.vehicle.leftDown.y && this.vehicle.leftUp.y >= bigVader.vehicle.leftUp.y)
+                    ) {
+                        this.active = false;
+                        this.move = false;
+                        this.vehicle.currentForm = 1;
+                        this.setForm();
                             if(si.isSound()){
                                 document.getElementById( this.collisionSound).play();
                             }
                             bigVader.setLives(this.damage);
                             bigVader.setForm();
                             game.total += - this.damage;
-                            var messageText = new si.MessageText(bigVader.getHitMessage(), "-","|", "*","+").FormatMessageSimple(); //.FormatMessageOnOff();
+                            messageText = new si.MessageText(bigVader.getHitMessage(), "-","|", "*","+").FormatMessageSimple(); //.FormatMessageOnOff();
                             theMessages.new(bigVader.vehicle, messageText);
                             return;
                         }
-                    }
-                });
+                    }   
+                }
             }
         }
     };
-
+    
     this.setForm = function () {
         page.setForm(this.vehicle);
     };
@@ -546,11 +574,17 @@ si.Messages = function () {
 
     this.cleanDiv = function(){
         newMessages = [];
-        this.messages.forEach(element => {
+        // this.messages.forEach(element => {
+        //     if(!element.cleanDiv()){
+        //         newMessages.push(element);
+        //     }
+        // });
+        for(var i = 0; i < this.messages.length; i++){
+            var element = this.messages[i];
             if(!element.cleanDiv()){
                 newMessages.push(element);
             }
-        });
+        }
         this.messages = newMessages;
     };
 };
@@ -982,13 +1016,24 @@ si.BigVaders = function() {
         }
 
         var newBigVaders = [];
-        this.bigVaders.forEach(element => {
-            if(element.active){
-                newBigVaders.push(element);
-            } else {
-                page.removeDiv(element.vehicle.id);
+        // this.bigVaders.forEach(element => {
+        //     if(element.active){
+        //         newBigVaders.push(element);
+        //     } else {
+        //         page.removeDiv(element.vehicle.id);
+        //     }
+        // });
+
+        for(var i = 0; i < this.bigVaders.length; i++){
+            var element = this.bigVaders[i];
+
+            if (element.active){
+               newBigVaders.push(element);
+               } else {
+                    page.removeDiv(element.vehicle.id);
             }
-        });
+        }
+
         this.bigVaders = newBigVaders;
     };
 
@@ -996,8 +1041,9 @@ si.BigVaders = function() {
 
         var switchdirection = false;
         var stopMove = false;
+        var i = 0;
 
-        for (var i = 0; i < this.bigVaders.length; i++) {
+        for (i = 0; i < this.bigVaders.length; i++) {
 
             if (this.bigVaders[i].active == true) {
                 this.bigVaders[i].fire();
@@ -1011,25 +1057,32 @@ si.BigVaders = function() {
                     page.setDiv(this.bigVaders[i].vehicle);
                 }
         }
-            if (switchdirection) {
-                for (j = 0; j < this.bigVaders.length; j++) {
-                    if (this.bigVaders[j].active == true) {
-                        this.bigVaders[j].switchDirection();
+        
+        if (switchdirection) {
+            for (j = 0; j < this.bigVaders.length; j++) {
+                if (this.bigVaders[j].active == true) {
+                    this.bigVaders[j].switchDirection();
                         //stopMove = this.invaders[j].moveDown() || stopMove;
-                    }
                 }
-                switchdirection = false;
             }
+            switchdirection = false;
+        }
 
-            if (stopMove) {
-                bigVaders.forEach(element => {
-                    if (element.active == true) {
-                        element.move = false;
-                    }
-                });
+        if (stopMove) {
+            // this.bigVaders.forEach(element => {
+            //     if (element.active == true) {
+            //         element.move = false;
+            //     }
+            // });
+         
+            for(i = 0; i < this.bigVaders.length;i++){
+                var element = this.bigVaders[i];
+                if (element.active == true) {
+                    element.move = false;
+                }
             }
+        }    
     };
-
 };
 
 theBigVaders = undefined;
@@ -1090,9 +1143,14 @@ si.Bunkers = function(){
     this.bunkers.push(new si.Bunker(sequence.next(), 40, 7, 150, 290));
     this.bunkers.push(new si.Bunker(sequence.next(), 40, 7, 250, 290));
 
-    this.bunkers.forEach(element => {
+    // this.bunkers.forEach(element => {
+    //     page.createDiv(element.vehicle);
+    // });
+
+    for(var i = 0; i < this.bunkers.length;i++){
+        var element = this.bunkers[i];
         page.createDiv(element.vehicle);
-    });
+    }
     
 };
 
@@ -1220,3 +1278,5 @@ si.Right = function(){
 si.Fire = function(){
     player.lastKeyPress = 32;
 };
+
+window.onload = si.Load();
