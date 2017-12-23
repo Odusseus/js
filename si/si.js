@@ -12,7 +12,7 @@ si.Constant = {
     RIGHTBOARD : 320,
     TOPBOARD : 30,
     FLOORBOARD : 350,
-    VERSION : "1.0.11",
+    VERSION : "1.0.12",
     DEFAULTTYPE : 0,
     DEFENDER : 1,
     INVADERTYPE : 2,
@@ -626,7 +626,7 @@ si.Player = function (id, width, height, x, y, forms) {
     };
 
     this.getHitMessage = function(){
-        var messages = ["Je suis touché!", "I am hit!", "Shit!", "Scheiße!","Bonzai!","Merdre!","A dieu.", "KxT???", "Maman?", "Vader?"];
+        var messages = ["Je suis touché!", "I am hit!", "Me han dado!", "Shit!", "Scheiße!","Bonzai!","Merdre!", "Mierda", "A dieu.", "KxT???", "Maman?", "Vader?", "Damned", "Maldicion"];
 
         var id = si.Random(0, messages.length) ;
 
@@ -736,7 +736,7 @@ si.Invader = function (id, width, height, x, y, lives, forms ) {
     };
 
     this.getHitMessage = function(){
-        var messages = ["Merdre!", "Shit!", "Scheiße!","Bonzai!","F*ck!","A dieu.", "KxT???", "Maman?", "Vader?", "Damned", "Mama!", "Mutti"];
+        var messages = ["Merdre!", "Shit!", "Scheiße!","Mierda", "Bonzai!","F*ck!","A dieu.", "Malicion", "KxT???", "Maman?", "Darth Vader?", "Damned", "Mama!", "Mutti", "Me quemo!"];
 
         var id = si.Random(0, messages.length) ;
 
