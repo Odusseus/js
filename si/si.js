@@ -19,12 +19,37 @@ si.Constant = {
     TYPENOBULLET : 0,
     TYPEBULLET1 : 1,
     TYPEBULLET2 : 2,
-    TYPEBULLET3 : 3
+    TYPEBULLET3 : 3,
+    AUDIOSHOT1 : 'audioShot1',
+    AUDIOSHOT2 : 'audioShot2',
+    AUDIOSHOT3 : 'audioShot3',
+    AUDIOCRASH1 : 'audioCrash1',
+    AUDIOCRASH2 : 'audioCrash2',
+    AUDIOCRASH3 : 'audioCrash3',
+};
+
+si.CreateAudioElement = function(audioFile, id){
+    var audio = document.createElement("AUDIO");
+    audio.src = audioFile;
+    audio.setAttribute("id", id);
+    document.body.appendChild(audio);
 };
 
 si.Load = function() {
     this.infoDiv = document.getElementById("version");
     this.infoDiv.innerHTML = si.Constant.VERSION;
+
+    si.CreateAudioElement("sound/shot/215438__taira-komori__shoot02.mp3", si.Constant.AUDIOSHOT1);
+    si.CreateAudioElement("sound/shot/28912__junggle__btn102.wav", si.Constant.AUDIOSHOT2);
+    si.CreateAudioElement("sound/shot/221441__jalastram__shoot014.mp3", si.Constant.AUDIOSHOT3);
+
+    si.CreateAudioElement("sound/crash/12831__schluppipuppie__crash-03.wav", si.Constant.AUDIOCRASH1);
+    si.CreateAudioElement("sound/crash/369711__mrguff__hit-impact.wav", si.Constant.AUDIOCRASH2);
+    si.CreateAudioElement("sound/crash/12734__leady__dropping-a-gun.wav", si.Constant.AUDIOCRASH3);
+};
+
+si.isSound = function(){
+    return document.getElementById("soundCheckbox").checked;
 };
 
 si.Random = function(min, max){
@@ -229,6 +254,11 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
     this.damage = -10;
     this.width = width;
     this.height = height;
+    this.fireSound = si.Constant.AUDIOSHOT1;
+    this.collisionSound = si.Constant.AUDIOCRASH1;
+
+    // var sound = document.getElementById( newBullet.fireSound);
+    //         sound.play();
 
     if(typeOfBullets == si.Constant.TYPEBULLET1){
        this.forms[0] = "";
@@ -236,6 +266,8 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
        this.forms[2] = "+";
        this.damage = -10;
        this.width = 20;
+       this.fireSound = si.Constant.AUDIOSHOT1;
+       this.collisionSound = si.Constant.AUDIOCRASH1;
        }
 
     if(typeOfBullets == si.Constant.TYPEBULLET2){
@@ -244,6 +276,8 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
         this.forms[2] = "*";
         this.damage = -5;
         this.width = 20;
+        this.fireSound = si.Constant.AUDIOSHOT2;
+        this.collisionSound = si.Constant.AUDIOCRASH2;
     }
     
     if(typeOfBullets == si.Constant.TYPEBULLET3){
@@ -252,6 +286,8 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
         this.forms[2] = "#$$#<br>$##$";
         this.damage = -20;
         this.width = 40;
+        this.fireSound = si.Constant.AUDIOSHOT3;
+        this.collisionSound = si.Constant.AUDIOCRASH3;
     }
 
     this.vehicle = new si.Vehicle(id, this.width, this.height, x, y, fireDirection, undefined, this.forms, si.Constant.TYPENOBULLET);
@@ -313,6 +349,10 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
                         this.move = false;
                         this.vehicle.currentForm = 1;
                         this.setForm();
+                        if(si.isSound()){
+                            var sound = document.getElementById( this.collisionSound);
+                            sound.play();
+                        }
                         return;
                     }
                  }
@@ -335,6 +375,10 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
             this.move = false;
             this.vehicle.currentForm = 1;
             this.setForm();
+            if(si.isSound()){
+                var sound = document.getElementById( this.collisionSound);
+                sound.play();
+            }
             return;
         }
     }
@@ -351,6 +395,9 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
                         this.move = false;
                         this.vehicle.currentForm = 1;
                         this.setForm();
+                        if(si.isSound()){
+                            document.getElementById( this.collisionSound).play();
+                        }
                         invader.active = false;
                         invader.vehicle.currentForm = 1;
                         invader.setForm();
@@ -376,6 +423,9 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
                             this.move = false;
                             this.vehicle.currentForm = 1;
                             this.setForm();
+                            if(si.isSound()){
+                                document.getElementById( this.collisionSound).play();
+                            }
                             bigVader.setLives(this.damage);
                             bigVader.setForm();
                             game.total += - this.damage;
@@ -406,6 +456,11 @@ si.Bullets = function () {
             page.createDiv(newBullet.vehicle);
 
             y = y + (vehicle.fireDirection * (3 + i) * height);
+
+            if(si.isSound()){
+                var sound = document.getElementById( newBullet.fireSound);
+                sound.play();
+            }
         }
     };
 
@@ -601,12 +656,12 @@ si.Player = function (id, width, height, x, y, forms) {
                     invader.active = false;
                     invader.move = false;
                     invader.vehicle.currentForm = 1;
-                    invader.setForm();
                     game.total += invader.lives;
+                    invader.setForm();
                 }
             }
         }
-    };
+    }
 
     this.fire = function () {
 
@@ -1166,4 +1221,3 @@ si.Right = function(){
 si.Fire = function(){
     player.lastKeyPress = 32;
 };
-
