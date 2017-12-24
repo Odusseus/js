@@ -26,6 +26,7 @@ si.Constant = {
     AUDIOCRASH1 : 'audioCrash1',
     AUDIOCRASH2 : 'audioCrash2',
     AUDIOCRASH3 : 'audioCrash3',
+    SOUNDINTERVAL : 10
 };
 
 si.Interval = [];
@@ -37,7 +38,7 @@ si.ClearInterval = function(){
 si.PlaySound = function(soundId ){
     document.getElementById(soundId).play();
     si.ClearInterval();
-}
+};
 
 si.CreateAudioElement = function(audioFile, id){
     var audio = document.createElement("AUDIO");
@@ -363,7 +364,9 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
                             //var sound = document.getElementById( this.collisionSound);
                             //sound.play();
                             var soundId = this.collisionSoundId;
-                            var interval = setInterval(function() { si.PlaySound(soundId); } ,500);
+                            document.getElementById(soundId).play();
+                            document.getElementById(soundId).pause();
+                            var interval = setInterval(function() { si.PlaySound(soundId); } , si.Constant.SOUNDINTERVAL);
                             si.Interval.push(interval); 
                         }
                         return;
@@ -391,7 +394,9 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
             if(si.isSound()){
                 //document.getElementById( this.collisionSound).play();
                 var soundId = this.collisionSoundId;
-                var interval = setInterval(function() { si.PlaySound(soundId); } ,500);
+                document.getElementById(soundId).play();
+                document.getElementById(soundId).pause();
+                var interval = setInterval(function() { si.PlaySound(soundId); } ,si.Constant.SOUNDINTERVAL);
                 si.Interval.push(interval); 
             }
             return;
@@ -413,7 +418,9 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
                         if(si.isSound()){
                             //document.getElementById( this.collisionSound).play();
                             var soundId = this.collisionSoundId;
-                            var interval = setInterval(function() { si.PlaySound(soundId); } ,500);
+                            document.getElementById(soundId).play();
+                            document.getElementById(soundId).pause();
+                            var interval = setInterval(function() { si.PlaySound(soundId); } ,si.Constant.SOUNDINTERVAL);
                             si.Interval.push(interval); 
                             }
                         invader.active = false;
@@ -470,7 +477,9 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
                             if(si.isSound()){
                                 //document.getElementById( this.collisionSound).play();
                                 var soundId = this.collisionSoundId;
-                                var interval = setInterval(function() { si.PlaySound(soundId); } ,500);
+                                document.getElementById(soundId).play();
+                                document.getElementById(soundId).pause();
+                                var interval = setInterval(function() { si.PlaySound(soundId); } ,si.Constant.SOUNDINTERVAL);
                                 si.Interval.push(interval); 
                             }
                             bigVader.setLives(this.damage);
@@ -505,10 +514,10 @@ si.Bullets = function () {
             y = y + (vehicle.fireDirection * (3 + i) * height);
 
             if(si.isSound()){
-                //var sound = document.getElementById( newBullet.fireSound);
-
                 var fireSoundId = newBullet.fireSoundId;
-                var interval = setInterval(function() { si.PlaySound(fireSoundId); } ,500);
+                document.getElementById(fireSoundId).play();
+                document.getElementById(fireSoundId).pause();
+                var interval = setInterval(function() { si.PlaySound(fireSoundId); } ,si.Constant.SOUNDINTERVAL);
                 si.Interval.push(interval); 
             }
         }
