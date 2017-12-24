@@ -12,7 +12,7 @@ si.Constant = {
     RIGHTBOARD : 320,
     TOPBOARD : 30,
     FLOORBOARD : 370,
-    VERSION : "1.0.15",
+    VERSION : "1.0.16",
     DEFAULTTYPE : 0,
     DEFENDER : 1,
     INVADERTYPE : 2,
@@ -44,6 +44,7 @@ si.CreateAudioElement = function(audioFile, id){
     var audio = document.createElement("AUDIO");
     audio.src = audioFile;
     audio.setAttribute("id", id);
+    audio.setAttribute("type","audio/mp3");
     document.body.appendChild(audio);
 };
 
