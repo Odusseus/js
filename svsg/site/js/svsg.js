@@ -164,7 +164,9 @@ Svsg.throwShadok = function(outputFieldname, checkShadokOutput, collisionOutput,
                 queenIds.push(queen.id);            
             }
         }, this);
-        queenIds.sort(Svsg.Util.sortNumber());
+        //queenIds.sort(Svsg.Util.sortNumber());
+        queenIds.sort(function(a, b){return a-b});
+        
         var checkList = [
                             [6, 9, 21, 26, 40, 43, 55, 60],
                             [1, 14, 24, 27, 39, 44, 50, 61], 
@@ -173,7 +175,7 @@ Svsg.throwShadok = function(outputFieldname, checkShadokOutput, collisionOutput,
                             [2, 14, 17, 31, 36, 48, 51, 61]
                         ];
         checkList.forEach(function(solution) {
-            solution.sort(Svsg.Util.sortNumber());
+            solution.sort(function(a, b){return a-b});
             if(queenIds.compare(solution)){
                Svsg.stopShadok();
                throw solution + " is not found!";

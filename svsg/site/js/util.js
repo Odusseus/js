@@ -32,7 +32,7 @@ Svsg.Util = {
         return r;
     },
     
-    sortNumber : function(a,b) {
+    sortNumber : function(a, b) {
         return a - b;
     },
 
