@@ -73,13 +73,13 @@
 
 #buttonsRight button {
     display: block;
-    margin: 10px;
-    width: 80px;
+    /* margin: 10px;
+    width: 60px; */
 }
 
 button {
     margin: 10px;
-    width: 80px;
+    width: 60px;
 }
 
 /* http://cssdeck.com/labs/fancy-3d-button */
