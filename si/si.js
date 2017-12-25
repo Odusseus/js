@@ -12,7 +12,7 @@ si.Constant = {
     RIGHTBOARD : 320,
     TOPBOARD : 30,
     FLOORBOARD : 370,
-    VERSION : "1.0.20",
+    VERSION : "1.0.21",
     DEFAULTTYPE : 0,
     DEFENDER : 1,
     INVADERTYPE : 2,
@@ -1320,10 +1320,10 @@ window.onload = si.Load();
 si.HighScore = function(){
 
     var url = "http://js.odusseus.org/si/hs/getJson.php";
-    if (window.location.protocol != "http:"){
-        //var url = "http://localhost/hs/getJson.php";
+    if (window.location.protocol == "file:"){
+        var url = "http://localhost/hs/getJson.php";
     }
-    document.getElementById("info").innerHTML = url;
+    //document.getElementById("info").innerHTML = url;
     loadJSON(url,
          function(data) { si.SetHighScore(data); },
          function(xhr) { si.SetHighScoreError(xhr); }
