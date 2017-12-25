@@ -12,7 +12,7 @@ si.Constant = {
     RIGHTBOARD : 320,
     TOPBOARD : 30,
     FLOORBOARD : 370,
-    VERSION : "1.0.19",
+    VERSION : "1.0.20",
     DEFAULTTYPE : 0,
     DEFENDER : 1,
     INVADERTYPE : 2,
@@ -1321,7 +1321,7 @@ si.HighScore = function(){
 
     var url = "http://js.odusseus.org/si/hs/getJson.php";
     if (window.location.protocol != "http:"){
-        var url = "http://localhost/hs/getJson.php";
+        //var url = "http://localhost/hs/getJson.php";
     }
     document.getElementById("info").innerHTML = url;
     loadJSON(url,
