@@ -24,6 +24,30 @@
     width: 350px;
 }
 
+#overlayHelp, #overlayHighScore {
+    position: fixed; /* Sit on top of the page content */
+    display: none; /* Hidden by default */
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
+    top: 0; 
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer; /* Add a pointer on hover */
+}
+
+#text{
+    position: absolute;
+    top: 150px;
+    left: 150px;
+    color: white;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    width: 250px;
+}
+
 /* button.controle {
     width: 100px;
     height: 50px;
@@ -50,7 +74,12 @@
 #buttonsRight button {
     display: block;
     margin: 10px;
-    width: 60px;
+    width: 80px;
+}
+
+button {
+    margin: 10px;
+    width: 80px;
 }
 
 /* http://cssdeck.com/labs/fancy-3d-button */
@@ -146,4 +175,35 @@ button.controle:active {
   
   .slider.round:before {
     border-radius: 50%;
+  }
+
+  .hsrow {
+    float: left;
+    width: 300px;
+  }
+
+  .hselement {
+    float: left;
+      margin: 2px;
+  }
+
+  .hsscore {
+    clear: both;
+    width: 30px;
+    text-align: right;
+  }
+
+  .hsname {
+    width: 70px;
+    text-align: left;
+  }
+
+  .hscountry {
+    width: 70px;
+    text-align: left;
+  }
+  
+  .hstimestamp {
+    text-align: left;
+    font-size: smaller;
   }

@@ -56,6 +56,8 @@
                 </div>
             </div>
         </div>
+        <button onclick="si.HighScore()">HighScore</button>
+        <button onclick="si.Help()">Help</button>
         <!-- <button onclick="si.Stop()">Stop</button> -->
         <div id="info"></div>
     </div>
@@ -72,5 +74,22 @@
         </audio>
         <audio src="sound/shot/215438__taira-komori__shoot02.mp" controls="none" id="audioShot1" />
     </div> -->
+    <div id="overlayHelp" onclick="si.HelpExit()">
+        <div id="text">
+            <h1>Help</h1>
+            <p>for comments send a mail to info@odusseus.org</p>
+            <button onclick="si.HelpExit()">Exit</button>
+        </div>
+    </div>
+    <div id="overlayHighScore" onclick="si.HighScoreExit()">
+        <div id="text">
+            <h1>Highscores</h1>
+             <div id="highscoreList">
+             </div>
+             <div>
+                 <button onclick="si.HighScoreExit()">Exit</button>
+             </div>
+        </div>
+    </div>
 </body>
 </html>

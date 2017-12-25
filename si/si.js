@@ -12,7 +12,7 @@ si.Constant = {
     RIGHTBOARD : 320,
     TOPBOARD : 30,
     FLOORBOARD : 370,
-    VERSION : "1.0.16",
+    VERSION : "1.0.17",
     DEFAULTTYPE : 0,
     DEFENDER : 1,
     INVADERTYPE : 2,
@@ -1313,3 +1313,70 @@ si.Fire = function(){
 };
 
 window.onload = si.Load();
+
+
+  
+
+si.HighScore = function(){
+
+    var url = "http://js.odusseus.org/si/hs/getJson.php";
+    if (window.location.protocol != "http:"){
+        var url = "http://localhost/hs/getJson.php";
+    }
+    loadJSON(url,
+         function(data) { si.SetHighScore(data); },
+         function(xhr) { si.SetHighScoreError(xhr); }
+    );
+
+    document.getElementById("overlayHighScore").style.display = "block";
+};
+
+
+
+//https://stackoverflow.com/questions/9838812/how-can-i-open-a-json-file-in-javascript-without-jquery
+function loadJSON(path, success, error)
+{
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function()
+    {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                if (success)
+                    success(JSON.parse(xhr.responseText));
+            } else {
+                if (error)
+                    error(xhr);
+            }
+        }
+    };
+    xhr.open("GET", path, true);
+    xhr.send();
+}
+
+si.SetHighScore = function(highscore){
+    if(highscore && highscore.list.length > 0){
+        var output = "";
+        for (var i = 0; i <  highscore.list.length; i++){
+            var score = highscore.list[i];
+            output += "<div class='hsrow'>" + "<div class='hsscore hselement'>" +score.score + "</div>" + "<div class='hsname hselement'>" + score.name + "</div>" + "<div class='hscountry  hselement'>" + score.country + "</div>" + "<div class='hstimestamp  hselement'>" + score.timestamp + "</div>" + "</div>" ;
+        }
+        document.getElementById("highscoreList").innerHTML = output;
+    }
+};
+
+si.SetHighScoreError = function(message){
+   document.getElementById("highscoreList").innerHTML = message;
+};
+
+
+si.HighScoreExit = function(){
+    document.getElementById("overlayHighScore").style.display = "none";
+};
+
+si.Help = function(){
+    document.getElementById("overlayHelp").style.display = "block";
+};
+
+si.HelpExit = function(){
+    document.getElementById("overlayHelp").style.display = "none";
+};
