@@ -2,7 +2,7 @@
 
 ## javascript experiments
 
-Space in Vader'ss : <http://rawgit.com/Odusseus/js/master/si/si.html>
+Space inVader's : <http://rawgit.com/Odusseus/js/master/si/si.html>
 
 Chessboard : <https://rawgit.com/Odusseus/js/master/chessboard/cb.html>
 

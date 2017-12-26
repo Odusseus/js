@@ -3,7 +3,7 @@
 // chessmachine@odusseus.org
 /*jshint esversion: 6 */
 // TODO regroup invaders
-// High score
+
 
 var si = si || {};
 
@@ -12,7 +12,7 @@ si.Constant = {
     RIGHTBOARD : 320,
     TOPBOARD : 30,
     FLOORBOARD : 370,
-    VERSION : "1.0.25",
+    VERSION : "1.0.26",
     DEFAULTTYPE : 0,
     DEFENDER : 1,
     INVADERTYPE : 2,
@@ -29,7 +29,10 @@ si.Constant = {
     AUDIOCRASH1 : 'audioCrash1',
     AUDIOCRASH2 : 'audioCrash2',
     AUDIOCRASH3 : 'audioCrash3',
-    SOUNDINTERVAL : 10
+    SOUNDINTERVAL : 10,
+    HIGHSCOREEURLTEST : "http://localhost/hs/getJson.php",
+    HIGHSCOREEURL : "http://js.odusseus.org/si/hs/getJson.php",
+    HTTPURL : "http://rawgit.com/Odusseus/js/master/si/si.html"
 };
 
 si.Interval = [];
@@ -52,8 +55,11 @@ si.CreateAudioElement = function(audioFile, id){
 };
 
 si.Load = function() {
-   
-   // this.infoDiv.innerHTML = si.Constant.VERSION;
+    
+    if (window.location.protocol == "https:"){
+        window.location = si.Constant.HTTPURL;
+        return;
+    }
 
     si.CreateAudioElement("sound/shot/215438__taira-komori__shoot02.mp3", si.Constant.AUDIOSHOT1);
     si.CreateAudioElement("sound/shot/28912__junggle__btn102.mp3", si.Constant.AUDIOSHOT2);
@@ -302,8 +308,8 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
     
     if(typeOfBullets == si.Constant.TYPEBULLET3){
         this.forms[0] = "";
-        this.forms[1] = "o.o<br>o.o";
-        this.forms[2] = "00";
+        this.forms[1] = ".o.<br>.o.";
+        this.forms[2] = "0";
         this.damage = -10;
         this.width = 30;
         this.fireSoundId = si.Constant.AUDIOSHOT3;
@@ -312,8 +318,8 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
 
     if(typeOfBullets == si.Constant.TYPEBULLET4){
         this.forms[0] = "";
-        this.forms[1] = "+.+<br>+.+";
-        this.forms[2] = "##";
+        this.forms[1] = "-x-<br>-x-";
+        this.forms[2] = "(:)";
         this.damage = -15;
         this.width = 40;
         this.fireSoundId = si.Constant.AUDIOSHOT2;
@@ -332,8 +338,8 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
 
     if(typeOfBullets == si.Constant.TYPEBULLETBIG){
         this.forms[0] = "";
-        this.forms[1] = "@..@<br>$..$";
-        this.forms[2] = "#$$#<br>$##$";
+        this.forms[1] = ".x..x.<br>.*..*.";
+        this.forms[2] = "^##^<br>V##V";
         this.damage = -20;
         this.width = 40;
         this.fireSoundId = si.Constant.AUDIOSHOT3;
@@ -416,10 +422,16 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
         }
         
     if(noCollision){
+        // if (
+        //     (this.vehicle.center.x >= player.vehicle.leftUp.x && this.vehicle.center.x <= player.vehicle.rightUp.x) &&
+        //     (this.vehicle.center.y >= player.vehicle.leftUp.y && this.vehicle.center.y <= player.vehicle.leftDown.y)
+        //    )
         if (
-            (this.vehicle.center.x >= player.vehicle.leftUp.x && this.vehicle.center.x <= player.vehicle.rightUp.x) &&
-            (this.vehicle.center.y >= player.vehicle.leftUp.y && this.vehicle.center.y <= player.vehicle.leftDown.y)
-           )
+            ((this.vehicle.leftDown.x >= player.vehicle.leftUp.x && this.vehicle.leftDown.x <= player.vehicle.rightUp.x) ||
+                (this.vehicle.rightDown.x <= player.vehicle.rightUp.x && this.vehicle.rightDown.x >= player.vehicle.leftUp.x)
+            ) &&
+            ( this.vehicle.leftDown.y >= player.vehicle.leftUp.y && this.vehicle.leftDown.y <= player.vehicle.leftDown.y)
+           ) 
         {
             noCollision = false;
             player.lives += this.damage;
@@ -477,32 +489,7 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
         }
 
         if (noCollision) {
-            // if(theBigVaders){
-            //     theBigVaders.bigVaders.forEach(bigVader => {
-            //         if (bigVader.active) {
-            //             if (((this.vehicle.leftUp.x >= bigVader.vehicle.leftDown.x && this.vehicle.leftUp.x <= bigVader.vehicle.rightDown.x) ||
-            //                 (this.vehicle.rightUp.x <= bigVader.vehicle.rightDown.x && this.vehicle.rightUp.x >= bigVader.vehicle.leftDown.x)
-            //                 ) && (this.vehicle.leftUp.y <= bigVader.vehicle.leftDown.y && this.vehicle.leftUp.y >= bigVader.vehicle.leftUp.y)
-            //                ) {
-            //                     this.active = false;
-            //                     this.move = false;
-            //                     this.vehicle.currentForm = 1;
-            //                     this.setForm();
-            //                     if(si.isSound()){
-            //                         document.getElementById( this.collisionSound).play();
-            //                     }
-            //                     bigVader.setLives(this.damage);
-            //                     bigVader.setForm();
-            //                     game.total += - this.damage;
-            //                     var messageText = new si.MessageText(bigVader.getHitMessage(), "-","|", "*","+").FormatMessageSimple(); //.FormatMessageOnOff();
-            //                     theMessages.new(bigVader.vehicle, messageText);
-            //                 return;
-            //             }
-            //         }
-            //     });
-            // }
             if(theBigVaders){
-
                 for(i = 0; i < theBigVaders.bigVaders.length; i++){
                     var bigVader = theBigVaders.bigVaders[i];
                     if (bigVader.active) {
@@ -788,7 +775,7 @@ si.Player = function (id, width, height, x, y, forms) {
         if (game.run % 3 == 0) {
             theBullets.fire(this.vehicle);
         } else {
-            if(game.run % 5 == 0){
+            if(game.run % 7 == 0){
                 var message = new si.MessageText("Gun to warm!", "-","|", "*","+").FormatMessageSimple(); //.FormatMessageOnOff();
                 theMessages.new(player.vehicle, message);
             }
@@ -960,7 +947,7 @@ si.Invaders = function(level) {
 
     for (var i = 0, x = page.leftBoard, y = page.topBoard, width = 20, height = 7; i < 4; i++, x = page.leftBoard) {
         for (var j = 0; j < height; j++) {
-            var typeOfBullets = 2 + level;
+            var typeOfBullets = level + 1;
             var newInvader = new si.Invader(sequence.next(), width, height, x, y, 10, this.forms, typeOfBullets);
             this.invaders.push(newInvader);
             page.createDiv(newInvader.vehicle);
@@ -1129,7 +1116,7 @@ si.BigVaders = function() {
     this.new = function(){
         this.clean();
         if(this.bigVaders.length == 0){
-            this.lives = 500;
+            this.lives = 200;
             var newBigVader = new si.BigVader(sequence.next(), this.width, this.height, this.x, this.y, this.lives, this.forms);
             this.bigVaders.push(newBigVader);
             page.createDiv(newBigVader.vehicle);
@@ -1270,14 +1257,18 @@ si.Bunkers = function(){
     this.bunkers.push(new si.Bunker(sequence.next(), 40, 7, 150, 290));
     this.bunkers.push(new si.Bunker(sequence.next(), 40, 7, 250, 290));
 
-    // this.bunkers.forEach(element => {
-    //     page.createDiv(element.vehicle);
-    // });
-
     for(var i = 0; i < this.bunkers.length;i++){
         var element = this.bunkers[i];
         page.createDiv(element.vehicle);
     }
+
+    this.cleanAll = function(){
+        for(var i = 0; i < this.bunkers.length; i++){
+            var bunker = this.bunkers[i];
+            page.removeDiv(bunker.vehicle.id);
+        }
+        this.bunkers = [];
+    };
     
 };
 
@@ -1335,7 +1326,7 @@ si.Game = function () {
         theMessages.cleanDiv();
 
         // Info message
-        //this.infoDiv = document.getElementById("info");
+        //this.infoDiv = document.getElementById("errormessage");
         //this.infoDiv.innerHTML = this.run;
 
         if(player.lives < 0){
@@ -1383,8 +1374,10 @@ si.Game = function () {
             this.lives += 100;
             theInvaders.cleanAll();
             theBullets.cleanAll();
+            theBunkers.cleanAll(); 
             this.level++;
             theInvaders = new si.Invaders(this.level);
+            theBunkers = new si.Bunkers();
             this.levelDiv.innerHTML = this.level;
             si.Start();
         }
@@ -1443,10 +1436,11 @@ si.LoadJSON = function(path, success, error)
 
 si.HighScore = function(score){
 
-    var url = "http://js.odusseus.org/si/hs/getJson.php";
+    var url = si.Constant.HIGHSCOREEURL;
     if (window.location.protocol == "file:"){
-        url = "http://localhost/hs/getJson.php";
+        url = si.Constant.HIGHSCOREEURLTEST;
     }
+
     if(score && score > 0){
         url += "?score=" + score;
     }
@@ -1476,10 +1470,9 @@ si.SetHighScore = function(highscore, hsscore){
 };
 
 si.SetHighScoreError = function(message){
-   document.getElementById("highscoreList").innerHTML = message;
-   var info = document.getElementById("info");
-   message += info.innerHTML + " " + message; 
-   info.innerHTML = message;
+   document.getElementById("highscoreList").innerHTML = "ERROR : no connection with Highscore server.";
+   var errormessage = document.getElementById("errormessage");
+   errormessage.innerHTML += " " + message;
 };
 
 si.HighScoreSend = function(){
@@ -1505,13 +1498,13 @@ si.HighScoreCancel = function(){
     document.getElementById("overlayHighScore").style.display = "none";
 };
 
-si.Help = function(){
+si.Info = function(){
     document.getElementById("version").innerHTML = si.Constant.VERSION;
-    document.getElementById("overlayHelp").style.display = "block";
+    document.getElementById("overlayInfo").style.display = "block";
 };
 
-si.HelpCancel = function(){
-    document.getElementById("overlayHelp").style.display = "none";
+si.InfoCancel = function(){
+    document.getElementById("overlayInfo").style.display = "none";
 };
 
 window.onload = si.Load();
