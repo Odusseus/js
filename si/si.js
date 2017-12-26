@@ -12,7 +12,7 @@ si.Constant = {
     RIGHTBOARD : 320,
     TOPBOARD : 30,
     FLOORBOARD : 370,
-    VERSION : "1.0.23",
+    VERSION : "1.0.24",
     DEFAULTTYPE : 0,
     DEFENDER : 1,
     INVADERTYPE : 2,
@@ -1432,14 +1432,12 @@ si.SetHighScore = function(highscore, hsscore){
             output += "<div class='hsrow'>" + "<div class='hsscore hselement'>" +score.score + "</div>" + "<div class='hsname hselement'>" + score.name + "</div>" + "<div class='hscountry  hselement'>" + score.country + "</div>" + "<div class='hstimestamp  hselement'>" + score.timestamp + "</div>" + "</div>" ;
         }
         document.getElementById("highscoreList").innerHTML = output;
-
-        if(highscore.token != null){
-            document.getElementById("enterHighscore").style.display = "inline";
-            document.getElementById("hsToken").value = highscore.token;
-            document.getElementById("hsScore").value = hsscore;
-        } else {
-            document.getElementById("enterHighscore").style.display = "none";
-        }
+    }
+    
+    if(highscore && highscore.token != null){
+       document.getElementById("enterHighscore").style.display = "inline";
+       document.getElementById("hsToken").value = highscore.token;
+       document.getElementById("hsScore").value = hsscore;
     }
 };
 
