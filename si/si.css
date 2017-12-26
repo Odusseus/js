@@ -87,6 +87,11 @@ button {
     width: 60px;
 }
 
+.HighScoreSendOk {
+    margin: 20px;
+    width: 80px;
+}
+
 /* http://cssdeck.com/labs/fancy-3d-button */
 
 button.controle {
