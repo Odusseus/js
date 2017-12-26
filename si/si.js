@@ -12,7 +12,7 @@ si.Constant = {
     RIGHTBOARD : 320,
     TOPBOARD : 30,
     FLOORBOARD : 370,
-    VERSION : "1.0.24",
+    VERSION : "1.0.25",
     DEFAULTTYPE : 0,
     DEFENDER : 1,
     INVADERTYPE : 2,
@@ -102,8 +102,6 @@ si.MessageText = function(text, topOn, sideOn, topOff, sideOff ){
 
     this.FormatMessageSimple = function(){
         this.messages.push(this.text);
-        //var text = this.text + " !!!";
-        //this.messages.push(text);
         return this;
     };
 };
@@ -246,14 +244,18 @@ si.Page = function () {
 
     this.setDiv = function (vehicle) {
         var div = document.getElementById(vehicle.id);
-        div.style.left = vehicle.leftUp.x + "px";
-        div.style.top = vehicle.leftUp.y + "px";
-        div.innerHTML = vehicle.forms[vehicle.currentForm];
+        if(div){
+            div.style.left = vehicle.leftUp.x + "px";
+            div.style.top = vehicle.leftUp.y + "px";
+            div.innerHTML = vehicle.forms[vehicle.currentForm];
+        }
     };
 
     this.removeDiv = function (id) {
         var div = document.getElementById(id);
-        document.body.removeChild( div );
+        if(div){
+            document.body.removeChild( div );
+        }
     };
 
     this.setForm = function (vehicle) {
@@ -543,7 +545,7 @@ si.Bullets = function () {
     this.bullets = [];
 
     this.fire = function(vehicle) {
-        for (var i = 0, x = vehicle.center.x, y = vehicle.center.y + (vehicle.fireDirection * vehicle.height), width = 2, height = 2; i < vehicle.numberOfBullets; i++) {
+        for (var i = 0, x = vehicle.center.x + vehicle.halfWidth, y = vehicle.center.y + (vehicle.fireDirection * vehicle.height), width = 2, height = 2; i < vehicle.numberOfBullets; i++) {
         
             var newBullet = new si.Bullet(sequence.next(), width, height, x, y, vehicle.fireDirection, vehicle.typeOfBullets);
             this.bullets.push(newBullet);
@@ -563,23 +565,41 @@ si.Bullets = function () {
 
     this.move = function () {
 
+        var newBullets = [];
         for (var ii = 0; ii < this.bullets.length; ii++) {
 
             if (this.bullets[ii].active == true) {
                 this.bullets[ii].moveUp();
                 page.setDiv(this.bullets[ii].vehicle);
                 this.bullets[ii].checkCollision();
+                newBullets.push(this.bullets[ii]);
             } else if(this.bullets[ii].explosionState > 0){
                 this.bullets[ii].explosionState--;
                 if(this.bullets[ii].explosionState == 0){
                     this.bullets[ii].vehicle.currentForm = 0;
                 }
                 page.setDiv(this.bullets[ii].vehicle);
+                newBullets.push(this.bullets[ii]);
+            } else {
+                this.clean(this.bullets[ii]);
             }
         }
+        this.bullets = newBullets;
+    };
 
+    this.cleanAll = function(){        
+        for(var i = 0; i < this.bullets.length; i++){
+            var bullet = this.bullets[i];
+            page.removeDiv(bullet.vehicle.id);
+        }
+        this.bullets = [];
     };
+
+    this.clean = function(bullet){       
+            page.removeDiv(bullet.vehicle.id);
     };
+
+};
 
 theBullets = new si.Bullets();
 
@@ -952,17 +972,23 @@ si.Invaders = function(level) {
         y = y + (2 * height);
     }
 
-    this.clean = function(){
+    this.cleanAll = function(){
         for(var i = 0; i < this.invaders.length; i++){
             var invader = this.invaders[i];
             page.removeDiv(invader.vehicle.id);
         }
+        this.invaders = [];
+    };
+
+    this.clean = function(invader){       
+            page.removeDiv(invader.vehicle.id);
     };
 
     this.move = function () {
 
         var switchdirection = false;
         var stopMove = false;
+        var newInvaders = [];
 
         for (var i = 0; i < this.invaders.length; i++) {
 
@@ -970,14 +996,19 @@ si.Invaders = function(level) {
                 this.invaders[i].fire();
                 switchdirection = this.invaders[i].moveLeftAndRight() || switchdirection;
                 page.setDiv(this.invaders[i].vehicle);
+                newInvaders.push(this.invaders[i]);
             } else if (this.invaders[i].explosionState > 0) {
                     this.invaders[i].explosionState--;
                     if(this.invaders[i].explosionState == 0){
                         this.invaders[i].vehicle.currentForm = 0;
                     }
                     page.setDiv(this.invaders[i].vehicle);
+                    newInvaders.push(this.invaders[i]);
                 }
         }
+
+        this.invaders = newInvaders;
+
             if (switchdirection) {
                 for (j = 0; j < this.invaders.length; j++) {
                     if (this.invaders[j].active == true) {
@@ -1328,6 +1359,8 @@ si.Game = function () {
             if (theInvaders.invaders[i].active) {
                 isInvader = true;
                 break;
+            } else {
+                theInvaders.clean(theInvaders.invaders[i]);
             }
         }
 
@@ -1343,12 +1376,13 @@ si.Game = function () {
 
         if (!isInvader && !isBigVader) {
             si.Stop();
-            this.resultDiv = document.getElementById("result");
-            this.resultDiv.innerHTML = "YOU WIN";
+            //this.resultDiv = document.getElementById("result");
+            //this.resultDiv.innerHTML = "YOU WIN";
 
             this.velocity += 10;
             this.lives += 100;
-            theInvaders.clean();
+            theInvaders.cleanAll();
+            theBullets.cleanAll();
             this.level++;
             theInvaders = new si.Invaders(this.level);
             this.levelDiv.innerHTML = this.level;
