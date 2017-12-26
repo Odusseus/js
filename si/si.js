@@ -12,7 +12,7 @@ si.Constant = {
     RIGHTBOARD : 320,
     TOPBOARD : 30,
     FLOORBOARD : 370,
-    VERSION : "1.0.21",
+    VERSION : "1.0.22",
     DEFAULTTYPE : 0,
     DEFENDER : 1,
     INVADERTYPE : 2,
@@ -20,6 +20,9 @@ si.Constant = {
     TYPEBULLET1 : 1,
     TYPEBULLET2 : 2,
     TYPEBULLET3 : 3,
+    TYPEBULLET4 : 4,
+    TYPEBULLET5 : 5,
+    TYPEBULLETBIG : 100,
     AUDIOSHOT1 : 'audioShot1',
     AUDIOSHOT2 : 'audioShot2',
     AUDIOSHOT3 : 'audioShot3',
@@ -49,8 +52,8 @@ si.CreateAudioElement = function(audioFile, id){
 };
 
 si.Load = function() {
-    this.infoDiv = document.getElementById("version");
-    this.infoDiv.innerHTML = si.Constant.VERSION;
+   
+   // this.infoDiv.innerHTML = si.Constant.VERSION;
 
     si.CreateAudioElement("sound/shot/215438__taira-komori__shoot02.mp3", si.Constant.AUDIOSHOT1);
     si.CreateAudioElement("sound/shot/28912__junggle__btn102.mp3", si.Constant.AUDIOSHOT2);
@@ -271,6 +274,10 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
     this.fireSoundId = si.Constant.AUDIOSHOT1;
     this.collisionSoundId = si.Constant.AUDIOCRASH1;
 
+    if (typeOfBullets != si.Constant.TYPEBULLETBIG && typeOfBullets > 5){
+        typeOfBullets = 5;
+    }
+
     if(typeOfBullets == si.Constant.TYPEBULLET1){
        this.forms[0] = "";
        this.forms[1] = "+.+<br>+.+";
@@ -292,6 +299,36 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
     }
     
     if(typeOfBullets == si.Constant.TYPEBULLET3){
+        this.forms[0] = "";
+        this.forms[1] = "o.o<br>o.o";
+        this.forms[2] = "00";
+        this.damage = -10;
+        this.width = 30;
+        this.fireSoundId = si.Constant.AUDIOSHOT3;
+        this.collisionSoundId = si.Constant.AUDIOCRASH3;
+    }
+
+    if(typeOfBullets == si.Constant.TYPEBULLET4){
+        this.forms[0] = "";
+        this.forms[1] = "+.+<br>+.+";
+        this.forms[2] = "##";
+        this.damage = -15;
+        this.width = 40;
+        this.fireSoundId = si.Constant.AUDIOSHOT2;
+        this.collisionSoundId = si.Constant.AUDIOCRASH2;
+    }
+
+    if(typeOfBullets == si.Constant.TYPEBULLET5){
+        this.forms[0] = "";
+        this.forms[1] = "v.v<br>v.v";
+        this.forms[2] = "VV";
+        this.damage = -20;
+        this.width = 45;
+        this.fireSoundId = si.Constant.AUDIOSHOT3;
+        this.collisionSoundId = si.Constant.AUDIOCRASH3;
+    }
+
+    if(typeOfBullets == si.Constant.TYPEBULLETBIG){
         this.forms[0] = "";
         this.forms[1] = "@..@<br>$..$";
         this.forms[2] = "#$$#<br>$##$";
@@ -607,11 +644,7 @@ si.Messages = function () {
 
     this.cleanDiv = function(){
         newMessages = [];
-        // this.messages.forEach(element => {
-        //     if(!element.cleanDiv()){
-        //         newMessages.push(element);
-        //     }
-        // });
+
         for(var i = 0; i < this.messages.length; i++){
             var element = this.messages[i];
             if(!element.cleanDiv()){
@@ -765,8 +798,8 @@ playerForms[3] = "/ \\<br>[**]";
 
 var player = new si.Player(sequence.next(), 20, 20, Math.ceil(page.rightBoard / 2), page.floorBoard, playerForms);
 
-si.Invader = function (id, width, height, x, y, lives, forms ) {
-    this.vehicle = new si.Vehicle(id, width, height, x, y, 1, 1, forms, si.Constant.TYPEBULLET2);
+si.Invader = function (id, width, height, x, y, lives, forms, level ) {
+    this.vehicle = new si.Vehicle(id, width, height, x, y, 1, 1, forms, level);
     this.direction = 1;
     this.explosionState = 3;
     this.active = true;
@@ -874,18 +907,41 @@ si.Invader = function (id, width, height, x, y, lives, forms ) {
     };
 };
 
-si.Invaders = function() {
+si.Invaders = function(level) {
     this.invaders = [];
     this.forms = [];
 
-    this.forms[0] = "";
-    this.forms[1] = "+ * + * <br> +*+ <br> + * + *";
-    this.forms[2] = "{x}";
-    this.forms[3] = "{XX}";
-    
+    if(!level){
+        level = 0;
+    }
+
+    var modulus = level % 3;
+
+    if(modulus==0){
+        this.forms[0] = "";
+        this.forms[1] = "+ * + * <br> +*+ <br> + * + *";
+        this.forms[2] = "{x}";
+        this.forms[3] = "{XX}";
+    }
+
+    if(modulus == 1){
+        this.forms[0] = "";
+        this.forms[1] = "+ X + X <br> +x+ <br> + X + X";
+        this.forms[2] = "[o]";
+        this.forms[3] = "]00[";
+    }
+
+    if(modulus == 2){
+        this.forms[0] = "";
+        this.forms[1] = "@ - @ - <br> -$- <br> - @ - @";
+        this.forms[2] = "!#!";
+        this.forms[3] = "{--}";
+    }
+
     for (var i = 0, x = page.leftBoard, y = page.topBoard, width = 20, height = 7; i < 4; i++, x = page.leftBoard) {
         for (var j = 0; j < height; j++) {
-            var newInvader = new si.Invader(sequence.next(), width, height, x, y, 10, this.forms);
+            var typeOfBullets = 1 + level;
+            var newInvader = new si.Invader(sequence.next(), width, height, x, y, 10, this.forms, typeOfBullets);
             this.invaders.push(newInvader);
             page.createDiv(newInvader.vehicle);
                  
@@ -895,6 +951,13 @@ si.Invaders = function() {
         //break;
         y = y + (2 * height);
     }
+
+    this.clean = function(){
+        for(var i = 0; i < this.invaders.length; i++){
+            var invader = this.invaders[i];
+            page.removeDiv(invader.vehicle.id);
+        }
+    };
 
     this.move = function () {
 
@@ -935,11 +998,11 @@ si.Invaders = function() {
     };
 };
 
-theInvaders = new si.Invaders();
+theInvaders = new si.Invaders(0);
 
 //*****************************************
 si.BigVader = function (id, width, height, x, y, lives, forms ) {
-    this.vehicle = new si.Vehicle(id, width, height, x, y, 1, 1, forms, si.Constant.TYPEBULLET3);
+    this.vehicle = new si.Vehicle(id, width, height, x, y, 1, 1, forms, si.Constant.TYPEBULLETBIG);
     this.direction = -1;
     this.explosionState = 3;
     this.active = true;
@@ -1030,7 +1093,7 @@ si.BigVaders = function() {
     this.height = 7;
     this.x = si.Constant.RIGHTBOARD - (this.width / 2);
     this.y = si.Constant.TOPBOARD;
-    this.lives = 500;
+    this.lives = 200;
 
     this.new = function(){
         this.clean();
@@ -1196,9 +1259,12 @@ si.Game = function () {
 
     this.run = 0;
     
-
     this.total = 0;
     this.totalDiv = document.getElementById("total");
+
+    this.level = 1;
+    this.levelDiv = document.getElementById("level");
+    this.levelDiv.innerHTML = this.level;
 
     this.lives = 0;
     this.livesDiv = document.getElementById("lives");
@@ -1253,6 +1319,7 @@ si.Game = function () {
             si.Stop();
             this.resultDiv = document.getElementById("result");
             this.resultDiv.innerHTML = "GAME OVER";
+            si.HighScore(this.total);
         }
 
         var isInvader = false;
@@ -1278,6 +1345,14 @@ si.Game = function () {
             si.Stop();
             this.resultDiv = document.getElementById("result");
             this.resultDiv.innerHTML = "YOU WIN";
+
+            this.velocity += 10;
+            this.lives += 100;
+            theInvaders.clean();
+            this.level++;
+            theInvaders = new si.Invaders(this.level);
+            this.levelDiv.innerHTML = this.level;
+            si.Start();
         }
     };
 };
@@ -1312,30 +1387,8 @@ si.Fire = function(){
     player.lastKeyPress = 32;
 };
 
-window.onload = si.Load();
-
-
-  
-
-si.HighScore = function(){
-
-    var url = "http://js.odusseus.org/si/hs/getJson.php";
-    if (window.location.protocol == "file:"){
-        var url = "http://localhost/hs/getJson.php";
-    }
-    //document.getElementById("info").innerHTML = url;
-    loadJSON(url,
-         function(data) { si.SetHighScore(data); },
-         function(xhr) { si.SetHighScoreError(xhr); }
-    );
-
-    document.getElementById("overlayHighScore").style.display = "block";
-};
-
-
-
 //https://stackoverflow.com/questions/9838812/how-can-i-open-a-json-file-in-javascript-without-jquery
-function loadJSON(path, success, error)
+si.LoadJSON = function(path, success, error)
 {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function()
@@ -1352,9 +1405,26 @@ function loadJSON(path, success, error)
     };
     xhr.open("GET", path, true);
     xhr.send();
-}
+};
 
-si.SetHighScore = function(highscore){
+si.HighScore = function(score){
+
+    var url = "http://js.odusseus.org/si/hs/getJson.php";
+    if (window.location.protocol == "file:"){
+        url = "http://localhost/hs/getJson.php";
+    }
+    if(score && score > 0){
+        url += "?score=" + score;
+    }
+    si.LoadJSON(url,
+         function(data) { si.SetHighScore(data, score); },
+         function(xhr) { si.SetHighScoreError(xhr); }
+    );
+
+    document.getElementById("overlayHighScore").style.display = "block";
+};
+
+si.SetHighScore = function(highscore, hsscore){
     if(highscore && highscore.list.length > 0){
         var output = "";
         for (var i = 0; i <  highscore.list.length; i++){
@@ -1362,6 +1432,14 @@ si.SetHighScore = function(highscore){
             output += "<div class='hsrow'>" + "<div class='hsscore hselement'>" +score.score + "</div>" + "<div class='hsname hselement'>" + score.name + "</div>" + "<div class='hscountry  hselement'>" + score.country + "</div>" + "<div class='hstimestamp  hselement'>" + score.timestamp + "</div>" + "</div>" ;
         }
         document.getElementById("highscoreList").innerHTML = output;
+
+        if(highscore.token != null){
+            document.getElementById("enterHighscore").style.display = "inline";
+            document.getElementById("hsToken").value = highscore.token;
+            document.getElementById("hsScore").value = hsscore;
+        } else {
+            document.getElementById("enterHighscore").style.display = "none";
+        }
     }
 };
 
@@ -1372,15 +1450,36 @@ si.SetHighScoreError = function(message){
    info.innerHTML = message;
 };
 
+si.HighScoreSend = function(){
+    document.getElementById("overlayHighScore").style.display = "none";
+    document.getElementById("enterHighscore").style.display = "none";
+    var name = document.getElementById("hsInputName").value;
+    var country = document.getElementById("hsInputCountry").value;
+    var token = document.getElementById("hsToken").value;
+    var score = document.getElementById("hsScore").value;
 
-si.HighScoreExit = function(){
+    var request = new XMLHttpRequest();
+    var url = "http://js.odusseus.org/si/hs/highscore.php";
+    if (window.location.protocol == "file:"){
+        url = "http://localhost/hs/highscore.php";
+    }
+    request.open('POST', url, true);    
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8;');
+    var data = "name=" + name + "&score=" + score + "&country=" + country + "&token=" + token ;
+    request.send(data);
+};
+
+si.HighScoreCancel = function(){
     document.getElementById("overlayHighScore").style.display = "none";
 };
 
 si.Help = function(){
+    document.getElementById("version").innerHTML = si.Constant.VERSION;
     document.getElementById("overlayHelp").style.display = "block";
 };
 
-si.HelpExit = function(){
+si.HelpCancel = function(){
     document.getElementById("overlayHelp").style.display = "none";
 };
+
+window.onload = si.Load();
