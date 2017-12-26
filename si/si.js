@@ -12,7 +12,7 @@ si.Constant = {
     RIGHTBOARD : 320,
     TOPBOARD : 30,
     FLOORBOARD : 370,
-    VERSION : "1.0.27",
+    VERSION : "1.0.28",
     DEFAULTTYPE : 0,
     DEFENDER : 1,
     INVADERTYPE : 2,
