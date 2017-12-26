@@ -12,7 +12,7 @@ si.Constant = {
     RIGHTBOARD : 320,
     TOPBOARD : 30,
     FLOORBOARD : 370,
-    VERSION : "1.0.22",
+    VERSION : "1.0.23",
     DEFAULTTYPE : 0,
     DEFENDER : 1,
     INVADERTYPE : 2,
@@ -940,7 +940,7 @@ si.Invaders = function(level) {
 
     for (var i = 0, x = page.leftBoard, y = page.topBoard, width = 20, height = 7; i < 4; i++, x = page.leftBoard) {
         for (var j = 0; j < height; j++) {
-            var typeOfBullets = 1 + level;
+            var typeOfBullets = 2 + level;
             var newInvader = new si.Invader(sequence.next(), width, height, x, y, 10, this.forms, typeOfBullets);
             this.invaders.push(newInvader);
             page.createDiv(newInvader.vehicle);
