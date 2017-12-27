@@ -12,7 +12,7 @@ si.Constant = {
     RIGHTBOARD : 320,
     TOPBOARD : 30,
     FLOORBOARD : 370,
-    VERSION : "1.0.28",
+    VERSION : "1.0.29",
     DEFAULTTYPE : 0,
     DEFENDER : 1,
     INVADERTYPE : 2,
@@ -311,7 +311,7 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
         this.forms[1] = ".o.<br>.o.";
         this.forms[2] = "0";
         this.damage = -10;
-        this.width = 30;
+        this.width = 25;
         this.fireSoundId = si.Constant.AUDIOSHOT3;
         this.collisionSoundId = si.Constant.AUDIOCRASH3;
     }
@@ -321,7 +321,7 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
         this.forms[1] = "-x-<br>-x-";
         this.forms[2] = "(:)";
         this.damage = -15;
-        this.width = 40;
+        this.width = 30;
         this.fireSoundId = si.Constant.AUDIOSHOT2;
         this.collisionSoundId = si.Constant.AUDIOCRASH2;
     }
@@ -331,7 +331,7 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
         this.forms[1] = "v.v<br>v.v";
         this.forms[2] = "VV";
         this.damage = -20;
-        this.width = 45;
+        this.width = 35;
         this.fireSoundId = si.Constant.AUDIOSHOT3;
         this.collisionSoundId = si.Constant.AUDIOCRASH3;
     }
@@ -369,8 +369,18 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
             if (y > page.floorBoard) {
                 this.move = false;
                 this.active = false;
-                this.vehicle.currentForm = 0;
+                this.vehicle.currentForm = 1;
                 this.setForm();
+                if(si.isSound()){
+                    //var sound = document.getElementById( this.collisionSound);
+                    //sound.play();
+                    var soundId = this.collisionSoundId;
+                    document.getElementById(soundId).play();
+                    document.getElementById(soundId).pause();
+                    var interval = setInterval(function() { si.PlaySound(soundId); } , si.Constant.SOUNDINTERVAL);
+                    si.Interval.push(interval); 
+                }
+                return;
             }
         }
     };
@@ -513,7 +523,9 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
                             bigVader.setForm();
                             game.total += - this.damage;
                             messageText = new si.MessageText(bigVader.getHitMessage(), "-","|", "*","+").FormatMessageSimple(); //.FormatMessageOnOff();
-                            theMessages.new(bigVader.vehicle, messageText);
+                            if(si.Random(1, 7) == 1 ){
+                                theMessages.new(bigVader.vehicle, messageText);
+                            }
                             return;
                         }
                     }   
@@ -922,7 +934,7 @@ si.Invaders = function(level) {
         level = 0;
     }
 
-    var modulus = level % 3;
+    var modulus = level % 5;
 
     if(modulus==0){
         this.forms[0] = "";
@@ -943,6 +955,20 @@ si.Invaders = function(level) {
         this.forms[1] = "@ - @ - <br> -$- <br> - @ - @";
         this.forms[2] = "!#!";
         this.forms[3] = "{--}";
+    }
+
+    if(modulus == 3){
+        this.forms[0] = "";
+        this.forms[1] = "a . u . <br> .X. <br> . u . a";
+        this.forms[2] = "/U&#92;";
+        this.forms[3] = "&#92;AA/";
+    }
+
+    if(modulus == 4){
+        this.forms[0] = "";
+        this.forms[1] = "o - o - <br> -O- <br> - o - o";
+        this.forms[2] = "+O+";
+        this.forms[3] = "-oo-";
     }
 
     for (var i = 0, x = page.leftBoard, y = page.topBoard, width = 20, height = 7; i < 4; i++, x = page.leftBoard) {
@@ -1370,15 +1396,15 @@ si.Game = function () {
             //this.resultDiv = document.getElementById("result");
             //this.resultDiv.innerHTML = "YOU WIN";
 
-            this.velocity += 10;
-            this.lives += 100;
+            this.level++;
+            this.velocity = 50 - this.level;
+            player.lives += this.level * 100;
             theInvaders.cleanAll();
             theBullets.cleanAll();
             theBunkers.cleanAll(); 
-            this.level++;
+            this.levelDiv.innerHTML = this.level;
             theInvaders = new si.Invaders(this.level);
             theBunkers = new si.Bunkers();
-            this.levelDiv.innerHTML = this.level;
             si.Start();
         }
     };
