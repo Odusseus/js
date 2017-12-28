@@ -12,7 +12,7 @@ si.Constant = {
     RIGHTBOARD : 320,
     TOPBOARD : 30,
     FLOORBOARD : 370,
-    VERSION : "1.0.32",
+    VERSION : "1.0.33",
     DEFAULTTYPE : 0,
     DEFENDER : 1,
     INVADERTYPE : 2,
@@ -938,13 +938,6 @@ si.Invaders = function(level) {
 
     var modulus = this.level % 5;
 
-    if(modulus == 0){
-        this.forms[0] = "";
-        this.forms[1] = "+ X + X <br> +x+ <br> + X + X";
-        this.forms[2] = "[o]";
-        this.forms[3] = "]00[";
-    }
-
     if(modulus==1){
         this.forms[0] = "";
         this.forms[1] = "+ * + * <br> +*+ <br> + * + *";
@@ -971,6 +964,13 @@ si.Invaders = function(level) {
         this.forms[1] = "o - o - <br> -O- <br> - o - o";
         this.forms[2] = "+O+";
         this.forms[3] = "-oo-";
+    }
+
+    if(modulus == 0){
+        this.forms[0] = "";
+        this.forms[1] = "+ X + X <br> +x+ <br> + X + X";
+        this.forms[2] = "[o]";
+        this.forms[3] = "]00[";
     }
 
     for (var i = 0, x = page.leftBoard, y = page.topBoard, width = 20, height = 7; i < 4; i++, x = page.leftBoard) {
