@@ -12,7 +12,7 @@ si.Constant = {
     RIGHTBOARD : 320,
     TOPBOARD : 30,
     FLOORBOARD : 370,
-    VERSION : "1.0.31",
+    VERSION : "1.0.32",
     DEFAULTTYPE : 0,
     DEFENDER : 1,
     INVADERTYPE : 2,
@@ -783,13 +783,13 @@ si.Player = function (id, width, height, x, y, forms) {
     };
 
     this.fire = function () {
-        if(game.run < this.runOld){
+        if(game.run - this.runOld < 20 ){
             return;
         }
 
-        this.runOld = game.run + 10;
+        this.runOld = game.run;
 
-        if (game.run % 4 == 0) {
+        if (game.run % 3 == 0) {
             theBullets.fire(this.vehicle);
         } else {
             if(game.run % 7 == 0){
