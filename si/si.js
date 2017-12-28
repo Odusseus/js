@@ -1,6 +1,6 @@
 // Author Pascal Boittin
 // 25-10-2014
-// chessmachine@odusseus.org
+// info@odusseus.org
 /*jshint esversion: 6 */
 // TODO regroup invaders
 
