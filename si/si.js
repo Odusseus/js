@@ -12,7 +12,7 @@ si.Constant = {
     RIGHTBOARD : 320,
     TOPBOARD : 30,
     FLOORBOARD : 370,
-    VERSION : "1.0.29",
+    VERSION : "1.0.30",
     DEFAULTTYPE : 0,
     DEFENDER : 1,
     INVADERTYPE : 2,
@@ -1176,14 +1176,6 @@ si.BigVaders = function() {
         }
 
         var newBigVaders = [];
-        // this.bigVaders.forEach(element => {
-        //     if(element.active){
-        //         newBigVaders.push(element);
-        //     } else {
-        //         page.removeDiv(element.vehicle.id);
-        //     }
-        // });
-
         for(var i = 0; i < this.bigVaders.length; i++){
             var element = this.bigVaders[i];
 
@@ -1222,19 +1214,12 @@ si.BigVaders = function() {
             for (j = 0; j < this.bigVaders.length; j++) {
                 if (this.bigVaders[j].active == true) {
                     this.bigVaders[j].switchDirection();
-                        //stopMove = this.invaders[j].moveDown() || stopMove;
                 }
             }
             switchdirection = false;
         }
 
         if (stopMove) {
-            // this.bigVaders.forEach(element => {
-            //     if (element.active == true) {
-            //         element.move = false;
-            //     }
-            // });
-         
             for(i = 0; i < this.bigVaders.length;i++){
                 var element = this.bigVaders[i];
                 if (element.active == true) {
