@@ -683,6 +683,7 @@ si.Player = function (id, width, height, x, y, forms) {
     this.lives = 100;
     this.vehicle = new si.Vehicle(id, width, height, x, y, -1, 2, forms, si.Constant.TYPEBULLET1);
     this.lastKeyPress = undefined;
+    this.runOld = 0;
 
     page.createDiv(this.vehicle);
     
@@ -782,6 +783,11 @@ si.Player = function (id, width, height, x, y, forms) {
     };
 
     this.fire = function () {
+        if(game.run < this.runOld){
+            return;
+        }
+
+        this.runOld = game.run + 10;
 
         if (game.run % 4 == 0) {
             theBullets.fire(this.vehicle);
