@@ -934,25 +934,22 @@ si.Invader = function (id, width, height, x, y, lives, forms, level ) {
 si.Invaders = function(level) {
     this.invaders = [];
     this.forms = [];
+    this.level = level;
 
-    if(!level){
-        level = 0;
-    }
+    var modulus = this.level % 5;
 
-    var modulus = level % 5;
-
-    if(modulus==0){
-        this.forms[0] = "";
-        this.forms[1] = "+ * + * <br> +*+ <br> + * + *";
-        this.forms[2] = "{x}";
-        this.forms[3] = "{XX}";
-    }
-
-    if(modulus == 1){
+    if(modulus == 0){
         this.forms[0] = "";
         this.forms[1] = "+ X + X <br> +x+ <br> + X + X";
         this.forms[2] = "[o]";
         this.forms[3] = "]00[";
+    }
+
+    if(modulus==1){
+        this.forms[0] = "";
+        this.forms[1] = "+ * + * <br> +*+ <br> + * + *";
+        this.forms[2] = "{x}";
+        this.forms[3] = "{XX}";
     }
 
     if(modulus == 2){
@@ -1047,7 +1044,7 @@ si.Invaders = function(level) {
     };
 };
 
-theInvaders = new si.Invaders(0);
+theInvaders = new si.Invaders(1);
 
 //*****************************************
 si.BigVader = function (id, width, height, x, y, lives, forms ) {
@@ -1404,9 +1401,6 @@ si.Game = function () {
 
         if (!isInvader && !isBigVader) {
             si.Stop();
-            //this.resultDiv = document.getElementById("result");
-            //this.resultDiv.innerHTML = "YOU WIN";
-
             this.level++;
             this.velocity = 50 - (this.level * 3);
             player.lives += this.level * 10;
