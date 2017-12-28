@@ -783,8 +783,7 @@ si.Player = function (id, width, height, x, y, forms) {
 
     this.fire = function () {
 
-        //var fireTime = Math.floor(Math.random() * 2) + 1;
-        if (game.run % 3 == 0) {
+        if (game.run % 4 == 0) {
             theBullets.fire(this.vehicle);
         } else {
             if(game.run % 7 == 0){
@@ -1128,26 +1127,47 @@ si.BigVader = function (id, width, height, x, y, lives, forms ) {
 si.BigVaders = function() {
     this.bigVaders = [];
     this.forms = [];
+    this.level = 0;
 
-    this.forms[0] = "";
-    this.forms[1] = "+ * + * <br> +*+ <br> + * + *";
-    this.forms[2] = "{+==0=0==+}";
-    this.forms[3] = "-X==o=o==X-";
-    this.width = 55;
-    this.height = 7;
-    this.x = si.Constant.RIGHTBOARD - (this.width / 2);
-    this.y = si.Constant.TOPBOARD;
-    this.lives = 200;
-
-    this.new = function(){
+    this.new = function(level){
         this.clean();
         if(this.bigVaders.length == 0){
             this.lives = 200;
+            this.level = level;
+            this.setForms();
             var newBigVader = new si.BigVader(sequence.next(), this.width, this.height, this.x, this.y, this.lives, this.forms);
             this.bigVaders.push(newBigVader);
             page.createDiv(newBigVader.vehicle);
         }
         return this;
+    };
+
+    this.setForms = function(){
+    
+        var modulus = this.level % 2;
+        if(modulus==0){
+            this.forms[0] = "";
+            this.forms[1] = " &#92; &#92; &#92; &#92; <br> &gt; o &lt; <br> / / / /";
+            this.forms[2] = "/(^.^)/";
+            this.forms[3] = "&#92;^o_o^&#92;";
+            this.width = 35; // 5 for 1 character
+            this.height = 7;
+            this.x = si.Constant.RIGHTBOARD - (this.width / 2);
+            this.y = si.Constant.TOPBOARD;
+            this.lives = 200;
+        }
+
+        if(modulus==1){
+            this.forms[0] = "";
+            this.forms[1] = "+ * + * <br> +*+ <br> + * + *";
+            this.forms[2] = "{+==0=0==+}";
+            this.forms[3] = "-X==o=o==X-";
+            this.width = 55;
+            this.height = 7;
+            this.x = si.Constant.RIGHTBOARD - (this.width / 2);
+            this.y = si.Constant.TOPBOARD;
+            this.lives = 200;
+        }
     };
 
     this.clean = function(){
@@ -1334,9 +1354,9 @@ si.Game = function () {
 
         if(this.run % 2000 == 0){
             if(!theBigVaders){
-                theBigVaders = new si.BigVaders().new();
+                theBigVaders = new si.BigVaders().new(this.level);
             } else {
-                theBigVaders.new();
+                theBigVaders.new(this.level);
             }
         }
 
@@ -1397,8 +1417,8 @@ si.Game = function () {
             //this.resultDiv.innerHTML = "YOU WIN";
 
             this.level++;
-            this.velocity = 50 - this.level;
-            player.lives += this.level * 100;
+            this.velocity = 50 - (this.level * 3);
+            player.lives += this.level * 10;
             theInvaders.cleanAll();
             theBullets.cleanAll();
             theBunkers.cleanAll(); 
