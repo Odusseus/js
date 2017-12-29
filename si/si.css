@@ -1,4 +1,8 @@
-﻿body {
+﻿html {
+    touch-action: manipulation;
+  }
+
+body {
     font-family: Lucida Console;
     font-size: small;
 }
