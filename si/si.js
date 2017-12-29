@@ -1539,3 +1539,9 @@ si.InfoCancel = function(){
 };
 
 window.onload = si.Load();
+
+// https://coderwall.com/p/lyw2ug/how-to-prevent-native-scrolling-on-mobile-browsers
+document.body.addEventListener("touchmove", function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+}, false);
