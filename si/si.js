@@ -12,7 +12,7 @@ si.Constant = {
     RIGHTBOARD : 320,
     TOPBOARD : 30,
     FLOORBOARD : 370,
-    VERSION : "1.0.37",
+    VERSION : "1.0.38",
     DEFAULTTYPE : 0,
     DEFENDER : 1,
     INVADERTYPE : 2,
@@ -31,7 +31,8 @@ si.Constant = {
     AUDIOCRASH3 : 'audioCrash3',
     SOUNDINTERVAL : 10,
     HIGHSCOREEURLTEST : "http://localhost/hs/getJson.php",
-    HIGHSCOREEURL : "http://js.odusseus.org/si/hs/getJson.php"
+    HIGHSCOREEURL : "http://js.odusseus.org/si/hs/getJson.php",
+    PRODURL : "http://si.odusseus.org/si.html"
 };
 
 si.Interval = [];
@@ -56,9 +57,7 @@ si.CreateAudioElement = function(audioFile, id){
 si.Load = function() {
     
     if (window.location.protocol == "https:"){
-        var currentLocation = window.location;
-        currentLocation.replace("https:", "http:");
-        window.location = currentLocation;
+        window.location = PRODURL;
         return;
     }
 
