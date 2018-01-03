@@ -41,9 +41,16 @@ si.ClearInterval = function(){
     clearInterval(interval);
 };
 
-si.PlaySound = function(soundId ){
-    document.getElementById(soundId).play();
-    si.ClearInterval();
+// si.PlaySound = function(soundId ){
+//     document.getElementById(soundId).play();
+//     si.ClearInterval();
+// };
+
+si.playSound = function(soundId){
+    if(si.isSound()){
+        var sound = document.getElementById(soundId);
+        sound.click();
+    }
 };
 
 si.CreateAudioElement = function(audioFile, id){
@@ -52,6 +59,12 @@ si.CreateAudioElement = function(audioFile, id){
     audio.setAttribute("id", id);
     audio.setAttribute("type","audio/mp3");
     document.body.appendChild(audio);
+
+    var soundElement = document.getElementById(id);
+    soundElement.addEventListener("click", function () {
+        soundElement.play();
+       
+    });
 };
 
 si.Load = function() {
@@ -68,7 +81,6 @@ si.Load = function() {
     si.CreateAudioElement("sound/crash/12831__schluppipuppie__crash-03.mp3", si.Constant.AUDIOCRASH1);
     si.CreateAudioElement("sound/crash/369711__mrguff__hit-impact.mp3", si.Constant.AUDIOCRASH2);
     si.CreateAudioElement("sound/crash/12734__leady__dropping-a-gun.mp3", si.Constant.AUDIOCRASH3);
-    
 };
 
 si.isSound = function(){
@@ -371,15 +383,18 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
                 this.active = false;
                 this.vehicle.currentForm = 1;
                 this.setForm();
-                if(si.isSound()){
-                    //var sound = document.getElementById( this.collisionSound);
-                    //sound.play();
-                    var soundId = this.collisionSoundId;
-                    document.getElementById(soundId).play();
-                    document.getElementById(soundId).pause();
-                    var interval = setInterval(function() { si.PlaySound(soundId); } , si.Constant.SOUNDINTERVAL);
-                    si.Interval.push(interval); 
-                }
+                si.playSound(this.collisionSoundId);
+                // if(si.isSound()){
+                //     //var sound = document.getElementById( this.collisionSound);
+                //     //sound.play();
+                //     // var soundId = this.collisionSoundId;
+                //     // document.getElementById(soundId).play();
+                //     // document.getElementById(soundId).pause();
+                //     // var interval = setInterval(function() { si.PlaySound(soundId); } , si.Constant.SOUNDINTERVAL);
+                //     // si.Interval.push(interval); 
+                    
+                //     si.playSound(this.collisionSoundId);
+                // }
                 return;
             }
         }
@@ -416,15 +431,20 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
                         this.move = false;
                         this.vehicle.currentForm = 1;
                         this.setForm();
-                        if(si.isSound()){
-                            //var sound = document.getElementById( this.collisionSound);
-                            //sound.play();
-                            var soundId = this.collisionSoundId;
-                            document.getElementById(soundId).play();
-                            document.getElementById(soundId).pause();
-                            var interval = setInterval(function() { si.PlaySound(soundId); } , si.Constant.SOUNDINTERVAL);
-                            si.Interval.push(interval); 
-                        }
+                        si.playSound(this.collisionSoundId);
+                        // if(si.isSound()){
+                        //     //var sound = document.getElementById( this.collisionSound);
+                        //     //sound.play();
+                        //     // var soundId = this.collisionSoundId;
+                        //     // document.getElementById(soundId).play();
+                        //     // document.getElementById(soundId).pause();
+                        //     // var interval = setInterval(function() { si.PlaySound(soundId); } , si.Constant.SOUNDINTERVAL);
+                        //     // si.Interval.push(interval); 
+
+                        //     var soundId = this.collisionSoundId;
+                        //     var sound = document.getElementById(soundId);
+                        //     sound.click();
+                        // }
                         return;
                     }
                  }
@@ -453,14 +473,19 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
             this.move = false;
             this.vehicle.currentForm = 1;
             this.setForm();
-            if(si.isSound()){
-                //document.getElementById( this.collisionSound).play();
-                var soundId = this.collisionSoundId;
-                document.getElementById(soundId).play();
-                document.getElementById(soundId).pause();
-                var interval = setInterval(function() { si.PlaySound(soundId); } ,si.Constant.SOUNDINTERVAL);
-                si.Interval.push(interval); 
-            }
+            si.playSound(this.collisionSoundId);
+            // if(si.isSound()){
+            //     //document.getElementById( this.collisionSound).play();
+            //     // var soundId = this.collisionSoundId;
+            //     // document.getElementById(soundId).play();
+            //     // document.getElementById(soundId).pause();
+            //     // var interval = setInterval(function() { si.PlaySound(soundId); } ,si.Constant.SOUNDINTERVAL);
+            //     // si.Interval.push(interval); 
+
+            //     var soundId = this.collisionSoundId;
+            //     var sound = document.getElementById(soundId);
+            //     sound.click();
+            // }
             return;
         }
     }
@@ -477,14 +502,19 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
                         this.move = false;
                         this.vehicle.currentForm = 1;
                         this.setForm();
-                        if(si.isSound()){
-                            //document.getElementById( this.collisionSound).play();
-                            var soundId = this.collisionSoundId;
-                            document.getElementById(soundId).play();
-                            document.getElementById(soundId).pause();
-                            var interval = setInterval(function() { si.PlaySound(soundId); } ,si.Constant.SOUNDINTERVAL);
-                            si.Interval.push(interval); 
-                            }
+                        si.playSound(this.collisionSoundId);
+                        // if(si.isSound()){
+                        //     //document.getElementById( this.collisionSound).play();
+                        //     // var soundId = this.collisionSoundId;
+                        //     // document.getElementById(soundId).play();
+                        //     // document.getElementById(soundId).pause();
+                        //     // var interval = setInterval(function() { si.PlaySound(soundId); } ,si.Constant.SOUNDINTERVAL);
+                        //     // si.Interval.push(interval);
+                            
+                        //     var soundId = this.collisionSoundId;
+                        //     var sound = document.getElementById(soundId);
+                        //     sound.click();
+                        //     }
                         invader.active = false;
                         invader.vehicle.currentForm = 1;
                         invader.setForm();
@@ -511,14 +541,19 @@ si.Bullet = function (id, width, height, x, y, fireDirection, typeOfBullets) {
                         this.move = false;
                         this.vehicle.currentForm = 1;
                         this.setForm();
-                            if(si.isSound()){
-                                //document.getElementById( this.collisionSound).play();
-                                var soundId = this.collisionSoundId;
-                                document.getElementById(soundId).play();
-                                document.getElementById(soundId).pause();
-                                var interval = setInterval(function() { si.PlaySound(soundId); } ,si.Constant.SOUNDINTERVAL);
-                                si.Interval.push(interval); 
-                            }
+                        si.playSound(this.collisionSoundId);
+                            // if(si.isSound()){
+                            //     //document.getElementById( this.collisionSound).play();
+                            //     // var soundId = this.collisionSoundId;
+                            //     // document.getElementById(soundId).play();
+                            //     // document.getElementById(soundId).pause();
+                            //     // var interval = setInterval(function() { si.PlaySound(soundId); } ,si.Constant.SOUNDINTERVAL);
+                            //     // si.Interval.push(interval); 
+
+                            //     var soundId = this.collisionSoundId;
+                            //     var sound = document.getElementById(soundId);
+                            //     sound.click();
+                            // }
                             bigVader.setLives(this.damage);
                             bigVader.setForm();
                             game.total += - this.damage;
@@ -552,13 +587,18 @@ si.Bullets = function () {
 
             y = y + (vehicle.fireDirection * (3 + i) * height);
 
-            if(si.isSound()){
-                var fireSoundId = newBullet.fireSoundId;
-                document.getElementById(fireSoundId).play();
-                document.getElementById(fireSoundId).pause();
-                var interval = setInterval(function() { si.PlaySound(fireSoundId); } ,si.Constant.SOUNDINTERVAL);
-                si.Interval.push(interval); 
-            }
+            si.playSound(newBullet.fireSoundId);
+            // if(si.isSound()){
+            //     var fireSoundId = newBullet.fireSoundId;
+            //     // document.getElementById(fireSoundId).play();
+            //     // document.getElementById(fireSoundId).pause();
+            //     // var interval = setInterval(function() { si.PlaySound(fireSoundId); } ,si.Constant.SOUNDINTERVAL);
+            //     // si.Interval.push(interval); 
+
+            //     var sound = document.getElementById(fireSoundId);
+            //     sound.click();
+                
+            // }
         }
     };
 
