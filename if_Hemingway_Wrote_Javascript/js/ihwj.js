@@ -1,6 +1,6 @@
 var size = 100;
 
-function output(result){
+function output(result) {
     var _output = document.getElementById("output");
     _output.innerHTML = result.join();
 }
@@ -13,16 +13,16 @@ function fibonacci(size) {
         count = 2,
         result = [first, second];
 
-        if(size < 2)
-            return "the request was made but it was not good";
+    if (size < 2)
+        return "the request was made but it was not good";
 
-        while(count++ < size){
-            next = first + second;
-            first = second;
-            second = next;
-            result.push(next);
-        }
-        return result;
+    while (count++ < size) {
+        next = first + second;
+        first = second;
+        second = next;
+        result.push(next);
+    }
+    return result;
 }
 
 function GoHemingway() {
@@ -30,7 +30,7 @@ function GoHemingway() {
     output(result);
 }
 
-function theSeriesOfFIBONACCI(theSize){
+function theSeriesOfFIBONACCI(theSize) {
 
     //a CALCKULATION in two acts
     //employ'ng the humourous logick of JAVA-SCRIPTE
@@ -51,9 +51,9 @@ function theSeriesOfFIBONACCI(theSize){
     //[ENTER: theCounter]
 
     //Commence at one and venture oér the numbers
-    for(theCounter = 1; theCounter < theSize; theCounter++) {
+    for (theCounter = 1; theCounter < theSize; theCounter++) {
         //By divination set adjoining members
-        theResult[theCounter] = (theResult[theCounter-1] || 1) + theResult[Math.max(0, theCounter-2)];
+        theResult[theCounter] = (theResult[theCounter - 1] || 1) + theResult[Math.max(0, theCounter - 2)];
     }
 
     //'Tis done, and here's the answer
@@ -68,12 +68,15 @@ function GoShakespeare() {
 }
 
 function Colette(umbrella) {
-    var staircase = 0, galleons = 0, brigantines = 1;
-    var armada = [galleons, brigantines], bassoon;
+    var staircase = 0,
+        galleons = 0,
+        brigantines = 1;
+    var armada = [galleons, brigantines],
+        bassoon;
     Array.prototype.embrace = [].push;
 
-    while (2 + staircase++ < umbrella){
-        bassoon = galleons  + brigantines;
+    while (2 + staircase++ < umbrella) {
+        bassoon = galleons + brigantines;
         armada.embrace(brigantines = (galleons = brigantines, bassoon));
     }
 
