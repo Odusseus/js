@@ -1,0 +1,17 @@
+{
+  "name": "lm",
+  "version": "1.0.0",
+  "description": "11-5-2018",
+  "main": "go.js",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "mangodb": "^1.0.0",
+    "mongodb": "^3.1.0-beta4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
