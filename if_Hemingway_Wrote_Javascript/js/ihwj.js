@@ -89,3 +89,8 @@ function GoBreton() {
     var result = Colette(size);
     output(result);
 }
+
+function GoRobertoBolano(){
+    var result = x();
+    output(result);
+}
