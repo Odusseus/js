@@ -8,11 +8,11 @@ http.get("http://www.hotspirit.nl", (resp) => {
         data += chunk;
     });
 
-    resp.on('end', () => { 
-        console.log(data)
-        
+    resp.on('end', () => {
+        console.log(data);
+
         const $ = cheerio.load(data);
-        
+
         $('a').each(function(index, element){
             var x = '';
             if(element.childNodes.length >= 0 && element.childNodes[0] != undefined && element.childNodes[0].data != undefined){
