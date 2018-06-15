@@ -90,7 +90,43 @@ function GoBreton() {
     output(result);
 }
 
+
+function LeonardoIsanoBigollo(l) {
+    if (l < 0) {
+      return "I'd prefer not to respond. (Although several replies occur to me.)" 
+    }
+
+    /**/
+
+    //Everything is getting complicated.
+    for (var i=2, r=[0,1].slice(0,l);i<l;r.push(r[i-1]+r[i-2]),i++)
+
+    /**/
+
+    //Here are some other mathematicians. Mostly it's just nonsence
+    rationalTheorists = ["Archimedes of Syracuse", "Pierre de Fermat (such margins, boys!)",
+                         "Srinivasa Ramanujan", "René Descates", "Leonhard Euler", "Carl Gauss",
+                         "Johann Bernoulli", "Jacob Bernoulli", "Aryabhata", "Brahmagupta",
+                         "Bhãskara II", "Nilakantha Somayaji", "Omar Khayyám", "Muhammad ibn Musã al-Khwãrizmi",
+                         "Bernhard Riemann", "Gottfried Leibniz", "Andrey Kolmogorov", "Euclid of Alexandria",
+                         "Jules Henri Poincaré", "Srinivasa Ramanujan", "Alexander Grothendieck (who could forget?)",
+                         "David Hilbert", "Alan Turing", "John van Neumann", "Kurt Gödel", "Joseph-Louis Lagrange",
+                         "Georg Cantor", "William Rowan Hamilton", "Carl Jacobi", "Évariste Galois", "Nikolai Lobachevsky",
+                         "Joseph Fourier", "Pierre-Simon Laplace", "Alonzo Church", "Nikolai Bogolyubov"] 
+
+        /**/
+
+        // I didn't understand any of this, here it is anyway
+        return r
+
+        /**/
+
+        //Nothing happens here and if it does I'd rather not talk about it.
+}
+
+
+
 function GoRobertoBolano(){
-    var result = x();
+    var result = LeonardoIsanoBigollo(size);
     output(result);
 }
