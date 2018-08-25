@@ -10,6 +10,9 @@ Shadok vs Gibi : SvsG <https://rawgit.com/Odusseus/js/master/svsg/site/index.htm
 
 if_Hemingway_Wrote_Javascript : <https://rawgit.com/Odusseus/js/master/if_Hemingway_Wrote_Javascript/index.html>
 
+Tools like list of days
+<https://cdn.rawgit.com/Odusseus/js/5bd1d07f/tools/index.html>
+
 ## Documentation
 
 <https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces>
