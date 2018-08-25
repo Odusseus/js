@@ -16,7 +16,7 @@ Date.prototype.ddmmyyyy = function() {
     var days = ['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
     var dayName = days[this.getDay()];
 
-    return dayName + " " + dateFormated;
+    return "<span class='dayName'>" + dayName + "</span>" + dateFormated;
   };
 
 function GoListOfDays(startDateName, endDateName, onlyDayId, endTextName) {
@@ -27,7 +27,7 @@ function GoListOfDays(startDateName, endDateName, onlyDayId, endTextName) {
     var onlyDay = Number(onlyDayIdText);
     var endTextText = document.getElementsByName(endTextName)[0].value;
 
-    if(startDateText == "" || endDateText == ""){
+    if(startDateText == "" && endDateText == ""){
         output("Please select a date.");
         return;
     }
@@ -53,15 +53,27 @@ function GoListOfDays(startDateName, endDateName, onlyDayId, endTextName) {
     var oldMonth = startDate.getMonth();
 
     while(currentDate <= endDate){
-        if(currentDate.getDay() == onlyDay){
-            var currentMonth = currentDate.getMonth();
-            if(currentMonth != oldMonth){
-                listOfDays += "<br>";
-                oldMonth = currentMonth;
-            }
-            listOfDays += "<li>" + currentDate.ddmmyyyy() + " " +endTextText +"</li>";
+        var currentMonth = currentDate.getMonth();
+        if(currentMonth != oldMonth){
+            listOfDays += "<br>";
+            oldMonth = currentMonth;
         }
 
+        var isToAdd = false;
+
+        if(currentDate.getDay() == onlyDay){
+            isToAdd = true;
+        } else if (onlyDay == 7) {
+            isToAdd = true;
+        } else if (onlyDay == 8 && (currentDate.getDay() > 0 && currentDate.getDay() < 6)) {
+            isToAdd = true;
+        }  else if (onlyDay == 9 && (currentDate.getDay() > 4 && currentDate.getDay() < 7)) {
+            isToAdd = true;
+        }
+
+        if(isToAdd){
+            listOfDays += "<li>" + currentDate.ddmmyyyy() + " " +endTextText +"</li>";
+        }
         currentDate.setDate(currentDate.getDate() + 1);
     }
 

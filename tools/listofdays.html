@@ -5,6 +5,7 @@
             List of days
         </title>
     </head>
+    <link href="css/tools.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="js/tools.js" defer></script>
 </html>
 <body>
@@ -12,9 +13,13 @@
         <div>
             Start date: <input type="date" name="startDate">
             End date: <input type="date" name="endDate">
+            <br>
             Only Day 
             <select id="onlyDay">
-                <option selected value="1">Maandag</option>
+                <option selected value="7">Hele week</option>
+                <option value="8">Werkdagen</option>
+                <option value="9">Weekend</option>
+                <option value="1">Maandag</option>
                 <option value="2">Dinsdag</option>
                 <option value="3">Woensdag</option>
                 <option value="4">Donderdag</option>
@@ -22,10 +27,11 @@
                 <option value="6">Zaterdag</option>
                 <option value="0">Zondag</option>
             </select>
+            <br>
             End Text: <input type="text" name="endText">
         </div>
 
-        <input type="button" value="Go List of days" onclick="GoListOfDays('startDate', 'endDate', 'onlyDay', 'endText')">
+        <input type="button" value="List of days" onclick="GoListOfDays('startDate', 'endDate', 'onlyDay', 'endText')">
     </div>
     <div id="output">
     </div>

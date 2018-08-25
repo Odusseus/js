@@ -1,0 +1,9 @@
+﻿body {
+    font-family: Lucida Console;
+    font-size: small;
+}
+
+ol li span {
+    float: left;
+    width: 100px;
+}
