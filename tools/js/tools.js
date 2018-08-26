@@ -60,7 +60,6 @@ function GoListOfDays(startDateName, endDateName, onlyDayId, endTextName) {
 
     if(endDate < startDate){
         output("Nothing to show : end date < start date.");
-        
         return;
     }
 
