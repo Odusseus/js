@@ -11,24 +11,35 @@
 <body>
     <div>
         <div>
-            Start date: <input type="date" name="startDate">
-            End date: <input type="date" name="endDate">
-            <br>
-            Only Day 
-            <select id="onlyDay">
-                <option selected value="7">Hele week</option>
-                <option value="8">Werkdagen</option>
-                <option value="9">Weekend</option>
-                <option value="1">Maandag</option>
-                <option value="2">Dinsdag</option>
-                <option value="3">Woensdag</option>
-                <option value="4">Donderdag</option>
-                <option value="5">Vrijdag</option>
-                <option value="6">Zaterdag</option>
-                <option value="0">Zondag</option>
-            </select>
-            <br>
-            End Text: <input type="text" name="endText">
+            <div>
+                <div  class="labelInput">Start date:</div>
+                <input type="date" name="startDate">
+            </div>
+
+            <div>
+                <div class="labelInput">End date:</div>
+                <input type="date" name="endDate">
+            </div>
+
+            <div>
+                <div class="labelInput">Only Day</div>
+                <select id="onlyDay">
+                    <option selected value="7">Hele week</option>
+                    <option value="8">Werkdagen</option>
+                    <option value="9">Weekend</option>
+                    <option value="1">Maandag</option>
+                    <option value="2">Dinsdag</option>
+                    <option value="3">Woensdag</option>
+                    <option value="4">Donderdag</option>
+                    <option value="5">Vrijdag</option>
+                    <option value="6">Zaterdag</option>
+                    <option value="0">Zondag</option>
+                </select>
+            </div>
+            <div>
+                <div class="labelInput">End Text:</div>
+                <input type="text" name="endText">
+            </div>
         </div>
 
         <input type="button" value="List of days" onclick="GoListOfDays('startDate', 'endDate', 'onlyDay', 'endText')">

@@ -3,6 +3,18 @@ function output(result) {
     output.innerHTML = result;
 }
 
+String.prototype.padSpaceEnd = function(length){
+
+    var differenceLength = length - this.length;
+    var newString = String(this);
+
+    for(var i = 0; i < differenceLength; i++){
+        newString += "&nbsp;"; 
+    }
+
+    return newString;
+};
+
 Date.prototype.ddmmyyyy = function() {
     var mm = this.getMonth() + 1; // getMonth() is zero-based
     var dd = this.getDate();
@@ -15,9 +27,10 @@ Date.prototype.ddmmyyyy = function() {
 
     var days = ['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
     var dayName = days[this.getDay()];
-
-    return "<span class='dayName'>" + dayName + "</span>" + dateFormated;
+    return dayName.padSpaceEnd(9) + " " + dateFormated;
   };
+
+  
 
 function GoListOfDays(startDateName, endDateName, onlyDayId, endTextName) {
     var startDateText = document.getElementsByName(startDateName)[0].value;
@@ -45,6 +58,10 @@ function GoListOfDays(startDateName, endDateName, onlyDayId, endTextName) {
     var startDate = new Date(startDateText);
     var endDate = new Date(endDateText);
 
+    if(endDate < startDate){
+        output("Nothing to show : end date < start date.");
+        return;
+    }
 
     var listOfDays = "";
 
