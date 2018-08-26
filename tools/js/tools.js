@@ -53,6 +53,7 @@ function GoListOfDays(startDateName, endDateName, onlyDayId, endTextName) {
     if(endDateText == ""){
         output("Please select a end date.");
         return;
+        
     }
 
     var startDate = new Date(startDateText);
@@ -61,7 +62,7 @@ function GoListOfDays(startDateName, endDateName, onlyDayId, endTextName) {
     if(endDate < startDate){
         output("Nothing to show : end date < start date.");
         return;
-        
+
     }
 
     var listOfDays = "";
