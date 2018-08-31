@@ -85,7 +85,7 @@ function GoListOfDays(startDateName, endDateName, onlyDayId, endTextName) {
             isToAdd = true;
         } else if (onlyDay == 8 && (currentDate.getDay() > 0 && currentDate.getDay() < 6)) {
             isToAdd = true;
-        }  else if (onlyDay == 9 && (currentDate.getDay() > 4 && currentDate.getDay() < 7)) {
+        }  else if (onlyDay == 9 && (currentDate.getDay() == 0 || currentDate.getDay() == 6)) {
             isToAdd = true;
         }
 
