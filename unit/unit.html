@@ -8,6 +8,11 @@
         <script type="text/javascript" src="js/unit.js" defer></script>
     </head>
     <body>
-       <div id="unit-1" class="unit" v-bind:style="stylePosition">{{ name }}</div>
+       <div id="unit-1"
+        class="unit"
+        v-bind:class="{active : isActive}"
+        v-bind:style="stylePosition"
+        v-on:click="select($event)"
+        draggable="true">{{ name }} </div>
     </body>
 </html>
