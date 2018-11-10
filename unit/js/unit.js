@@ -4,6 +4,7 @@ var Unit = {
         el: '#unit-1',
         data: {
             name: 'One',
+            info: "",
             isActive: false,
             stylePosition: {
                 position: 'absolute',
@@ -15,6 +16,13 @@ var Unit = {
             select: function (event) {
                 this.isActive = !this.isActive;
 
+            },
+            selected: function (event) {
+                var x = event.pageX;     // Get the horizontal coordinate
+                var y = event.pageY;     // Get the vertical coordinate
+                var coor = "X coords: " + x + ", Y coords: " + y;
+                this.info = coor;
+                
             }
         }
     })

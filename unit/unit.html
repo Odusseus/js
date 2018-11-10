@@ -13,6 +13,7 @@
         v-bind:class="{active : isActive}"
         v-bind:style="stylePosition"
         v-on:click="select($event)"
-        draggable="true">{{ name }} </div>
+        v-on:mouseup="selected($event)"
+        >{{ name }} {{info}}</div>
     </body>
 </html>
