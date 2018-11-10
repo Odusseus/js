@@ -7,6 +7,7 @@ var Unit = {
                 position: 'absolute',
                 top: '400px',
                 left: '500px'
+                
             }
         }
     })
