@@ -24,3 +24,5 @@ Tools like list of days
 <https://www.st-andrews.ac.uk/news/archive/2017/title,1539813,en.php>
 
 <https://www.codeproject.com/Articles/250102/An-HTML-progressbar-using-web-workers>
+
+SB (sandbox) are ignored.
