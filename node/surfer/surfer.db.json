@@ -1,0 +1,82 @@
+{
+  "urls": [
+    {
+      "id": 1,
+      "url": "http://mekaarutrecht.nl/locaties-en-adressen",
+      "domain": "mekaarutrecht.nl",
+      "pgn": false
+    },
+    {
+      "id": 2,
+      "url": "http://tweetet.nl",
+      "domain": "tweetet.nl",
+      "pgn": false
+    },
+    {
+      "id": 3,
+      "url": "https://objectdesk.gemgids.nl/Publication/Site/180#",
+      "domain": "objectdesk.gemgids.nl",
+      "pgn": false
+    },
+    {
+      "id": 4,
+      "url": "https://google.com/maps/place/Ravellaan,+Utrecht/@52.0841154,5.0909266,17z/data=!3m1!4b1!4m5!3m4!1s0x47c66f7ce3251429:0x10efc6194ddb6e7b!8m2!3d52.0841154!4d5.0931153",
+      "domain": "google.com",
+      "pgn": false
+    },
+    {
+      "id": 5,
+      "url": "https://google.nl/maps/place/Malakkastraat+6,+3531+HM+Utrecht/@52.090188,5.0954635,18z/data=!3m1!4b1!4m2!3m1!1s0x47c66f7ac5f48527:0xec9bb5e45c8d97c8",
+      "domain": "google.nl",
+      "pgn": false
+    },
+    {
+      "id": 6,
+      "url": "http://carolinelobanov.nl/blog/projecten/vatapa",
+      "domain": "carolinelobanov.nl",
+      "pgn": false
+    },
+    {
+      "id": 7,
+      "url": "http://carolinelobanov.nl",
+      "domain": "carolinelobanov.nl",
+      "pgn": false
+    },
+    {
+      "id": 8,
+      "url": "http://edvaneeden.nl/boeken",
+      "domain": "edvaneeden.nl",
+      "pgn": false
+    },
+    {
+      "id": 9,
+      "url": "http://2512.hotspirit.nl",
+      "domain": "2512.hotspirit.nl",
+      "pgn": false
+    },
+    {
+      "id": 10,
+      "url": "http://deweekkrant.nl/artikel/2013/april/03/het_einde_van_de_analoge_schaakklok",
+      "domain": "deweekkrant.nl",
+      "pgn": false
+    },
+    {
+      "id": 11,
+      "url": "http://lombox.net/cinebox/schakeninlombok.html",
+      "domain": "lombox.net",
+      "pgn": false
+    },
+    {
+      "id": 12,
+      "url": "http://lombox.net/cinebox/hotspirit.html",
+      "domain": "lombox.net",
+      "pgn": false
+    },
+    {
+      "id": 13,
+      "url": "http://www.brno-utrecht.hotspirit.nl",
+      "domain": "www.brno-utrecht.hotspirit.nl",
+      "pgn": false
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "name": "surfer",
+  "version": "1.0.0",
+  "description": "Scraping tool.",
+  "main": "go.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Odusseus/js.git"
+  },
+  "keywords": [
+    "nodejs",
+    "scraping",
+    "surfing"
+  ],
+  "author": "Pascal Boittin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Odusseus/js/issues"
+  },
+  "homepage": "https://github.com/Odusseus/js#readme",
+  "dependencies": {
+    "get-urls": "9.1.0",
+    "lowdb": "1.0.0",
+    "parse-domain": "2.3.1",
+    "request": "2.88.0"
+  }
+}
