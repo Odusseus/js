@@ -16,7 +16,6 @@ const sayMessage = (message, repeat, second) => {
             outMessage = outMessage.concat(message);
         }
 
-        //resolve(message);
         setTimeout(
             () => resolve(outMessage),
             second * 1000
@@ -29,7 +28,26 @@ console.log('Begin');
 //sayMessage(1,1,0).then(message => console.log(message));
 //sayMessage('miaou','ABC',0).then(message => console.log(message));
 
-sayMessage('miaou',1,1).then(message => console.log(message));
-sayMessage('kwak',2,5).then(message => console.log(message));
-sayMessage('waf',3,3).then(message => console.log(message));
+const cat = async() => {
+    await sayMessage('miaou',1,1).then(message => console.log(message));
+};
+
+const dog = async() => {
+    await sayMessage('waf',3,3).then(message => console.log(message));
+};
+
+const duck = async() => {
+    await sayMessage('kwak',2,5).then(message => console.log(message));
+};
+
+
+console.log('start duck');
+duck();
+
+console.log('start cat');
+cat();
+
+console.log('start dog');
+dog();
+
 console.log('End');
