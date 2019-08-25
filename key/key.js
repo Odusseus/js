@@ -35,7 +35,7 @@ const getKey = (myKey,url) => {
   var urltextHash = urltext.hashCode();
   
   var keyValue = myKeyTextHash * urltextHash;
-  var beginKey = parseInt(String(keyValue).substring(0, 2), 10);
+  var beginKey = parseInt(String(keyValue).substring(0, 3), 10);
   var endKey = parseInt(String(keyValue).slice(-4), 10);
   
   
