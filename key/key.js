@@ -16,7 +16,7 @@ const getHostName = (url) => {
     return match[2];
     }
     else {
-        return "";
+        return url;
     }
 }
 
@@ -27,21 +27,23 @@ const clean = (id) => {
 }
 
 const getKey = (myKey,url) => {
-    var keyId = document.getElementById("keyId");
+  
+  var myKeyText = document.getElementById(myKey).value;
+  var urltext = getHostName(document.getElementById(url).value.toLowerCase());
 
-    var myKeyText = document.getElementById(myKey).value;
-    var urltext = getHostName(document.getElementById(url).value);
+  var myKeyTextHash = myKeyText.hashCode();
+  var urltextHash = urltext.hashCode();
+  
+  var keyValue = myKeyTextHash * urltextHash;
+  var beginKey = parseInt(String(keyValue).substring(0, 2), 10);
+  var endKey = parseInt(String(keyValue).slice(-4), 10);
+  
+  
+  var keyId = document.getElementById("keyId");
+  keyId.innerHTML  = `${names[beginKey]}${endKey}`;
 
-    var myKeyTextHash = myKeyText.hashCode();
-    var urltextHash = urltext.hashCode();
-
-    var keyValue = myKeyTextHash * urltextHash;
-    var beginKey = parseInt(String(keyValue).substring(0, 2), 10);
-    var endKey = parseInt(String(keyValue).slice(-4), 10);
-
-
-    // keyId.innerHTML  = `${myKeyText} ${urltext} ${beginKey} ${names[beginKey]}${endKey}`;
-    keyId.innerHTML  = `${names[beginKey]}${endKey}`;
+  var debugId = document.getElementById("debugId");
+  //debugId.innerHTML  = `${myKeyText} ${urltext} ${beginKey} ${names[beginKey]}${endKey}`;
 }
 
 
