@@ -16,7 +16,6 @@ const sayMessage = (message, repeat, second) => {
             outMessage = outMessage.concat(message);
         }
 
-        //resolve(message);
         setTimeout(
             () => resolve(outMessage),
             second * 1000
@@ -27,12 +26,18 @@ const sayMessage = (message, repeat, second) => {
 
 console.log('Begin');
 
-Promise.all([ 
-    sayMessage('miaou',1,1).then(message => console.log(message)),
-    sayMessage('kwak',2,5).then(message => console.log(message)),
-    sayMessage('waf',3,3).then(message => console.log(message)),
-])
-.then(function(){
-    console.log("All Done!")
-})
+const getIssPosition = async() => {
+    await sayMessage('miaou',1,1).then(message => console.log(message));
+};
+
+do {
+    var data = getIssPosition();
+    setTimeout(
+        () => {
+            console.log(data)
+        },
+        second * 1000
+    );
+} while (true);
+
 console.log('End');
