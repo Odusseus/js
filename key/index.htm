@@ -3,15 +3,16 @@
     <head>
         <link rel="stylesheet" type="text/css" href="key.css"></link>
         <script type="text/javascript" src="names.js"></script>
+        <script type="text/javascript" src="version.js"></script>
         <script type="text/javascript" src="key.js"></script>
     </head>
-    <body>
+    <body onload="getVersion('versionId')">
         <div class="container">
             <form>
-                <label>My key:</label>
+                <label id="versionId">My key</label>
                 <input type="password" id="myKeyId" name="myKey"/>
                 <br>
-                <label>Url:</label>
+                <label>Url</label>
                 <input type="text" id="urlId" name="url"/>
                 <br>
                 <div id="buttonId">

@@ -20,6 +20,10 @@ const getHostName = (url) => {
     }
 }
 
+const getVersion = (id) => {
+  let field = document.getElementById(id);
+    field.innerHTML = `My key (v${VERSION})`;
+}
 
 const clean = (id) => {
     let field = document.getElementById(id);
