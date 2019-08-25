@@ -30,6 +30,15 @@ const clean = (id) => {
     field.value = "";
 }
 
+const showKey = (id) => {
+  let field = document.getElementById(id);
+  if (field.type === "password") {
+    field.type = "text";
+  } else {
+    field.type = "password";
+  }
+}
+
 const getKey = (myKey,url) => {
   
   var myKeyText = document.getElementById(myKey).value;
@@ -47,7 +56,8 @@ const getKey = (myKey,url) => {
   
   
   var keyId = document.getElementById("keyId");
-  keyId.innerHTML  = `${names[beginKey]}${endKey}`;
+  var name = names[beginKey];
+  keyId.innerHTML  = `${name}${endKey}`;
 
   var debugId = document.getElementById("debugId");
   //debugId.innerHTML  = `${myKeyText} ${urltext} ${beginKey} ${names[beginKey]}${endKey}`;

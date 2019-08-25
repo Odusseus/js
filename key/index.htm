@@ -21,16 +21,21 @@
                     class="button"
                     name="Submit"
                     value="Ok"
-                    onclick="return getKey('myKeyId','urlId')"/>       
+                    onclick="return getKey('myKeyId','urlId')"/>
+                    <input type="button"
+                    class="button"
+                    name="Show"
+                    value="Show"
+                    onclick="return showKey('myKeyId')"/>       
                     <input type="button"
                     class="button"
                     name="Clean"
                     value="Clean"
-                    onclick="return clean('urlId')"/>         
+                    onclick="return clean('urlId')"/>                   
                 </div>
             </form>
-            <div  id='keyId'>
-            </div>
+            <h1  id='keyId'>
+            </h1>
             <div  id='debugId'>
             </div>
         </div>
