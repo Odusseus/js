@@ -25,9 +25,12 @@ const getVersion = (id) => {
     field.innerHTML = `My key (v${VERSION})`;
 }
 
-const clean = (id) => {
-    let field = document.getElementById(id);
-    field.value = "";
+const clean = () => {
+    let fields = document.getElementsByClassName("clean");
+    for (var i=0, len=fields.length|0; i<len; i=i+1|0) {
+      fields[i].value = "";
+      fields[i].innerHTML = "";
+  }
 }
 
 const showKey = (id) => {
