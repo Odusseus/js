@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="key.css"></link>
+        <script type="text/javascript" src="names.js"></script>
+        <script type="text/javascript" src="key.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <form>
+                <label>My key:</label>
+                <input type="text" id="myKeyId" name="myKey"/>
+                <br>
+                <label>Url:</label>
+                <input type="text" id="urlId" name="url"/>
+                <br>
+                <div id="buttonId">
+
+                    <input type="button"
+                    class="button"
+                    name="Submit"
+                    value="Ok"
+                    onclick="return getKey('myKeyId','urlId')"/>       
+                    <input type="button"
+                    class="button"
+                    name="Clean"
+                    value="Clean"
+                    onclick="return clean('urlId')"/>         
+                </div>
+            </form>
+            <div  id='keyId'>
+            </div>
+        </div>
+    </body>
+</html>
