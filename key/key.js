@@ -30,6 +30,16 @@ const clean = () => {
     for (var i=0, len=fields.length|0; i<len; i=i+1|0) {
       fields[i].value = "";
       fields[i].innerHTML = "";
+      display("copyButton" + (i+1), false)
+  }
+}
+
+const display = (id, onOff) => {
+  var x = document.getElementById(id);
+  if (onOff === true) {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
   }
 }
 
@@ -42,15 +52,17 @@ const showKey = (id) => {
   }
 }
 
-const getKey = (myKey,url) => {
-  
-  var myKeyText = document.getElementById(myKey).value;
-  var urltext = getHostName(document.getElementById(url).value.toLowerCase());
+const showKeys = (id1, id2) => {
+  showKey(id1);
+  showKey(id2);
+}
 
-  var myKeyTextHash = myKeyText.hashCode();
-  var urltextHash = urltext.hashCode();
+const getKey = (myKeyText, addKeyText, urlText) => {
   
-  var keyValue = myKeyTextHash * urltextHash;
+  var myKeyTextHash = myKeyText.hashCode();
+  var urlTextHash = urlText.hashCode();
+  
+  var keyValue = myKeyTextHash * urlTextHash;
   var beginKey = parseInt(String(keyValue).substring(0, 4), 10);
   if(beginKey > names.length){
     beginKey = parseInt(String(keyValue).substring(0, 3), 10);
@@ -58,12 +70,57 @@ const getKey = (myKey,url) => {
   var endKey = parseInt(String(keyValue).slice(-4), 10);
   
   
-  var keyId = document.getElementById("keyId");
   var name = names[beginKey];
-  keyId.innerHTML  = `${name}${endKey}`;
+  return `${name}${endKey}${addKeyText}`;
+
+  var debugId = document.getElementById("debugId");
+  var innerHTML = debugId.innerHTML;
+  debugId.innerHTML  = `${innerHTML} ${myKeyText} ${urltext} ${beginKey} ${names[beginKey]}${endKey}`;
+}
+
+const getKeys = (myKey, addKey, url) => {
+  
+  var myKeyText = document.getElementById(myKey).value;
+  var addKeyText = document.getElementById(addKey).value;
+  var urltext = getHostName(document.getElementById(url).value.toLowerCase());
+
+  var key1 = getKey(myKeyText , addKeyText, urltext);
+  var key2 = getKey(myKeyText + '2', addKeyText, urltext);
+  var key3 = getKey(myKeyText + '3', addKeyText, urltext);
+
+  
+  var keyId = document.getElementById("key1Id");
+  keyId.innerHTML  = key1;
+  display("copyButton1", true);
+  
+  var keyId = document.getElementById("key2Id");
+  keyId.innerHTML  = key2;
+  display("copyButton2", true);
+  
+  var keyId = document.getElementById("key3Id");
+  keyId.innerHTML  = key3;
+  display("copyButton3", true);
 
   var debugId = document.getElementById("debugId");
   //debugId.innerHTML  = `${myKeyText} ${urltext} ${beginKey} ${names[beginKey]}${endKey}`;
+}
+
+const selectText = (containerid) => {
+  if (document.selection) { // IE
+      var range = document.body.createTextRange();
+      range.moveToElementText(document.getElementById(containerid));
+      range.select();
+  } else if (window.getSelection) {
+      var range = document.createRange();
+      range.selectNode(document.getElementById(containerid));
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+  }
+}
+
+const copyKey = (keyId) => {
+  selectText(keyId);
+  document.execCommand("copy");
 }
 
 

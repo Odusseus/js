@@ -10,10 +10,13 @@
         <div class="container">
             <form>
                 <label id="versionId">My key</label>
-                <input type="password" id="myKeyId" name="myKey"/>
+                <input type="password" id="myKeyId" name="myKey" class="inputField"/>
+                <br>
+                <label id="versionId">Add key</label>
+                <input type="password" id="addKeyId" name="addKey" class="inputField"/>
                 <br>
                 <label>Url</label>
-                <input type="text" id="urlId" name="url" class="clean"/>
+                <input type="text" id="urlId" name="url" class="clean inputField"/>
                 <br>
                 <div id="buttonId">
 
@@ -21,12 +24,12 @@
                     class="button"
                     name="Submit"
                     value="Ok"
-                    onclick="return getKey('myKeyId','urlId')"/>
+                    onclick="return getKeys('myKeyId', 'addKeyId', 'urlId')"/>
                     <input type="button"
                     class="button"
                     name="Show"
                     value="Show"
-                    onclick="return showKey('myKeyId')"/>       
+                    onclick="return showKeys('myKeyId', 'addKeyId')"/>       
                     <input type="button"
                     class="button"
                     name="Clean"
@@ -34,9 +37,21 @@
                     onclick="return clean()"/>                   
                 </div>
             </form>
-            <h1  id='keyId' class="clean">
-            </h1>
-            <div  id='debugId'>
+            <div class="keysOutBlock">
+                <div class="keyOutBlock">
+                    <div id='key1Id' class="keyout clean"></div>
+                    <button id='copyButton1' class='copyButton' style="display: none;" onclick="copyKey('key1Id')" >Copy</button>
+                </div>
+                <div class="keyOutBlock">
+                    <div id='key2Id' class="keyout clean"></div>
+                    <button id='copyButton2'  class='copyButton' style="display: none;" onclick="copyKey('key2Id')" >Copy</button>
+                </div>
+                <div  class="keyOutBlock">
+                    <div id='key3Id' class="keyout clean"></div>
+                    <button id='copyButton3'  class='copyButton' style="display: none;" onclick="copyKey('key3Id')" >Copy</button>
+                </div>
+                <div  id='debugId'>
+                </div>
             </div>
         </div>
     </body>

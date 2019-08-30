@@ -6,6 +6,7 @@
 
 .container #buttonId {
     padding: 10px;  
+    padding-left: 115px;
   }
   
   .container label {
@@ -29,3 +30,33 @@
     display: inline-block;
     font-size: 16px;
   }
+
+  .keyout {
+    font-size: 40px;
+    float: left;
+    padding-right: 20px;
+  }
+  
+  .keyOutBlock {
+    height: 70px;
+  }
+  
+  .keysOutBlock {
+    float: left;
+  }
+  
+  .copyButton {
+    background-color: black; /* Green */
+    border: none;
+    color: white;
+    padding: 20px 20PX;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    float: right;
+ }
+
+ .inputField {
+   width: 300px;
+ }

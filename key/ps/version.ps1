@@ -1,3 +1,5 @@
+Write-Output "Set-ExecutionPolicy RemoteSigned"
+
 $version = Get-Content .\version.txt
 [int]$versionNr = [convert]::ToInt32($version, 10)
 $versionNr++
