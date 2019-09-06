@@ -51,10 +51,9 @@
     color: white;
     padding: 20px 20PX;
     text-align: center;
-    text-decoration: none;
-    display: inline-block;
+    text-decoration: none;    
     font-size: 16px;
-    float: right;
+    float:right;
  }
 
  .inputField {
