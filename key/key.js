@@ -11,9 +11,17 @@
   };
 
 const getHostName = (url) => {
-    var match = url.match(/([A-Za-z0-9]+\.?[A-Za-z0-9]+\.[A-Za-z0-9]+)/);
-    if (match != null && match.length === 2) {
-      return match[1];
+    var match = url.match(/([A-Za-z0-9]+\.)([A-Za-z0-9]+\.[A-Za-z0-9]+)|([A-Za-z0-9]+\.[A-Za-z0-9]+)/);
+    if (match != null) {    
+      let url = null;
+      let i = match.length - 1;
+      while (url == null && i > 0) {
+        if (typeof match[i] === "string"){
+          url = match[i];
+        }
+        i--;
+      } 
+      return url;
     }
     else {
         return null;
