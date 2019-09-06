@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 
  String.prototype.hashCode = function() {
     var hash = 0, i, chr;
