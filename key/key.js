@@ -11,12 +11,12 @@
   };
 
 const getHostName = (url) => {
-    var match = url.match(/:\/\/(www[0-9]?\.)?(.[^/:]+)/i);
-    if (match != null && match.length > 2 && typeof match[2] === 'string' && match[2].length > 0) {
-    return match[2];
+    var match = url.match(/([A-Za-z0-9]+\.?[A-Za-z0-9]+\.[A-Za-z0-9]+)/);
+    if (match != null && match.length === 2) {
+      return match[1];
     }
     else {
-        return url;
+        return null;
     }
 }
 
@@ -43,18 +43,23 @@ const display = (id, onOff) => {
   }
 }
 
-const showKey = (id) => {
-  let field = document.getElementById(id);
-  if (field.type === "password") {
-    field.type = "text";
-  } else {
-    field.type = "password";
+const showKey = (showKeyId) => {
+  let showKeyElement = document.getElementById(showKeyId);
+  if(showKeyElement.value == "Show"){
+    showKeyElement.value = "Hide";
   }
-}
+  else {
+    showKeyElement.value = "Show";
+  }
 
-const showKeys = (id1, id2) => {
-  showKey(id1);
-  showKey(id2);
+  let elements = document.getElementsByClassName("password");
+  for (let i = 0; i < elements.length; i++) {
+    if (elements[i].type === "password") {
+      elements[i].type = "text";
+    } else {
+      elements[i].type = "password";
+    }
+  }  
 }
 
 const getKey = (myKeyText, addKeyText, urlText) => {
@@ -83,10 +88,16 @@ const getKeys = (myKey, addKey, url) => {
   var myKeyText = document.getElementById(myKey).value;
   var addKeyText = document.getElementById(addKey).value;
   var urltext = getHostName(document.getElementById(url).value.toLowerCase());
+ 
+  var key1 = "url is not valide";
+  var key2 = key1;
+  var key3 = key1;
 
-  var key1 = getKey(myKeyText , addKeyText, urltext);
-  var key2 = getKey(myKeyText + '2', addKeyText, urltext);
-  var key3 = getKey(myKeyText + '3', addKeyText, urltext);
+  if(urltext){
+     key1 = getKey(myKeyText , addKeyText, urltext);
+     key2 = getKey(myKeyText + '2', addKeyText, urltext);
+     key3 = getKey(myKeyText + '3', addKeyText, urltext);
+  }
 
   
   var keyId = document.getElementById("key1Id");

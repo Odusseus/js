@@ -10,10 +10,10 @@
         <div class="container">
             <form>
                 <label id="versionId">My key</label>
-                <input type="password" id="myKeyId" name="myKey" class="inputField"/>
+                <input type="password" id="myKeyId" name="myKey" class="inputField password"/>
                 <br>
                 <label id="versionId">Add key</label>
-                <input type="password" id="addKeyId" name="addKey" class="inputField"/>
+                <input type="password" id="addKeyId" name="addKey" class="inputField password"/>
                 <br>
                 <label>Url</label>
                 <input type="text" id="urlId" name="url" class="clean inputField"/>
@@ -25,11 +25,13 @@
                     name="Submit"
                     value="Ok"
                     onclick="return getKeys('myKeyId', 'addKeyId', 'urlId')"/>
-                    <input type="button"
-                    class="button"
-                    name="Show"
-                    value="Show"
-                    onclick="return showKeys('myKeyId', 'addKeyId')"/>       
+                    <input
+                        id="showId"
+                        type="button"
+                        class="button"
+                        name="Show"
+                        value="Show"
+                        onclick="return showKey('showId')"/>       
                     <input type="button"
                     class="button"
                     name="Clean"
