@@ -34,7 +34,7 @@ const getHostName = (url) => {
 
 const getVersion = (id) => {
   let field = document.getElementById(id);
-    field.innerHTML = `My key (v${VERSION})`;
+    field.innerHTML = `My key<br>(v1.0.${VERSION})`;
 };
 
 const clean = () => {

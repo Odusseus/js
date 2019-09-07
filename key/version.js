@@ -1,1 +1,1 @@
-﻿var VERSION = 7;
+﻿var VERSION = 8;
