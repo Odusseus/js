@@ -1,1 +1,1 @@
-﻿const VERSION = 6;
+﻿var VERSION = 7;

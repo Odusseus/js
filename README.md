@@ -13,6 +13,9 @@ if_Hemingway_Wrote_Javascript : <https://rawgit.com/Odusseus/js/master/if_Heming
 Tools like list of days
 <https://rawgit.com/Odusseus/js/master/tools/listofdays.html>
 
+Same Key generator for same url
+<https://rawgit.com/Odusseus/js/master/key/index.htm>
+
 ## Documentation
 
 <https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces>
@@ -26,3 +29,5 @@ Tools like list of days
 <https://www.codeproject.com/Articles/250102/An-HTML-progressbar-using-web-workers>
 
 SB (sandbox) are ignored.
+
+Ico library <http://www.iconarchive.com>
