@@ -14,24 +14,48 @@
         <link rel="shortcut icon" href="Gakuseisean-Radium-Key.ico" type="image/x-icon"/>
     </head>
     <body onload="getVersion('versionId')">
+        <h1>Url key (<span id="versionId"></span>)</h1>
         <div class="container">
             <form>
-                <label id="versionId">My key</label>
-                <input type="password" id="myKeyId" name="myKey" class="inputField password"/>
-                <br>
-                <label id="versionId">Add key</label>
-                <input type="password" id="addKeyId" name="addKey" class="inputField password"/>
-                <br>
                 <label>Url</label>
                 <input type="text" id="urlId" name="url" class="clean inputField"/>
                 <br>
-                <div id="buttonId">
+                <label id="versionId">My key</label>
+                <input type="password" id="myKeyId" name="myKey" class="inputField password"/>
+                <br>
+                <label>Add key</label>
+                <input type="password" id="addKeyId" name="addKey" class="inputField password"/>
+                <br>
+                <div class="radios">
+                    <div class="radio">
+                            <input id="radioRight" type="radio" name="position" value="right">
+                            <br>
+                            Right
+                        </div>
+                        <div class="radio">
+                            <input id="radioMiddle" type="radio" name="position" value="" checked="checked">
+                            <br>
+                            Middle
+                        </div>
+                        <div class="radio">
+                            <input id="radioLeft" type="radio" name="position" value="">
+                            <br>
+                            Left
+                        </div>
+                        <div class="radio">
+                            <input id="radioAll" type="radio" name="position" value="">
+                            <br>
+                            All
+                        </div>
+                    </div> 
+                </form>
+                <div id="buttonId" class="buttons">
 
                     <input type="button"
                     class="button"
                     name="Submit"
                     value="Ok"
-                    onclick="return getKeys('myKeyId', 'addKeyId', 'urlId')"/>
+                    onclick="return getKeys('myKeyId', 'addKeyId', 'urlId', true)"/>
                     <input
                         id="showId"
                         type="button"
@@ -45,20 +69,14 @@
                     value="Clean"
                     onclick="return clean()"/>                   
                 </div>
-            </form>
             <div class="keysOutBlock">
                 <div class="keyOutBlock">
-                    <div id='key1Id' class="keyout clean"></div>
-                    <button id='copyButton1' class='copyButton' style="display: none;" onclick="copyKey('key1Id')" >Copy</button>
-                </div>
-                <div class="keyOutBlock">
-                    <div id='key2Id' class="keyout clean"></div>
-                    <button id='copyButton2'  class='copyButton' style="display: none;" onclick="copyKey('key2Id')" >Copy</button>
-                </div>
-                <div  class="keyOutBlock">
-                    <div id='key3Id' class="keyout clean"></div>
-                    <button id='copyButton3'  class='copyButton' style="display: none;" onclick="copyKey('key3Id')" >Copy</button>
-                </div>
+                    <div class='outButtons'>
+                        <div id='key1Id' class="keyout clean"></div>
+                        <button id='copyButton' class='copyButton' style="display: none;" onclick="copyKey('key1Id')" >Copy</button>
+                        <button id='newButton' class='newButton' style="display: none;" onclick="getNewKeys('myKeyId', 'addKeyId', 'urlId')" >New</button>
+                    </div>
+                </div>               
                 <div  id='debugId'>
                 </div>
             </div>

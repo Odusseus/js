@@ -1,5 +1,7 @@
 /*jshint esversion: 6 */
 
+var keyVersion = 0;
+
 const isDebug = () =>{
   return false;
 };
@@ -34,10 +36,11 @@ const getHostName = (url) => {
 
 const getVersion = (id) => {
   let field = document.getElementById(id);
-    field.innerHTML = `My key<br>(v1.0.${VERSION})`;
+    field.innerHTML = `v1.0.${VERSION}`;
 };
 
 const clean = () => {
+    keyVersion = 0;
     let fields = document.getElementsByClassName("clean");
     for (var i=0, len=fields.length|0; i<len; i=i+1|0) {
       fields[i].value = "";
@@ -79,7 +82,7 @@ const getKey = (myKeyText, addKeyText, urlText) => {
   var myKeyTextHash = myKeyText.hashCode();
   var urlTextHash = urlText.hashCode();
   
-  var keyValue = myKeyTextHash * urlTextHash;
+  var keyValue = urlTextHash * (myKeyTextHash + keyVersion) ;
   var beginKey = parseInt(String(keyValue).substring(0, 4), 10);
   if(beginKey > names.length){
     beginKey = parseInt(String(keyValue).substring(0, 3), 10);
@@ -96,37 +99,34 @@ const getKey = (myKeyText, addKeyText, urlText) => {
   return `${name}${endKey}${addKeyText}`;
 };
 
-const getKeys = (myKey, addKey, url) => {
+const getKeys = (myKey, addKey, url, newKey ) => {
   
+  if (newKey) {
+    keyVersion = 0;
+  }
   var myKeyText = document.getElementById(myKey).value;
   var addKeyText = document.getElementById(addKey).value;
   var urltext = getHostName(document.getElementById(url).value.toLowerCase());
  
   var key1 = "url is not valide";
-  var key2 = key1;
-  var key3 = key1;
 
   if(urltext){
      key1 = getKey(myKeyText , addKeyText, urltext);
-     key2 = getKey(myKeyText + '2', addKeyText, urltext);
-     key3 = getKey(myKeyText + '3', addKeyText, urltext);
   }
 
   
   var keyId = document.getElementById("key1Id");
   keyId.innerHTML  = key1;
-  display("copyButton1", true);
-  
-  keyId = document.getElementById("key2Id");
-  keyId.innerHTML  = key2;
-  display("copyButton2", true);
-  
-  keyId = document.getElementById("key3Id");
-  keyId.innerHTML  = key3;
-  display("copyButton3", true);
+  display("copyButton", true);
+  display("newButton", true);
 
   var debugId = document.getElementById("debugId");
   //debugId.innerHTML  = `${myKeyText} ${urltext} ${beginKey} ${names[beginKey]}${endKey}`;
+};
+
+const getNewKeys = (myKey, addKey, url) => {
+  keyVersion = keyVersion + 1;
+  getKeys(myKey, addKey, url, false);
 };
 
 const selectText = (containerid) => {
