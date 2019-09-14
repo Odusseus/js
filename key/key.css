@@ -4,7 +4,7 @@ html *
    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-h1, .container, .buttons, .radios {
+h1, .container, .buttons, .radios, .outButtons {
   padding: 10px;  
   padding-left: 130px;
 }
@@ -16,7 +16,9 @@ h1, .container, .buttons, .radios {
   padding: 10px;
 }
 
-
+.inputField {
+  width: 300px;
+}
 
  .radios {
   margin: auto;
@@ -46,9 +48,9 @@ h1, .container, .buttons, .radios {
 }
 
 .keyout {
-  float: left;
-  padding-right: 20px;
+  padding: 10px;
   font-weight: bolder;
+  width: 210px;
 }
 
 .keyOutBlock {
@@ -57,14 +59,13 @@ h1, .container, .buttons, .radios {
 
 .keysOutBlock {
   float: left;
+  width: 100%
 }
 
-.outButtons {
-  margin: auto;  
-  width: 100%;
+.outButton {
+  padding-right: 5px;
   float: left;
 }
-
 .newButton, .copyButton {
   background-color: black;
   color: white;

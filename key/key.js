@@ -45,8 +45,9 @@ const clean = () => {
     for (var i=0, len=fields.length|0; i<len; i=i+1|0) {
       fields[i].value = "";
       fields[i].innerHTML = "";
-      display("copyButton" + (i+1), false);
-  }
+    }
+    display("copyButton", false);
+    display("newButton", false);
 };
 
 const display = (id, onOff) => {
@@ -82,12 +83,12 @@ const getKey = (myKeyText, addKeyText, urlText) => {
   var myKeyTextHash = myKeyText.hashCode();
   var urlTextHash = urlText.hashCode();
   
-  var keyValue = urlTextHash * (myKeyTextHash + keyVersion) ;
-  var beginKey = parseInt(String(keyValue).substring(0, 4), 10);
+  var keyValue = urlTextHash * myKeyTextHash ;
+  var beginKey = parseInt(String(keyValue).substring(0, 4), 10) + keyVersion;
   if(beginKey > names.length){
-    beginKey = parseInt(String(keyValue).substring(0, 3), 10);
+    beginKey = parseInt(String(keyValue).substring(0, 3), 10) + keyVersion;
   }
-  var endKey = parseInt(String(keyValue).slice(-4), 10);
+  var endKey = parseInt(String(keyValue).slice(-4), 10) + keyVersion;
     
   var name = names[beginKey];
   if (isDebug()) {
@@ -96,7 +97,32 @@ const getKey = (myKeyText, addKeyText, urlText) => {
     debugId.innerHTML  = `${innerHTML} ${myKeyText} ${urltext} ${beginKey} ${names[beginKey]}${endKey}`;
   }
 
-  return `${name}${endKey}${addKeyText}`;
+  let positions = document.getElementsByClassName("radioPosition");
+  let checkedValue;
+  for (let i = 0; i < positions.length; i++) {
+    if (positions[i].checked === true) {
+      checkedValue = positions[i].value;
+      break;
+    }
+  }  
+
+  let key;
+  switch(checkedValue) {
+    case "left":
+      key = `${name}${endKey}${addKeyText}`;
+      break;
+    case "middle":
+      key = `${name}${addKeyText}${endKey}`;
+      break;
+    case "right":
+      key = `${addKeyText}${name}${endKey}`;
+      break;
+    case "all":
+      key = `${addKeyText}${name}${addKeyText}${endKey}${addKeyText}`;
+      break;
+  }
+
+  return key;
 };
 
 const getKeys = (myKey, addKey, url, newKey ) => {
@@ -113,10 +139,10 @@ const getKeys = (myKey, addKey, url, newKey ) => {
   if(urltext){
      key1 = getKey(myKeyText , addKeyText, urltext);
   }
-
   
   var keyId = document.getElementById("key1Id");
   keyId.innerHTML  = key1;
+
   display("copyButton", true);
   display("newButton", true);
 

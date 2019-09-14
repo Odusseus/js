@@ -28,53 +28,57 @@
                 <br>
                 <div class="radios">
                     <div class="radio">
-                            <input id="radioRight" type="radio" name="position" value="right">
-                            <br>
-                            Right
-                        </div>
-                        <div class="radio">
-                            <input id="radioMiddle" type="radio" name="position" value="" checked="checked">
-                            <br>
-                            Middle
-                        </div>
-                        <div class="radio">
-                            <input id="radioLeft" type="radio" name="position" value="">
+                            <input id="radioLeft" class="radioPosition" type="radio" name="position" value="left">
                             <br>
                             Left
-                        </div>
-                        <div class="radio">
-                            <input id="radioAll" type="radio" name="position" value="">
-                            <br>
-                            All
-                        </div>
-                    </div> 
-                </form>
-                <div id="buttonId" class="buttons">
+                    </div>
+                    <div class="radio">
+                        <input id="radioMiddle" class="radioPosition" type="radio" name="position" value="middle" checked="checked">
+                        <br>
+                        Middle
+                    </div>
+                    <div class="radio">
+                        <input id="radioRight" class="radioPosition" type="radio" name="position" value="right">
+                        <br>
+                        Right
+                    </div>
+                    <div class="radio">
+                        <input id="radioAll" class="radioPosition" type="radio" name="position" value="all">
+                        <br>
+                        All
+                    </div>
+                </div> 
+            </form>
+            <div id="buttonId" class="buttons">
 
-                    <input type="button"
+                <input type="button"
+                class="button"
+                name="Submit"
+                value="Ok"
+                onclick="return getKeys('myKeyId', 'addKeyId', 'urlId', true)"/>
+                <input
+                    id="showId"
+                    type="button"
                     class="button"
-                    name="Submit"
-                    value="Ok"
-                    onclick="return getKeys('myKeyId', 'addKeyId', 'urlId', true)"/>
-                    <input
-                        id="showId"
-                        type="button"
-                        class="button"
-                        name="Show"
-                        value="Show"
-                        onclick="return showKey('showId')"/>       
-                    <input type="button"
-                    class="button"
-                    name="Clean"
-                    value="Clean"
-                    onclick="return clean()"/>                   
-                </div>
+                    name="Show"
+                    value="Show"
+                    onclick="return showKey('showId')"/>       
+                <input type="button"
+                class="button"
+                name="Clean"
+                value="Clean"
+                onclick="return clean()"/>                   
+            </div>
             <div class="keysOutBlock">
                 <div class="keyOutBlock">
+                    <div id='key1Id' class="keyout clean"></div>
                     <div class='outButtons'>
-                        <div id='key1Id' class="keyout clean"></div>
-                        <button id='copyButton' class='copyButton' style="display: none;" onclick="copyKey('key1Id')" >Copy</button>
-                        <button id='newButton' class='newButton' style="display: none;" onclick="getNewKeys('myKeyId', 'addKeyId', 'urlId')" >New</button>
+                        <div class="outButton">
+                            <button id='copyButton' class='copyButton' style="display: none;" onclick="copyKey('key1Id')" >Copy</button>
+                        </div>
+                        <div class="outButton">
+                            <button id='newButton' class='newButton' style="display: none;" onclick="getNewKeys('myKeyId', 'addKeyId', 'urlId')" >New</button>
+                        </div>
                     </div>
                 </div>               
                 <div  id='debugId'>
