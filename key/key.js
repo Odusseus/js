@@ -109,13 +109,13 @@ const getKey = (myKeyText, addKeyText, urlText) => {
   let key;
   switch(checkedValue) {
     case "left":
-      key = `${name}${endKey}${addKeyText}`;
+      key = `${addKeyText}${name}${endKey}`;
       break;
     case "middle":
       key = `${name}${addKeyText}${endKey}`;
       break;
     case "right":
-      key = `${addKeyText}${name}${endKey}`;
+      key = `${name}${endKey}${addKeyText}`;
       break;
     case "all":
       key = `${addKeyText}${name}${addKeyText}${endKey}${addKeyText}`;
