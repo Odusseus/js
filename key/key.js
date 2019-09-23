@@ -1,4 +1,5 @@
 /*jshint esversion: 6 */
+/* https://github.com/Odusseus/js/tree/master/key */
 
 var keyVersion = 0;
 
