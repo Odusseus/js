@@ -14,5 +14,12 @@
             "request": "launch",
             "file": "${workspaceFolder}/index.html"
         },
+        {
+            "name": "React Launch index.html",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:3000/",
+            "webRoot": "${workspaceFolder}"
+        },
     ]
 }

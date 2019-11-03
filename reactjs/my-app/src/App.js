@@ -8,11 +8,10 @@ import './App.css';
 const App = () => {
   const [data, setData] = useState(
     'Allo Pascal'
+    
   );
   return (
-  <div className="App">
-    <MyDiv value={data}></MyDiv>  
-  </div>
+  <div className="App"><MyDiv value={data}/></div>
   );
 }
 
