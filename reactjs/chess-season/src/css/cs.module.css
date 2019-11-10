@@ -1,0 +1,26 @@
+
+.event{
+  width: 100%;
+}
+
+.group {
+  font-weight: bold;
+  /* display: inline-block; */
+  padding-right: 10px;
+  /* width: 100px; */
+}
+.date {
+display: inline-block;
+padding-right: 10px;
+}
+
+.description {
+  display: inline-block;
+  padding-right: 10px;
+  width: 100px;
+}
+
+.type {
+  display: inline-block;
+  padding-right: 10px;
+}
