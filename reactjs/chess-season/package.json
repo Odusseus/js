@@ -37,5 +37,5 @@
   "devDependencies": {
     "eslint-plugin-import": "file:node_modules/eslint-plugin-import"
   },
-  "homepage": "http://odusseus.github.io/js/reactjs/chess-season"
+  "homepage": "http://odusseus.github.io/js/reactjs/chess-season/public"
 }
