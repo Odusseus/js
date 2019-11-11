@@ -13,7 +13,7 @@ class ShowEvents extends Component {
     let newLineDisplay = '';
     return (
       <>
-        <div>Events</div>
+        <div>Events v1</div>
         <div>
             {
               events.map(

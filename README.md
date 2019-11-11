@@ -1,5 +1,7 @@
 # js
 
+odusseus site : <http://odusseus.github.io/js>
+
 ## javascript experiments
 
 Space inVader's : <http://rawgit.com/Odusseus/js/master/si/si.html>
