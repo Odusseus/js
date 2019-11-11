@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/js/reactjs/chess-season/static/css/main.7e5559e9.chunk.css",
-    "main.js": "/js/reactjs/chess-season/static/js/main.13b552f7.chunk.js",
-    "main.js.map": "/js/reactjs/chess-season/static/js/main.13b552f7.chunk.js.map",
-    "runtime-main.js": "/js/reactjs/chess-season/static/js/runtime-main.46463e16.js",
-    "runtime-main.js.map": "/js/reactjs/chess-season/static/js/runtime-main.46463e16.js.map",
-    "static/js/2.badb2ebb.chunk.js": "/js/reactjs/chess-season/static/js/2.badb2ebb.chunk.js",
-    "static/js/2.badb2ebb.chunk.js.map": "/js/reactjs/chess-season/static/js/2.badb2ebb.chunk.js.map",
-    "index.html": "/js/reactjs/chess-season/index.html",
-    "precache-manifest.f3fa5c31a76850e57bf18ab25f58ace8.js": "/js/reactjs/chess-season/precache-manifest.f3fa5c31a76850e57bf18ab25f58ace8.js",
-    "service-worker.js": "/js/reactjs/chess-season/service-worker.js",
-    "static/css/main.7e5559e9.chunk.css.map": "/js/reactjs/chess-season/static/css/main.7e5559e9.chunk.css.map"
+    "main.css": "/js/static/css/main.7e5559e9.chunk.css",
+    "main.js": "/js/static/js/main.1153241b.chunk.js",
+    "main.js.map": "/js/static/js/main.1153241b.chunk.js.map",
+    "runtime-main.js": "/js/static/js/runtime-main.01874b46.js",
+    "runtime-main.js.map": "/js/static/js/runtime-main.01874b46.js.map",
+    "static/js/2.badb2ebb.chunk.js": "/js/static/js/2.badb2ebb.chunk.js",
+    "static/js/2.badb2ebb.chunk.js.map": "/js/static/js/2.badb2ebb.chunk.js.map",
+    "index.html": "/js/index.html",
+    "precache-manifest.b661d2a2f02836282cb3fa9fc468af10.js": "/js/precache-manifest.b661d2a2f02836282cb3fa9fc468af10.js",
+    "service-worker.js": "/js/service-worker.js",
+    "static/css/main.7e5559e9.chunk.css.map": "/js/static/css/main.7e5559e9.chunk.css.map"
   },
   "entrypoints": [
-    "static/js/runtime-main.46463e16.js",
+    "static/js/runtime-main.01874b46.js",
     "static/js/2.badb2ebb.chunk.js",
     "static/css/main.7e5559e9.chunk.css",
-    "static/js/main.13b552f7.chunk.js"
+    "static/js/main.1153241b.chunk.js"
   ]
 }
