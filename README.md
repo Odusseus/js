@@ -18,6 +18,9 @@ Tools like list of days
 Same Key generator for same url
 <https://rawgit.com/Odusseus/js/master/key/index.htm>
 
+Error site
+<https://rawgit.com/Odusseus/js/master/error/index.htm>
+
 ## Documentation
 
 <https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces>
