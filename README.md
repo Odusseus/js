@@ -36,3 +36,6 @@ Error site
 SB (sandbox) are ignored.
 
 Ico library <http://www.iconarchive.com>
+
+CORS
+https://www.html5rocks.com/en/tutorials/cors/
