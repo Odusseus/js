@@ -31,8 +31,8 @@ si.Constant = {
     AUDIOCRASH3 : 'audioCrash3',
     SOUNDINTERVAL : 10,
     HIGHSCOREEURLTEST : "http://localhost/hs/getJson.php",
-    HIGHSCOREEURL : "http://js.odusseus.org/si/hs/getJson.php",
-    PRODURL : "http://si.odusseus.org/si.html"
+    HIGHSCOREEURL : "http://www.odusseus.org/si/hs/getJson.php",
+    PRODURL : "http://www.si.odusseus.org/si.html"
 };
 
 si.Interval = [];

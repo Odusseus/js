@@ -1,4 +1,4 @@
- const EventsJson = {
+ const EventsJsonMock = {
   'Events':[
     {'group' : '2019-2020', 'date' : '17-01-2020', 'description' : 'Hot-Spirit', 'type' : 'Toernooi' },
     {'group' : '2019-2020', 'date' : '07-11-2019', 'description' : 'John', 'type' : 'Training' },
@@ -33,6 +33,24 @@
     {'group' : '2019-2020', 'date' : '19-06-2020', 'description' : 'Hot-Spirit', 'type' : 'Toernooi' }
   ]  
 }
+
+class EventsJson{
+  constructor(){
+
+  }
+
+  getList(){
+    const userAction = async () => {
+      const response = await fetch('http://localhost:9000/getitem.php?key=D51981B6-32B0-4678-95DC-AB1D922C52DC&token=B038D9EB-3ABB-4E9D-B19C-FB973451C7D0');
+      const myJson = await response.json(); //extract JSON from the http response
+      // do something with myJson
+      return myJson.Events;
+    }
+    
+    return EventsJsonMock.Events;
+  }
+}
+
 
 export default EventsJson;
 
