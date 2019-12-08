@@ -12,7 +12,7 @@ class ShowEvents extends Component {
 
     componentDidMount() {
       let site = window.location.href;
-      let urlBase = "http://www.odusseus.org/php/item";
+      let urlBase = "https://www.odusseus.org/php/item";
       let key = "4265AC3D-DD4B-427C-8BFD-6D7E7BB92C09";
       let token = "DFAC7440-1A78-4612-AECD-E896759CD66D";
       if (false && site.includes("localhost")){
