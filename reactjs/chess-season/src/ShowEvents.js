@@ -30,10 +30,16 @@ class ShowEvents extends Component {
           let today = new Date();
           today.setHours(0,0,0,0);
           values.forEach(element => {
-            if(Date.parse(element.date) >= today){
+            if(new Date(element.date) >= today){
               newEvents.push(element);
             }            
           });
+            newEvents.sort(
+              (a, b) => 
+              ( 
+                new Date(a.date) - new Date(b.date)
+                ));
+
             this.setState({ events: newEvents });
       })
       .catch(console.log)
@@ -42,7 +48,6 @@ class ShowEvents extends Component {
   render() {
     let groupName = null;
     let groupNameDisplay = null;
-    let newLineDisplay = '';
     return (
       <>
         <div>Events v1.1.3 from {this.state.source}</div>
@@ -50,7 +55,7 @@ class ShowEvents extends Component {
             {
               this.state.events.map(
                 function (event, index) {                  
-                  if(groupName != event.group){
+                  if(groupName !== event.group){
                     groupName = event.group;
                     groupNameDisplay = `For ${event.group}`;
                   }
