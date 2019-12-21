@@ -15,7 +15,7 @@ class ShowEvents extends Component {
       let urlBase = "https://www.odusseus.org/php/item";
       let key = "4265AC3D-DD4B-427C-8BFD-6D7E7BB92C09";
       let token = "DFAC7440-1A78-4612-AECD-E896759CD66D";
-      if (false && site.includes("localhost")){
+      if (true && site.includes("localhost")){
         urlBase = "http://localhost:9000";
         key = "D51981B6-32B0-4678-95DC-AB1D922C52DC";
         token = "591FFE3A-7EF6-4F16-BCB4-880555820D6C";
@@ -27,8 +27,10 @@ class ShowEvents extends Component {
       .then((data) => {
           let values = JSON.parse(data.value);
           let newEvents = [];
+          let today = new Date();
+          today.setHours(0,0,0,0);
           values.forEach(element => {
-            if(Date.parse(element.date) >= Date.now()){
+            if(Date.parse(element.date) >= today){
               newEvents.push(element);
             }            
           });
@@ -43,7 +45,7 @@ class ShowEvents extends Component {
     let newLineDisplay = '';
     return (
       <>
-        <div>Events v2 from {this.state.source}</div>
+        <div>Events v1.1.3 from {this.state.source}</div>
         <div>
             {
               this.state.events.map(
