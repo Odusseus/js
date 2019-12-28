@@ -9,10 +9,17 @@
   padding-right: 10px;
   /* width: 100px; */
 }
-.date {
+.date, .day {
 display: inline-block;
 padding-right: 10px;
+width: 80px;
 }
+
+.date {
+  display: inline-block;
+  padding-right: 10px;
+  width: 90px;
+  }
 
 .description {
   display: inline-block;

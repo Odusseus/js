@@ -1,6 +1,7 @@
 /*jshint esversion: 6 */
 import React, { Component } from 'react';
 import Moment from 'react-moment';
+import EventDisplay from './EventDisplay';
 
 import styles from './css/cs.module.css'
 class ShowEvents extends Component {
@@ -31,7 +32,8 @@ class ShowEvents extends Component {
           today.setHours(0,0,0,0);
           values.forEach(element => {
             if(new Date(element.date) >= today){
-              newEvents.push(element);
+              let eventDisplay = new EventDisplay(element);
+              newEvents.push(eventDisplay);
             }            
           });
             newEvents.sort(
@@ -67,6 +69,9 @@ class ShowEvents extends Component {
                   return <div className={styles.event} key={index}>
                     <div className={styles.group}>
                       {groupNameDisplay}
+                    </div>
+                    <div className={styles.day}>
+                      {event.day}
                     </div>
                     <div className={styles.date}>
                     {
