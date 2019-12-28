@@ -56,7 +56,7 @@ class ShowEvents extends Component {
         <div>
             {
               this.state.events.map(
-                function (event, index) {                  
+                event => {                  
                   if(groupName !== event.group){
                     groupName = event.group;
                     groupNameDisplay = `For ${event.group}`;
@@ -66,9 +66,13 @@ class ShowEvents extends Component {
                     groupNameDisplay = '';
                   }
 
-                  return <div className={styles.event} key={index}>
+                  return (
+                   <div className={styles.event} key={event.id}>
                     <div className={styles.group}>
                       {groupNameDisplay}
+                    </div>
+                    <div className={styles.id}>
+                      {event.id}
                     </div>
                     <div className={styles.day}>
                       {event.day}
@@ -86,7 +90,8 @@ class ShowEvents extends Component {
                     <div className={styles.type}>
                       {event.type}
                     </div>
-                  </div>;
+                  </div>
+                  );
                 }
               )
             }
