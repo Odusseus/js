@@ -41,7 +41,7 @@ class EventsJson{
 
   getList(){
     const userAction = async () => {
-      const response = await fetch('http://localhost:9000/getitem.php?key=D51981B6-32B0-4678-95DC-AB1D922C52DC&token=B038D9EB-3ABB-4E9D-B19C-FB973451C7D0');
+      const response = await fetch('http://localhost:9000/getitem.php?key=4265AC3D-DD4B-427C-8BFD-6D7E7BB92C09&token=B038D9EB-3ABB-4E9D-B19C-FB973451C7D0');
       const myJson = await response.json(); //extract JSON from the http response
       // do something with myJson
       return myJson.Events;

@@ -17,7 +17,7 @@ class ShowEvents extends Component {
       let token = "DFAC7440-1A78-4612-AECD-E896759CD66D";
       if (true && site.includes("localhost")){
         urlBase = "http://localhost:9000";
-        key = "D51981B6-32B0-4678-95DC-AB1D922C52DC";
+        key = "4265AC3D-DD4B-427C-8BFD-6D7E7BB92C09";
         token = "591FFE3A-7EF6-4F16-BCB4-880555820D6C";
       }
       let url = urlBase + "/getitem.php?key=" + key + "&token=" + token;
@@ -50,7 +50,7 @@ class ShowEvents extends Component {
     let groupNameDisplay = null;
     return (
       <>
-        <div>Events v1.1.3 from {this.state.source}</div>
+        <div>Events v1.1.4 from {this.state.source}</div>
         <div>
             {
               this.state.events.map(
