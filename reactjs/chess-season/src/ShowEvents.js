@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import Moment from 'react-moment';
 import EventDisplay from './EventDisplay';
+import Event from './Event';
 
 import styles from './css/cs.module.css'
 class ShowEvents extends Component {
@@ -12,24 +13,71 @@ class ShowEvents extends Component {
       this.state = {
         events: [],
         source: "",
-        eventName: ""
-      }
+        newGroup: "",
+        newDate: "",
+        newDescription: "",
+        newType: ""      }
 
-      this.onDismiss = this.onDismiss.bind(this);
-      this.onChangeName = this.onChangeName.bind(this);
+      this.onDelete = this.onDelete.bind(this);
+      this.onChangeGroup = this.onChangeGroup.bind(this);
+      this.onChangeDate = this.onChangeDate.bind(this);
+      this.onChangeDescription = this.onChangeDescription.bind(this);
+      this.onChangeType = this.onChangeType.bind(this);
+      this.onAdd = this.onAdd.bind(this);
+      this.onSave = this.onSave.bind(this);
     }
 
-    onDismiss(id){
+    onDelete(id){
       const isNotId = event => event.objectId !== id;
       const updatedEvents = this.state.events.filter(isNotId);
       this.setState({events: updatedEvents} );
     }
 
-    onChangeName(event){
-      this.setState({eventName: event.target.value});
+    onChangeGroup(event){
+      this.setState({newGroup: event.target.value});
     }
 
+    onChangeDate(event){
+      this.setState({newDate: event.target.value});
+    }
+
+    onChangeDescription(event){
+      this.setState({newDescription: event.target.value});
+    }
+
+    onChangeType(event){
+      this.setState({newType: event.target.value});
+    }
+
+    onAdd(){
+      let newDate  = new Date();
+      if( this.state.newDate !== '') {
+        const parts = this.state.newDate.split('-');
+        if(parts.length === 3){
+          newDate = new Date(parts[2], parts[1] - 1, parts[0]);
+        }
+      }
+      newDate.setHours(0,0,0,0);
+
+      let newEvent = new Event(this.state.newGroup,
+                               newDate.toJSON(),
+                               this.state.newDescription,
+                              this.state.newType);
+      let eventDisplay = new EventDisplay(newEvent);
+        
+      let newEvents = [];
+        
+      this.state.events.forEach(element => newEvents.push(element));
+      newEvents.push(eventDisplay);
+      this.setState({events: newEvents});
+    }
+
+    onSave(){
+    }
     componentDidMount() {
+      if(this.state.events.length > 0 ) {
+        return;
+      }
       let site = window.location.href;
       let urlBase = "https://www.odusseus.org/php/item";
       let key = "4265AC3D-DD4B-427C-8BFD-6D7E7BB92C09";
@@ -73,11 +121,46 @@ class ShowEvents extends Component {
         <div>Events v1.1.4 from {this.state.source}</div>
         <div>
           <form>
-            <input 
-              type="text"
-              onChange={this.onChangeName}
-              />
+            <fieldset className={styles.inputField}>
+              <legend>New event</legend>
+              <div className={styles.inputField}>
+                <label className={styles.inputFieldLabel}> 
+                  Group
+                </label>
+                <input type="text" onChange={this.onChangeGroup}/>
+              </div>
+              <div className={styles.inputField}>
+                <label className={styles.inputFieldLabel}> 
+                  Date
+                </label>
+                <input type="text" onChange={this.onChangeDate} />
+              </div>
+              <div className={styles.inputField}>
+                <label className={styles.inputFieldLabel}> 
+                  Description
+                </label>
+                <input type="text" onChange={this.onChangeDescription} />
+              </div>
+              <div className={styles.inputField}>
+                <label className={styles.inputFieldLabel}> 
+                  Type
+                </label>
+                <input type="text" onChange={this.onChangeType} />
+               </div>
+               <div className={styles.button}>
+                      <button onClick={ () => this.onAdd() }>Add</button>
+                    </div>
+                    <div className={styles.button}>
+                      <button onClick={ () => this.onSave() }>save</button>
+                    </div>
+              </fieldset>
             </form>
+            <div className={styles.debug}>
+              <div>{this.state.newGroup}</div>
+              <div>{this.state.newDate}</div>
+              <div>{this.state.newDescription}</div>
+              <div>{this.state.newType}</div>
+            </div>
         </div>
         <div>
             {
@@ -105,9 +188,7 @@ class ShowEvents extends Component {
                     </div>
                     <div className={styles.date}>
                     {
-                        <Moment format='DD-MM-YYYY'>
-                          {event.date}
-                        </Moment>
+                      <LocalMoment date={event.date} />
                     }
                     </div>
                     <div className={styles.description}>
@@ -116,10 +197,9 @@ class ShowEvents extends Component {
                     <div className={styles.type}>
                       {event.type}
                     </div>
-                    <div>
-                      <button onClick={ () => this.onDismiss(event.objectId) }>Dismiss</button>
-
-                    </div>
+                    <div className={styles.button}>
+                      <button onClick={ () => this.onDelete(event.objectId) }>Delete</button>
+                    </div>                    
                   </div>
                   );
                 }
@@ -130,5 +210,9 @@ class ShowEvents extends Component {
     );
   }
 }
-
+  
+  function LocalMoment(date) {
+    return <Moment format = 'DD-MM-YYYY'>{date}</Moment>;
+  }
+  
 export default ShowEvents;
