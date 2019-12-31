@@ -6,9 +6,27 @@ import EventDisplay from './EventDisplay';
 import styles from './css/cs.module.css'
 class ShowEvents extends Component {
 
-    state = {
-      events : [],
-      source: ""
+    constructor(props) {
+      super(props);
+
+      this.state = {
+        events: [],
+        source: "",
+        eventName: ""
+      }
+
+      this.onDismiss = this.onDismiss.bind(this);
+      this.onChangeName = this.onChangeName.bind(this);
+    }
+
+    onDismiss(id){
+      const isNotId = event => event.objectId !== id;
+      const updatedEvents = this.state.events.filter(isNotId);
+      this.setState({events: updatedEvents} );
+    }
+
+    onChangeName(event){
+      this.setState({eventName: event.target.value});
     }
 
     componentDidMount() {
@@ -54,6 +72,14 @@ class ShowEvents extends Component {
       <>
         <div>Events v1.1.4 from {this.state.source}</div>
         <div>
+          <form>
+            <input 
+              type="text"
+              onChange={this.onChangeName}
+              />
+            </form>
+        </div>
+        <div>
             {
               this.state.events.map(
                 event => {                  
@@ -67,12 +93,12 @@ class ShowEvents extends Component {
                   }
 
                   return (
-                   <div className={styles.event} key={event.id}>
+                   <div className={styles.event} key={event.objectId}>
                     <div className={styles.group}>
                       {groupNameDisplay}
                     </div>
                     <div className={styles.id}>
-                      {event.id}
+                      {event.objectId}
                     </div>
                     <div className={styles.day}>
                       {event.day}
@@ -89,6 +115,10 @@ class ShowEvents extends Component {
                     </div>
                     <div className={styles.type}>
                       {event.type}
+                    </div>
+                    <div>
+                      <button onClick={ () => this.onDismiss(event.objectId) }>Dismiss</button>
+
                     </div>
                   </div>
                   );

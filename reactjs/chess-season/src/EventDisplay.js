@@ -11,7 +11,7 @@ function maxId() {
 
 class EventDisplay {
   constructor(event) {
-    this.id = maxId();
+    this.objectId = maxId();
     this.group = event.group;
     this.date = event.date;
     this.description = event.description;
