@@ -54,30 +54,56 @@ class ShowEvents extends Component {
       if( this.state.newDate !== '') {
         const parts = this.state.newDate.split('-');
         if(parts.length === 3){
-          newDate = new Date(parts[2], parts[1] - 1, parts[0]);
+          // save as UTC time
+          newDate = new Date(Date.UTC(parts[2], parts[1] - 1, parts[0]));
         }
       }
       newDate.setHours(0,0,0,0);
 
       let newEvent = new Event(this.state.newGroup,
-                               newDate.toJSON(),
+                               newDate.toISOString(),
                                this.state.newDescription,
                               this.state.newType);
       let eventDisplay = new EventDisplay(newEvent);
+
+      let newEvents = this.state.events.concat(eventDisplay);
+      newEvents.sort(
+        (a, b) => 
+        ( 
+          new Date(a.date) - new Date(b.date)
+          ));
         
-      let newEvents = [];
-        
-      this.state.events.forEach(element => newEvents.push(element));
-      newEvents.push(eventDisplay);
       this.setState({events: newEvents});
     }
 
     onSave(){
+//       let site = window.location.href;
+//       let urlBase = "https://www.odusseus.org/php/item";
+//       let key = "4265AC3D-DD4B-427C-8BFD-6D7E7BB92C09";
+//       let token = "DFAC7440-1A78-4612-AECD-E896759CD66D";
+//       if (true && site.includes("localhost")){
+//         urlBase = "http://localhost:9000";
+//         key = "4265AC3D-DD4B-427C-8BFD-6D7E7BB92C09";
+//         token = "591FFE3A-7EF6-4F16-BCB4-880555820D6C";
+//       }
+//       let url = urlBase + "/postitem.php";
+
+//       fetch('https://mywebsite.com/endpoint/', {
+//       method: 'POST',
+//       headers: {
+//         'Accept': 'application/json',
+//     'Content-Type': 'application/json',
+//   },
+//   body: JSON.stringify({
+//     firstParam: 'yourValue',
+//     secondParam: 'yourOtherValue',
+//   })
+// })
     }
     componentDidMount() {
-      if(this.state.events.length > 0 ) {
-        return;
-      }
+      // if(this.state.events.length > 0 ) {
+      //   return;
+      // }
       let site = window.location.href;
       let urlBase = "https://www.odusseus.org/php/item";
       let key = "4265AC3D-DD4B-427C-8BFD-6D7E7BB92C09";
@@ -120,7 +146,6 @@ class ShowEvents extends Component {
       <>
         <div>Events v1.1.4 from {this.state.source}</div>
         <div>
-          <form>
             <fieldset className={styles.inputField}>
               <legend>New event</legend>
               <div className={styles.inputField}>
@@ -154,7 +179,6 @@ class ShowEvents extends Component {
                       <button onClick={ () => this.onSave() }>save</button>
                     </div>
               </fieldset>
-            </form>
             <div className={styles.debug}>
               <div>{this.state.newGroup}</div>
               <div>{this.state.newDate}</div>
@@ -180,7 +204,7 @@ class ShowEvents extends Component {
                     <div className={styles.group}>
                       {groupNameDisplay}
                     </div>
-                    <div className={styles.id}>
+                    <div className={styles.id} >
                       {event.objectId}
                     </div>
                     <div className={styles.day}>
@@ -211,8 +235,9 @@ class ShowEvents extends Component {
   }
 }
   
-  function LocalMoment(date) {
-    return <Moment format = 'DD-MM-YYYY'>{date}</Moment>;
+  function LocalMoment(element) {
+    let newDate = new Date(element.date);
+    return <Moment format = 'DD-MM-YYYY'>{newDate}</Moment>;
   }
   
 export default ShowEvents;

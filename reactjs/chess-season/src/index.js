@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 //import App from './App';
 import ShowEvents from './ShowEvents';
+//import ShowEventsTest from './ShowEventsTest';
+//import AddTest from './AddTest';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
