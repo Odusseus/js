@@ -3,8 +3,9 @@ import React, { Component } from 'react';
 import Moment from 'react-moment';
 import EventDisplay from './EventDisplay';
 import Event from './Event';
+import PostEvent from './PostEvent';
+import styles from './css/cs.module.css';
 
-import styles from './css/cs.module.css'
 class ShowEvents extends Component {
 
     constructor(props) {
@@ -77,28 +78,28 @@ class ShowEvents extends Component {
     }
 
     onSave(){
-//       let site = window.location.href;
-//       let urlBase = "https://www.odusseus.org/php/item";
-//       let key = "4265AC3D-DD4B-427C-8BFD-6D7E7BB92C09";
-//       let token = "DFAC7440-1A78-4612-AECD-E896759CD66D";
-//       if (true && site.includes("localhost")){
-//         urlBase = "http://localhost:9000";
-//         key = "4265AC3D-DD4B-427C-8BFD-6D7E7BB92C09";
-//         token = "591FFE3A-7EF6-4F16-BCB4-880555820D6C";
-//       }
-//       let url = urlBase + "/postitem.php";
+            let site = window.location.href;
+            let urlBase = "https://www.odusseus.org/php/item";
+            let key = "4265AC3D-DD4B-427C-8BFD-6D7E7BB92C09";
+            let token = "DFAC7440-1A78-4612-AECD-E896759CD66D";
+            if (true && site.includes("localhost")){
+              urlBase = "http://localhost:9000";
+              key = "4265AC3D-DD4B-427C-8BFD-6D7E7BB92C09";
+              token = "591FFE3A-7EF6-4F16-BCB4-880555820D6C";
+            }
+            
+            let url = urlBase + "/postitem.php";
+            let value = JSON.stringify(this.state.events);
+            let postEvent = new PostEvent(key, token, value);
 
-//       fetch('https://mywebsite.com/endpoint/', {
-//       method: 'POST',
-//       headers: {
-//         'Accept': 'application/json',
-//     'Content-Type': 'application/json',
-//   },
-//   body: JSON.stringify({
-//     firstParam: 'yourValue',
-//     secondParam: 'yourOtherValue',
-//   })
-// })
+            let myHeaders = new Headers();
+            myHeaders.append('Accept', 'application/json');
+            myHeaders.append('Content-Type', 'application/json');
+
+            fetch(url, {
+              method: 'POST', 
+              body: JSON.stringify(postEvent)
+            }).catch(console.log);
     }
     componentDidMount() {
       // if(this.state.events.length > 0 ) {
@@ -136,8 +137,7 @@ class ShowEvents extends Component {
 
             this.setState({ events: newEvents });
       })
-      .catch(console.log)
-
+      .catch(console.log);
     } 
   render() {
     let groupName = null;
