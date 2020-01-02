@@ -17,7 +17,11 @@ class ShowEvents extends Component {
         newGroup: "",
         newDate: "",
         newDescription: "",
-        newType: ""      }
+        newType: "",
+        isShowNewEvent: false,
+        isShowDebug: false,
+        isShowInfo: false
+      }
 
       this.onDelete = this.onDelete.bind(this);
       this.onChangeGroup = this.onChangeGroup.bind(this);
@@ -26,6 +30,10 @@ class ShowEvents extends Component {
       this.onChangeType = this.onChangeType.bind(this);
       this.onAdd = this.onAdd.bind(this);
       this.onSave = this.onSave.bind(this);
+      this.onReload = this.onReload.bind(this);
+      this.setIsShowNewEvent = this.setIsShowNewEvent.bind(this);
+      this.setIsShowDebug = this.setIsShowDebug.bind(this);
+      this.setIsShowInfo = this.setIsShowInfo.bind(this);
     }
 
     onDelete(id){
@@ -101,6 +109,26 @@ class ShowEvents extends Component {
               body: JSON.stringify(postEvent)
             }).catch(console.log);
     }
+
+    setIsShowNewEvent()
+    {
+      let isShowNewEvent = this.state.isShowNewEvent ? false : true;
+      this.setState({isShowNewEvent: isShowNewEvent});
+    }
+
+    setIsShowDebug(){
+      let isShowDebug = this.state.isShowDebug ? false : true;
+      this.setState({isShowDebug: isShowDebug});
+    }
+
+    setIsShowInfo(){
+      let isShowInfo = this.state.isShowInfo ? false : true;
+      this.setState({isShowInfo: isShowInfo});
+    }
+
+    onReload(){
+      window.location.reload();
+    }
     componentDidMount() {
       // if(this.state.events.length > 0 ) {
       //   return;
@@ -142,10 +170,29 @@ class ShowEvents extends Component {
   render() {
     let groupName = null;
     let groupNameDisplay = null;
+    let displayNewEvent = this.state.isShowNewEvent ? styles.displayInitial : styles.displayNone;
+    let displayDebug = this.state.isShowDebug ? styles.displayInitial : styles.displayNone;
+    let displayInfo = this.state.isShowInfo ? styles.displayInitial : styles.displayNone;
     return (
       <>
-        <div>Events v1.1.4 from {this.state.source}</div>
-        <div>
+        <nav>
+          <ul>
+            <li>
+              <button onClick={ () => this.setIsShowNewEvent() }>New</button>
+            </li>
+            <li>
+              <button onClick={ () => this.setIsShowInfo() }>Info</button>
+            </li>
+            <li>
+              <button onClick={ () => this.onReload() }>Reload</button>
+            </li>
+            <li>
+              <button onClick={ () => this.setIsShowDebug() }>Debug</button>
+            </li>
+          </ul>
+        </nav>
+        <div className={displayInfo}>Events v1.1.4 from {this.state.source}</div>
+        <div className={displayNewEvent}>
             <fieldset className={styles.inputField}>
               <legend>New event</legend>
               <div className={styles.inputField}>
@@ -176,10 +223,10 @@ class ShowEvents extends Component {
                       <button onClick={ () => this.onAdd() }>Add</button>
                     </div>
                     <div className={styles.button}>
-                      <button onClick={ () => this.onSave() }>save</button>
-                    </div>
+                      <button onClick={ () => this.onSave() }>Save</button>
+                    </div>                   
               </fieldset>
-            <div className={styles.debug}>
+            <div className={displayDebug}>
               <div>{this.state.newGroup}</div>
               <div>{this.state.newDate}</div>
               <div>{this.state.newDescription}</div>
