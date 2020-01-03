@@ -166,7 +166,9 @@ class ShowEvents extends Component {
     componentDidMount() {
       const retrieveKeys = localStorage.getItem('keys');
       const keys = JSON.parse(retrieveKeys);
-      this.setState({key: keys.key, token: keys.token});
+      if(keys){
+        this.setState({key: keys.key, token: keys.token});
+      }
       let site = window.location.href;
       let key = '';
       let token = '';
