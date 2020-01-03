@@ -42,6 +42,7 @@ width: 90px;
 
 .button {
   display: inline-block;
+  padding-right: 10px;
 }
 
 .inputFieldLabel {
@@ -51,6 +52,10 @@ width: 90px;
 }
 
 .inputField {
+  width: 300px;
+}
+
+.fieldset {
   white-space: nowrap;
 }
 

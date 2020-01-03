@@ -5,6 +5,7 @@ import EventDisplay from './EventDisplay';
 import Event from './Event';
 import PostEvent from './PostEvent';
 import styles from './css/cs.module.css';
+import Keys from './Keys';
 
 class ShowEvents extends Component {
 
@@ -18,6 +19,8 @@ class ShowEvents extends Component {
         newDate: "",
         newDescription: "",
         newType: "",
+        key: "",
+        token:"",
         isShowNewEvent: false,
         isShowDebug: false,
         isShowInfo: false
@@ -28,6 +31,8 @@ class ShowEvents extends Component {
       this.onChangeDate = this.onChangeDate.bind(this);
       this.onChangeDescription = this.onChangeDescription.bind(this);
       this.onChangeType = this.onChangeType.bind(this);
+      this.onChangeKey = this.onChangeKey.bind(this);
+      this.onChangeToken = this.onChangeToken.bind(this);
       this.onAdd = this.onAdd.bind(this);
       this.onSave = this.onSave.bind(this);
       this.onReload = this.onReload.bind(this);
@@ -56,6 +61,14 @@ class ShowEvents extends Component {
 
     onChangeType(event){
       this.setState({newType: event.target.value});
+    }
+
+    onChangeKey(event){
+      this.setState({key: event.target.value});
+    }
+
+    onChangeToken(event){
+      this.setState({token: event.target.value});
     }
 
     onAdd(){
@@ -87,13 +100,22 @@ class ShowEvents extends Component {
 
     onSave(){
             let site = window.location.href;
+            const retrieveKeys = localStorage.getItem('keys');
+            const keys = JSON.parse(retrieveKeys);
+            let key = '';
+            let token = '';
+            if(keys && keys.key && keys.token){
+              key = keys.key;
+              token = keys.token;
+            } else {
+              if (site.includes("localhost")){
+                key = "4265AC3D-DD4B-427C-8BFD-6D7E7BB92C09";
+              }
+            }
+            
             let urlBase = "https://www.odusseus.org/php/item";
-            let key = "4265AC3D-DD4B-427C-8BFD-6D7E7BB92C09";
-            let token = "DFAC7440-1A78-4612-AECD-E896759CD66D";
             if (true && site.includes("localhost")){
               urlBase = "http://localhost:9000";
-              key = "4265AC3D-DD4B-427C-8BFD-6D7E7BB92C09";
-              token = "591FFE3A-7EF6-4F16-BCB4-880555820D6C";
             }
             
             let url = urlBase + "/postitem.php";
@@ -104,10 +126,17 @@ class ShowEvents extends Component {
             myHeaders.append('Accept', 'application/json');
             myHeaders.append('Content-Type', 'application/json');
 
-            fetch(url, {
+          fetch(url, {
               method: 'POST', 
               body: JSON.stringify(postEvent)
-            }).catch(console.log);
+              }
+            ).then(res => res.json())
+            .then((data)=> {
+              let keys = new Keys(data.key, data.token);
+              localStorage.setItem('keys', JSON.stringify(keys));
+              this.setState({key: data.key, token: data.token});
+            })
+            .catch(console.log);
     }
 
     setIsShowNewEvent()
@@ -126,21 +155,32 @@ class ShowEvents extends Component {
       this.setState({isShowInfo: isShowInfo});
     }
 
+    setKeys(){
+      let keys = new Keys(this.state.key, this.state.token);
+      localStorage.setItem('keys', JSON.stringify(keys));
+    }
+
     onReload(){
       window.location.reload();
     }
     componentDidMount() {
-      // if(this.state.events.length > 0 ) {
-      //   return;
-      // }
+      const retrieveKeys = localStorage.getItem('keys');
+      const keys = JSON.parse(retrieveKeys);
+      this.setState({key: keys.key, token: keys.token});
       let site = window.location.href;
+      let key = '';
+      let token = '';
+      if(keys && keys.key && keys.token){
+        key = keys.key;
+        token = keys.token;
+      } else {        
+        if (site.includes("localhost")){
+          key = "4265AC3D-DD4B-427C-8BFD-6D7E7BB92C09";
+        }
+      }
       let urlBase = "https://www.odusseus.org/php/item";
-      let key = "4265AC3D-DD4B-427C-8BFD-6D7E7BB92C09";
-      let token = "DFAC7440-1A78-4612-AECD-E896759CD66D";
-      if (true && site.includes("localhost")){
+      if (site.includes("localhost")){
         urlBase = "http://localhost:9000";
-        key = "4265AC3D-DD4B-427C-8BFD-6D7E7BB92C09";
-        token = "591FFE3A-7EF6-4F16-BCB4-880555820D6C";
       }
       let url = urlBase + "/getitem.php?key=" + key + "&token=" + token;
       this.setState({ source: urlBase });
@@ -178,59 +218,84 @@ class ShowEvents extends Component {
         <nav>
           <ul>
             <li>
+              <div className={styles.button}>
               <button onClick={ () => this.setIsShowNewEvent() }>New</button>
+              </div>
             </li>
             <li>
+            <div className={styles.button}>
               <button onClick={ () => this.setIsShowInfo() }>Info</button>
-            </li>
-            <li>
-              <button onClick={ () => this.onReload() }>Reload</button>
-            </li>
-            <li>
-              <button onClick={ () => this.setIsShowDebug() }>Debug</button>
-            </li>
+            </div>
+            </li>            
           </ul>
         </nav>
-        <div className={displayInfo}>Events v1.1.4 from {this.state.source}</div>
+        <div className={displayInfo}>
+          <fieldset className={styles.fieldset}>
+            <legend>Info</legend>
+            <div>Events (23-102019) v1.2.0 from {this.state.source}</div>
+            <div className={styles.button}>
+              <button className={styles.button} onClick={ () => this.onReload() }>Reload</button>
+            </div>
+            <div className={styles.button}>
+              <button onClick={ () => this.setIsShowDebug() }>Debug</button>
+            </div>
+            
+            <div className={styles.inputField}>
+              <label className={styles.inputFieldLabel}> 
+                Key
+              </label>
+              <input className={styles.inputField} type="text" value={this.state.key} onChange={this.onChangeKey}/>
+            </div>
+            <div className={styles.inputField}>
+              <label className={styles.inputFieldLabel}> 
+                Token
+              </label>
+              <input className={styles.inputField} type="text" value={this.state.token} onChange={this.onChangeToken}/>
+            </div>
+            <div className={styles.button}>
+              <button onClick={ () => this.setKeys() }>Set Keys</button>
+            </div>
+          </fieldset>
+        </div>
         <div className={displayNewEvent}>
-            <fieldset className={styles.inputField}>
+            <fieldset className={styles.fieldset}>
               <legend>New event</legend>
               <div className={styles.inputField}>
                 <label className={styles.inputFieldLabel}> 
                   Group
                 </label>
-                <input type="text" onChange={this.onChangeGroup}/>
+                <input className={styles.inputField} type="text" onChange={this.onChangeGroup}/>
               </div>
               <div className={styles.inputField}>
                 <label className={styles.inputFieldLabel}> 
                   Date
                 </label>
-                <input type="text" onChange={this.onChangeDate} />
+                <input className={styles.inputField} type="text" onChange={this.onChangeDate} />
               </div>
               <div className={styles.inputField}>
                 <label className={styles.inputFieldLabel}> 
                   Description
                 </label>
-                <input type="text" onChange={this.onChangeDescription} />
+                <input className={styles.inputField} type="text" onChange={this.onChangeDescription} />
               </div>
               <div className={styles.inputField}>
                 <label className={styles.inputFieldLabel}> 
                   Type
                 </label>
-                <input type="text" onChange={this.onChangeType} />
+                <input className={styles.inputField} type="text" onChange={this.onChangeType} />
                </div>
                <div className={styles.button}>
-                      <button onClick={ () => this.onAdd() }>Add</button>
-                    </div>
-                    <div className={styles.button}>
-                      <button onClick={ () => this.onSave() }>Save</button>
-                    </div>                   
+                  <button onClick={ () => this.onAdd() }>Add</button>
+                </div>
+                <div className={styles.button}>
+                  <button onClick={ () => this.onSave() }>Save</button>
+                </div>                   
               </fieldset>
             <div className={displayDebug}>
-              <div>{this.state.newGroup}</div>
-              <div>{this.state.newDate}</div>
-              <div>{this.state.newDescription}</div>
-              <div>{this.state.newType}</div>
+              <div>Group: {this.state.newGroup}</div>
+              <div>Date: {this.state.newDate}</div>
+              <div>Description: {this.state.newDescription}</div>
+              <div>Type: {this.state.newType}</div>
             </div>
         </div>
         <div>
