@@ -76,7 +76,16 @@ const showKey = (showKeyId) => {
     } else {
       elements[i].type = "password";
     }
-  }  
+  }
+
+  elements = document.getElementsByClassName("outputPassword");
+  for (let i = 0; i < elements.length; i++) {
+    if (elements[i].style.display === "none") {
+        elements[i].style.display = "inline";
+      } else {
+        elements[i].style.display = "none";
+      }
+  }    
 };
 
 const getKey = (myKeyText, addKeyText, urlText) => {
@@ -172,8 +181,16 @@ const selectText = (containerid) => {
 };
 
 const copyKey = (keyId) => {
-  selectText(keyId);
-  document.execCommand("copy");
+  const keyElement = document.getElementById(keyId);
+  let newDiv = document.createElement("div");
+  newDiv.setAttribute("id", "tempKey");
+  document.body.appendChild(newDiv);   
+  let tempKey = document.getElementById("tempKey");
+  tempKey.innerHTML = keyElement.innerHTML;
+
+  selectText("tempKey");
+  document.execCommand('copy');
+  tempKey.parentNode.removeChild(tempKey);
 };
 
 
