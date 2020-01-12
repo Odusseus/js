@@ -16,6 +16,7 @@ const ShowEventsFC = () =>  {
   const [newType, setNewType] = useState("");
   const [key, setKey] = useState("");
   const [token, setToken] = useState("");
+  const [user, setUser] = useState("");
   const [isShowNewEvent, setIsShowNewEvent] = useState(false);
   const [isShowDebug, setIsShowDebug] = useState(false);
   const [isShowInfo, setIsShowInfo] = useState(false);
@@ -76,7 +77,7 @@ const ShowEventsFC = () =>  {
   }
 
   const setKeys = () => {
-    let keys = new Keys(key, token);
+    let keys = new Keys(key, token, user);
     localStorage.setItem('keys', JSON.stringify(keys));
   }
 
@@ -96,11 +97,15 @@ const ShowEventsFC = () =>  {
     let site = window.location.href;
     const retrieveKeys = localStorage.getItem('keys');
     let keys = JSON.parse(retrieveKeys);
-    if(!keys){
-      keys = new Keys();
-      if (site.includes("localhost")){
-        keys.key = "4265AC3D-DD4B-427C-8BFD-6D7E7BB92C09";
-        keys.token = "testToken";
+
+    if (site.includes("localhost")){
+      if((!keys 
+          || keys.key === ""
+          || keys.token === "")
+          && !keys.user) {
+      keys = new Keys("4265AC3D-DD4B-427C-8BFD-6D7E7BB92C09", 
+                      "testToken",
+                      keys.user);
       }
     }
     
@@ -113,7 +118,7 @@ const ShowEventsFC = () =>  {
     
     let url = urlBase + "/postitem.php";
     let value = JSON.stringify(events);
-    let postEvent = new PostEvent(keys.key, keys.token, value);
+    let postEvent = new PostEvent(keys.key, keys.token, keys.user, value);
 
     let myHeaders = new Headers();
     myHeaders.append('Accept', 'application/json');
@@ -125,7 +130,7 @@ const ShowEventsFC = () =>  {
       }
     ).then(res => res.json())
     .then((data)=> {
-      let keys = new Keys(data.key, data.token);
+      let keys = new Keys(data.key, data.token, user);
       localStorage.setItem('keys', JSON.stringify(keys));
       setKey(keys.key);
       setToken(keys.token);
@@ -137,7 +142,7 @@ const ShowEventsFC = () =>  {
     const retrieveKeys = localStorage.getItem('keys');
     let keys = JSON.parse(retrieveKeys);
     if(!keys){
-      keys = new Keys();
+      keys = new Keys("","","");
       if (site.includes("localhost")){
         keys.key = "4265AC3D-DD4B-427C-8BFD-6D7E7BB92C09";
         keys.token = "testToken";
@@ -145,6 +150,7 @@ const ShowEventsFC = () =>  {
     }
     setKey(keys.key);
     setToken(keys.token);
+    setUser(keys.user);
     
     let urlBase = "https://www.odusseus.org/php/item";
     if (site.includes("localhost")){
@@ -196,12 +202,18 @@ const ShowEventsFC = () =>  {
         <div className={displayInfo}>
           <fieldset className={styles.fieldset}>
             <legend>Info</legend>
-            <div>Events (23-10-2019) v2.0.0 API = {source}</div>            
+            <div>Events (23-10-2019) v2.0.1 API = {source}</div>            
             <div className={styles.button}>
               <button onClick={ () => toggleShowDebug() }>Debug</button>
             </div>
             <div className={styles.button}>
               <button className={styles.button} onClick={ () => window.location.reload()}>Reload</button>
+            </div>
+            <div className={styles.inputField}>
+              <label className={styles.inputFieldLabel}> 
+                User
+              </label>
+              <input className={styles.inputField} type="text" value={user} onChange={event => setUser(event.target.value)}/>
             </div>
             <div className={styles.inputField}>
               <label className={styles.inputFieldLabel}> 
@@ -216,7 +228,7 @@ const ShowEventsFC = () =>  {
               <input className={styles.inputField} type="text" value={token} onChange={event => setToken(event.target.value)}/>
             </div>
             <div className={styles.button}>
-              <button onClick={ () => setKeys() }>Set Keys</button>
+              <button onClick={ () => setKeys() }>Save Keys</button>
             </div>
           </fieldset>
         </div>
