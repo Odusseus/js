@@ -4,3 +4,5 @@ https://github.com/the-road-to-learn-react/the-road-to-learn-react/blob/master/m
 
 https://www.getrevue.co/profile/rwieruch
 https://www.programming-books.io/
+
+serve -s build
