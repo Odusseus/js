@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import fetch from 'unfetch';
 import * as Constant from './constant';
 import * as Environment from './environment';
+import Cookies from 'react-cookie';
 
 export default function MyApp() {
 
@@ -176,6 +177,7 @@ function SignIn({ show }) {
     setMessage('');
     evt.preventDefault();
     const requestOptions = {
+      credentials: 'include',
       method: 'POST',
       headers: {
         //'Accept': 'application/json', 
@@ -191,7 +193,7 @@ function SignIn({ show }) {
     };
     fetch(`${Environment.HostDebug}${Constant.UserLoginApi}`, requestOptions)
       .then((response) => {
-        return response.json()
+        return response.json();
       })
       .then((data) => {
         console.log(data);
@@ -256,14 +258,15 @@ function Maxlength({ show }) {
     evt.preventDefault();
     const requestOptions = {
       method: 'GET',
-      // headers: {
+      credentials: 'include',
+       headers: {
       //   //'Accept': 'application/json', 
       //   //'Content-Type': 'application/json'
-      //   'content-type': 'application/x-www-form-urlencoded'
-      // },
+         'content-type': 'application/x-www-form-urlencoded'
+       },
       mode: 'no-cors'
     };
-    fetch(`${Environment.HostDebug}${Constant.Maxlength}`, requestOptions)
+    fetch(`${Environment.HostDebug}${Constant.Itemlength}`, requestOptions)
       .then((response) => {
         return response.json()
       })

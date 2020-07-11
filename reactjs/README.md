@@ -5,6 +5,8 @@ https://github.com/the-road-to-learn-react/the-road-to-learn-react/blob/master/m
 https://www.getrevue.co/profile/rwieruch
 https://www.programming-books.io/
 
+https://www.sarthakbatra.com/blog/running-react-with-https-on-custom-local-domain/
+
 yarn start
     Starts the development server.
 
