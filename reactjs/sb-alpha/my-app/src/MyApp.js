@@ -6,6 +6,9 @@ import * as Environment from './environment';
 import AppDataShow from './component/AppDataShow';
 import ItemEdit from './component/ItemEdit';
 import ItemsShow from './component/ItemsShow';
+import Item from './component/Item';
+import Items from './component/Items';
+
 
 export default function MyApp() {
 
@@ -15,6 +18,14 @@ export default function MyApp() {
   const [showItemLength, setShowItemLength] = useState(false);
   const [showSaveItem, setShowSaveItem] = useState("");
   const [showGetItem, setShowGetItem] = useState("");
+
+  const items = new Items();
+  let itemA = new Item('va', 'ca');
+  let itemB = new Item('vb', 'cb');
+  let itemC = new Item('vc', 'cc');
+  items.Add(itemA);
+  items.Add(itemB);
+  items.Add(itemC);
 
   function info() {
     let show = showInfo;
@@ -67,7 +78,7 @@ export default function MyApp() {
         <GetItem show={showGetItem} />
         <AppDataShow />
         <ItemEdit show={true}/>
-        <ItemsShow show={true}/>
+        <ItemsShow show={true} items={items} />
       </div>
     </div>
     ;

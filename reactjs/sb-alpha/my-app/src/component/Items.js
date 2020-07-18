@@ -8,4 +8,9 @@ export default class Items {
   Add(item){
     this.list.push(item);  
   }
+
+  Delete(id){
+    let newList = this.list.filter( item => item.id != id);
+    this.list = newList;
+  }
 }

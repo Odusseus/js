@@ -1,25 +1,24 @@
-//import styles from '../css/cs.module.css';
+import styles from '../css/cs.module.css';
 import React, { useState } from 'react';
 import Item from './Item';
 import Items from './Items';
 
 // TODO https://medium.com/coding-in-depth/reactjs-share-data-between-the-components-de492b129086#:~:text=React%20provide%20an%20easy%20way,to%20communicate%20between%20any%20component.
 
-export default function ItemsShow({ show }) {
+export default function ItemsShow({ show, items }) {
   let displayInfo = show ? styles.displayInitial : styles.displayNone;
-  var items = new Items();
+  const [list, setList] = useState(items.list);
 
-  let itemA = new Item('va', 'ca');
-  let itemB = new Item('vb', 'cb');
-  let itemC = new Item('vc', 'cc');
-  items.Add(itemA);
-  items.Add(itemB);
-  items.Add(itemC);
+  const deleteItem = (id) => {
+    alert(id);
+    items.Delete(id);
+    setList(items.list);
+  }
 
   return (
     <ul>
       {
-        items.list.map(item => {
+        list.map(item => {
           return (
             <li key={item.id}>
               <div>
@@ -33,6 +32,7 @@ export default function ItemsShow({ show }) {
                 <div>
                   {item.comment}
                 </div>
+                <button onClick={() => deleteItem(item.id)}>Delete</button>
               </div>
             </li>
           )
