@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import fetch from 'unfetch';
 import * as Constant from './constant';
 import * as Environment from './environment';
+import AppDataShow from './component/AppDataShow';
+import ItemEdit from './component/ItemEdit';
 
 export default function MyApp() {
 
@@ -62,6 +64,8 @@ export default function MyApp() {
         <ItemLength show={showItemLength} />
         <SaveItem show={showSaveItem} />
         <GetItem show={showGetItem} />
+        <AppDataShow />
+        <ItemEdit show={true}/>
       </div>
     </div>
     ;
@@ -103,7 +107,7 @@ function CreateAccount({ show }) {
       },
       //mode: 'no-cors',
       body: JSON.stringify({
-        appname: "test",
+        appname: Environment.AppName,
         nickname: nickname,
         password: password,
         email: email
