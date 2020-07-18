@@ -5,7 +5,7 @@ import Item from './Item';
 export default function ItemEdit({ show }) {
   let displayInfo = show ? styles.displayInitial : styles.displayNone;
 
-  let item = new Item();
+  let item = new Item('','');
   const [id, setId] = useState(item.id);
   const [value, setValue] = useState(item.value);
   const [comment, setComment] = useState(item.comment);

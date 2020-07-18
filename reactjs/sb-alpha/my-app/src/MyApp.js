@@ -5,6 +5,7 @@ import * as Constant from './constant';
 import * as Environment from './environment';
 import AppDataShow from './component/AppDataShow';
 import ItemEdit from './component/ItemEdit';
+import ItemsShow from './component/ItemsShow';
 
 export default function MyApp() {
 
@@ -66,6 +67,7 @@ export default function MyApp() {
         <GetItem show={showGetItem} />
         <AppDataShow />
         <ItemEdit show={true}/>
+        <ItemsShow show={true}/>
       </div>
     </div>
     ;

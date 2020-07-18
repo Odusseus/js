@@ -3,8 +3,6 @@ import AppData from './AppData';
 
 export default function AppDataShow() {
   let appData = new AppData("xx");
-  
-
 
   const appDataShow =
   <div>

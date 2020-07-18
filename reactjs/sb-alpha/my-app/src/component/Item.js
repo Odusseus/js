@@ -4,15 +4,9 @@ export default class Item {
   value;
   comment;
 
-  constructor(){
-    
-  }
-
-  new(value, comment){
+  constructor(value, comment){
     this.value = value;
     this.comment = comment;
     this.id = ++Item.maxId;  
   }
 }
-
-//export default Item;
