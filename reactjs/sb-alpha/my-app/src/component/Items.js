@@ -10,7 +10,12 @@ export default class Items {
   }
 
   Delete(id){
-    let newList = this.list.filter( item => item.id != id);
+    let newList = this.list.filter( item => item.id !== id);
     this.list = newList;
+  }
+
+  GetItem(id){
+    return this.list.filter( item => item.id === id);
+    
   }
 }

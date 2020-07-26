@@ -40,6 +40,10 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 ## TODO 
 https://www.robinwieruch.de/react-function-component#react-function-component-example
 
+https://medium.com/@nipunadilhara/passing-data-between-different-components-using-react-c8e27319ee69
+
+https://github.com/imranhsayed/react-hooks
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).

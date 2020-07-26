@@ -1,32 +1,61 @@
 import styles from './css/cs.module.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import fetch from 'unfetch';
 import * as Constant from './constant';
 import * as Environment from './environment';
 import AppDataShow from './component/AppDataShow';
-import ItemEdit from './component/ItemEdit';
-import ItemsShow from './component/ItemsShow';
+import ItemsList from './component/ItemsList';
 import Item from './component/Item';
-import Items from './component/Items';
 
+//import ItemsEdit from './component/ItemsEdit';
+//import ItemEdit from './component/ItemEdit';
+//import ItemsShow from './component/ItemsShow';
+//import Item from './component/Item';
+//import Items from './component/Items';
+
+// let newItems = new Items();    
+//     let itemA = new Item('va', 'ca');
+//     let itemB = new Item('vb', 'cb');
+//     let itemC = new Item('vc', 'cc');
+//     newItems.Add(itemA);
+//     newItems.Add(itemB);
+//     newItems.Add(itemC);  
 
 export default function MyApp() {
-
   const [showInfo, setShowInfo] = useState(false);
   const [showNewAccount, setShowNewAccount] = useState(false);
   const [showSignIn, setShowSignIn] = useState(false);
   const [showItemLength, setShowItemLength] = useState(false);
   const [showSaveItem, setShowSaveItem] = useState("");
   const [showGetItem, setShowGetItem] = useState("");
+  const [showItemsList, setShowItemsList] = useState(false);
+  const [initialState, setInitialState] = useState([]);
 
-  const items = new Items();
-  let itemA = new Item('va', 'ca');
-  let itemB = new Item('vb', 'cb');
-  let itemC = new Item('vc', 'cc');
-  items.Add(itemA);
-  items.Add(itemB);
-  items.Add(itemC);
+  // useEffect ( () => {
+  //   const newInitialState = initialState;
+  //   newInitialState.push( new Item('va', 'ca'));
+  //   newInitialState.push( new Item('vb', 'cb'));
+  //   newInitialState.push( new Item('vc', 'cc')); 
+  //   setInitialState(newInitialState);
+  //  }, []);
 
+  //const [showItemsEdit, setShowItemsEdit] = useState(false);
+  //const [item, setItem] = useState(new Item('',''));
+ // const [items, setItems] = useState(newItems);
+
+  
+    //useEffect ( () => {
+    // let newItems = new Items();    
+    // let itemA = new Item('va', 'ca');
+    // let itemB = new Item('vb', 'cb');
+    // let itemC = new Item('vc', 'cc');
+    // newItems.Add(itemA);
+    // newItems.Add(itemB);
+    // newItems.Add(itemC);  
+    //setItems(newItems);
+    //}, [])
+  
+    
   function info() {
     let show = showInfo;
     setShowInfo(!show);
@@ -57,6 +86,23 @@ export default function MyApp() {
     setShowGetItem(!show);
   }
 
+  // function editItems() {
+  //   let show = showItemsEdit;
+  //   setShowItemsEdit(!show);
+  // }  
+
+  function listItems() {
+    let show = showItemsList;
+    setShowItemsList(!show);
+  }  
+
+//   function parentFunction(id){
+//     //alert(id);
+//     let editItem = items.GetItem(id);
+//     let newItem =  editItem[0];
+//     setItem(newItem);
+// }
+
   const greeting = "Hello Voca-Quiz!";
   const myApp =
     <div>
@@ -67,6 +113,8 @@ export default function MyApp() {
         <button onClick={itemLength}>Item length</button>
         <button onClick={saveItem}>Save Item</button>
         <button onClick={getItem}>Get Item</button>
+        {/* <button onClick={editItems}>Show Items</button> */}
+        <button onClick={listItems}>Show Items List</button>
       </nav>
       <div>
         <h1>{greeting}</h1>
@@ -75,10 +123,10 @@ export default function MyApp() {
         <SignIn show={showSignIn} />
         <ItemLength show={showItemLength} />
         <SaveItem show={showSaveItem} />
-        <GetItem show={showGetItem} />
-        <AppDataShow />
-        <ItemEdit show={true}/>
-        <ItemsShow show={true} items={items} />
+        <GetItem show={showGetItem} />        
+        {/* <AppDataShow /> */}
+        {/* <ItemsEdit show={true} /> */}
+        <ItemsList show={showItemsList}/>
       </div>
     </div>
     ;

@@ -2,20 +2,24 @@ import styles from '../css/cs.module.css';
 import React, { useState } from 'react';
 import Item from './Item';
 
-export default function ItemEdit({ show }) {
+export default function ItemEdit({ show, item }) {
+  
+  //alert(item.id + '-' +item.value);
+
   let displayInfo = show ? styles.displayInitial : styles.displayNone;
 
-  let item = new Item('','');
   const [id, setId] = useState(item.id);
   const [value, setValue] = useState(item.value);
   const [comment, setComment] = useState(item.comment);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
 
+  //alert('after ' +item.id + '-' +item.value);
+
   const handelSubmit = (evt) => {
     item.value = value;
     item.comment = comment;
-    alert(item.value)
+    //alert(item.value)
   }
   
   return (
