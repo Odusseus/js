@@ -1,12 +1,11 @@
-export default class Item {  
-  static maxId = 0;
+export default class Item {
   id;
   value;
   comment;
 
-  constructor(value, comment){
+  constructor(id, value, comment){
     this.value = value;
     this.comment = comment;
-    this.id = ++Item.maxId;
+    this.id = id;
   }
 }

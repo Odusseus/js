@@ -105,7 +105,7 @@ export default function MyApp() {
 
   const greeting = "Hello Voca-Quiz!";
   const myApp =
-    <div>
+    <div className={styles.event}>
       <nav>
         <button onClick={info}>Info</button>
         <button onClick={newAccount}>New account</button>
@@ -116,7 +116,7 @@ export default function MyApp() {
         {/* <button onClick={editItems}>Show Items</button> */}
         <button onClick={listItems}>Show Items List</button>
       </nav>
-      <div>
+      <div className={styles.group}>
         <h1>{greeting}</h1>
         <Info show={showInfo} />
         <CreateAccount show={showNewAccount} />

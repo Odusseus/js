@@ -19,11 +19,8 @@ export default function ItemForm({ item, addItem }) {
     evt.preventDefault();
     if (!value) return;
 
-    const newItem = new Item();
+    const newItem = new Item(id, value, comment);
 
-    newItem.id = item.id;
-    newItem.value = value;
-    newItem.comment = comment;
     setId('');
     setValue('');
     setComment('');    
@@ -38,18 +35,19 @@ export default function ItemForm({ item, addItem }) {
     <form onSubmit={onFormSubmit}>
       <fieldset className={styles.fieldset}>
         <legend>Edit Item:</legend>
-        <div>
-          <label>
+        <div className={styles.id}>
+          <label className={styles.inputFieldLabel}>
             id
           </label>
-          <di>
+          <div>
             {id}
-          </di>
+          </div>
         </div>
-        <div>
-          <label>
+        <div className={styles.inputField}>
+          <label className={styles.inputFieldLabel}>
             Value
-              <input
+              <input 
+              className={styles.inputField}
               type="text"
               value={value}
               onChange={e => setValue(e.target.value)}
@@ -57,10 +55,10 @@ export default function ItemForm({ item, addItem }) {
             />
           </label>
         </div>
-        <div>
-          <label>
+        <div className={styles.inputField}>
+          <label className={styles.inputFieldLabel}>
             comment
-                <input
+            <input className={styles.inputField}
               type="text"
               value={comment}
               onChange={e => setComment(e.target.value)}
@@ -68,7 +66,7 @@ export default function ItemForm({ item, addItem }) {
             />
           </label>
         </div>
-        <div>
+        <div className={styles.button}>
           <input type="submit" value="Save" />
         </div>
         <Message message={message} />

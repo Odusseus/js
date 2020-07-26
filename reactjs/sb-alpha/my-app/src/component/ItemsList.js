@@ -1,5 +1,6 @@
 import styles from '../css/cs.module.css';
 import React, { useState, useEffect } from 'react';
+import { useCookies } from 'react-cookie';
 import Item from './Item';
 import ItemRow from './ItemRow';
 import ItemForm from './ItemForm';
@@ -21,11 +22,12 @@ export default function ItemsList({ show }) {
 	//  }
 
 	const [items, setItems] = useState([]);
-	const [item, setItem] = useState(new Item());
+	const [item, setItem] = useState(new Item(0));
 	const [error, setError] = useState('');
 	const [message, setMessage] = useState('');
 	const [version, setVersion] = useState(0);
 	const [save, setSave] = useState(false);
+	const [cookies, setCookie, removeCookie] = useCookies([Environment.AppName]);
 
   useEffect(() => {
     setError('');
@@ -54,9 +56,24 @@ export default function ItemsList({ show }) {
 					}
 					setItems(itemsValue);
 					setVersion(messageVersion);
+					// TODO refactoring
+					let maxId = 0;
+					for (let i = 0; i < itemsValue.length; i++) {
+						let id = itemsValue[i].id;
+						if( id > maxId) {
+							maxId = id;
+						} 					
+					}
+					if(maxId > 0) maxId++;
+					setItem(new Item(maxId));
         }
         else {
-          setError(data.message);
+					let errorMessage = data.message;
+					if(data.statusCode === 401){
+						errorMessage = 'You are logged out, svp login again.';
+						removeCookie(Environment.AppName);
+					}
+          setError(errorMessage);
         }
       })
       .catch(error => {
@@ -68,7 +85,7 @@ export default function ItemsList({ show }) {
 	useEffect(() => {
 		if(save) {
 			saveItem();
-			setSave(true);
+			setSave(false);
 		}
 
 	}, [save]);
@@ -138,8 +155,17 @@ export default function ItemsList({ show }) {
 		let newList = items.filter(item => item.id !== newItem.id);
 		const newInitialState = [...newList, newItem];
 		const newInitialStateSoort = newInitialState.sort(compareValues('value'));
+		// TODO refactoring
 		setItems(newInitialStateSoort);
-		const resetItem = new Item();
+		let maxId = 0;
+		for (let i = 0; i < newInitialStateSoort.length; i++) {
+			let id = newInitialStateSoort[i].id;
+			if( id > maxId) {
+				maxId = id;
+			} 
+		}	
+		if(maxId > 0) maxId++;	
+		const resetItem = new Item(maxId);
 		setItem(resetItem);		
 		setSave(true);
 	};
