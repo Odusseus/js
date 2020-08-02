@@ -27,7 +27,7 @@ export default function ItemsList({ show }) {
 	const [message, setMessage] = useState('');
 	const [version, setVersion] = useState(0);
 	const [save, setSave] = useState(false);
-	const [cookies, setCookie, removeCookie] = useCookies([Environment.AppName]);
+	const [cookies, setCookie, removeCookie] = useCookies([Constant.Cookie]);
 
   useEffect(() => {
     setError('');
@@ -37,9 +37,10 @@ export default function ItemsList({ show }) {
       credentials: 'include',
       headers: {
         'content-type': 'application/x-www-form-urlencoded'
-      },
-    };
-    fetch(`${Environment.HostDebug}${Constant.GetItem}`, requestOptions)
+      }
+		};
+		let token = Constant.SameOrigin ? '' : `?token=${cookies.token}`;
+    fetch(`${Environment.HostDebug}${Constant.GetItem}${token}`, requestOptions)
       .then((response) => {
         return response.json()
       })
@@ -71,14 +72,14 @@ export default function ItemsList({ show }) {
 					let errorMessage = data.message;
 					if(data.statusCode === 401){
 						errorMessage = 'You are logged out, svp login again.';
-						removeCookie(Environment.AppName);
+						//removeCookie(Environment.AppName);
 					}
           setError(errorMessage);
         }
       })
       .catch(error => {
         console.error('There was an error.', error);
-        setError(`There was an error : ${Environment.HostDebug}${Constant.GetItem}`);
+        setError(`There was an error : ${Environment.HostDebug}${Constant.GetItem} error:${error}`);
       });
 	}, []);
 
@@ -105,8 +106,9 @@ export default function ItemsList({ show }) {
         value: itemsValue,
         version: version
       })
-    };
-    fetch(`${Environment.HostDebug}${Constant.SaveItem}`, requestOptions)
+		};
+    let token = Constant.SameOrigin ? '' : `?token=${cookies.token}`;
+    fetch(`${Environment.HostDebug}${Constant.SaveItem}${token}`, requestOptions)
       .then((response) => {
         return response.json()
       })

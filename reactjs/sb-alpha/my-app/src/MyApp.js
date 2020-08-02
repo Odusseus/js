@@ -1,11 +1,12 @@
-import styles from './css/cs.module.css';
 import React, { useState, useEffect } from 'react';
+import { useCookies } from 'react-cookie';
 import fetch from 'unfetch';
 import * as Constant from './constant';
 import * as Environment from './environment';
 import AppDataShow from './component/AppDataShow';
 import ItemsList from './component/ItemsList';
 import Item from './component/Item';
+import styles from './css/cs.module.css';
 
 //import ItemsEdit from './component/ItemsEdit';
 //import ItemEdit from './component/ItemEdit';
@@ -256,6 +257,7 @@ function SignIn({ show }) {
   const [isCookiePermanent, setIsCookiePermanent] = useState(false);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+  const [cookies, setCookie, removeCookie] = useCookies([Constant.Cookie]);
 
   const handelSubmit = (evt) => {
     setError('');
@@ -288,6 +290,8 @@ function SignIn({ show }) {
         console.log(data);
         if (data.statusCode === 200) {
           setMessage(data.message);
+         let tokenTimeout = parseInt(data.tokenTimeout,10);
+         setCookie(Constant.Cookie, data.token, {expires: new Date(Date.now() + tokenTimeout)});
         }
         else {
           if (data.statusCode !== undefined) {
@@ -358,6 +362,7 @@ function ItemLength({ show }) {
 
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+  const [cookies, setCookie, removeCookie] = useCookies([Constant.Cookie]);
 
   const handelSubmit = (evt) => {
     setError('');
@@ -368,9 +373,10 @@ function ItemLength({ show }) {
       credentials: 'include',
       headers: {
         'content-type': 'application/x-www-form-urlencoded'
-      },
+      }
     };
-    fetch(`${Environment.HostDebug}${Constant.Itemlength}`, requestOptions)
+    let token = Constant.SameOrigin ? '' : `&token=${cookies.token}`;
+    fetch(`${Environment.HostDebug}${Constant.Itemlength}${token}`, requestOptions)
       .then((response) => {
         return response.json()
       })
@@ -414,6 +420,7 @@ function SaveItem({ show }) {
 
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+  const [cookies, setCookie, removeCookie] = useCookies([Constant.Cookie]);
 
   const handelSubmit = (evt) => {
     setError('');
@@ -430,7 +437,10 @@ function SaveItem({ show }) {
         version: version
       })
     };
-    fetch(`${Environment.HostDebug}${Constant.SaveItem}`, requestOptions)
+    
+    let token = Constant.SameOrigin ? '' : `?token=${cookies.token}`;
+    
+    fetch(`${Environment.HostDebug}${Constant.SaveItem}${token}`, requestOptions)
       .then((response) => {
         return response.json()
       })
@@ -494,6 +504,7 @@ function GetItem({ show }) {
   
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+  const [cookies, setCookie, removeCookie] = useCookies([Constant.Cookie]);
 
   const handelSubmit = (evt) => {
     setError('');
@@ -506,7 +517,10 @@ function GetItem({ show }) {
         'content-type': 'application/x-www-form-urlencoded'
       }      
     };
-    fetch(`${Environment.HostDebug}${Constant.GetItem}`, requestOptions)
+
+    let token = Constant.SameOrigin ? '' : `?token=${cookies.token}`;
+    
+    fetch(`${Environment.HostDebug}${Constant.GetItem}${token}`, requestOptions)
       .then((response) => {
         return response.json()
       })
