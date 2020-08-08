@@ -20,11 +20,12 @@ export default function ItemForm({ item, addItem }) {
     if (!value) return;
 
     const newItem = new Item(id, value, comment);
-
-    setId('');
-    setValue('');
-    setComment('');    
     addItem(newItem);
+
+    const nextItem = new Item(0, '', '');
+    setId(nextItem.id);
+    setValue(nextItem.value);
+    setComment(nextItem.comment);    
   };
 
   const handleOnChange = (event) => {

@@ -10,7 +10,9 @@ import * as Environment from '../environment';
 export default function ItemsList({ show }) {
 
 	let displayInfo = show ? styles.displayInitial : styles.displayNone;
-	const [items, setItems] = useState([]);
+  
+  //const [displayInfo] = useState(displayInfox);
+  const [items, setItems] = useState([]);
 	const [item, setItem] = useState(new Item(0,'', ''));
 	const [error, setError] = useState('');
 	const [message, setMessage] = useState('');
@@ -45,17 +47,8 @@ export default function ItemsList({ show }) {
 						messageVersion = message.version;
 					}
 					setItems(itemsValue);
-					setVersion(messageVersion);
-					// TODO refactoring
-					let maxId = 0;
-					for (let i = 0; i < itemsValue.length; i++) {
-						let id = itemsValue[i].id;
-						if( id > maxId) {
-							maxId = id;
-						} 					
-					}
-					if(maxId > 0) maxId++;
-					setItem(new Item(maxId));
+					setVersion(messageVersion);				
+					setItem(new Item(0, '', ''));
         }
         else {
 					let errorMessage = data.message;
@@ -148,13 +141,14 @@ export default function ItemsList({ show }) {
       itemsList = [];
     }
 		if(newItem.id === '' || newItem.id === 0){
-      newItem.id = 1;
+      newItem.id = 0;
       for (let i = 0; i < itemsList.length; i++) {
         let id = itemsList[i].id;
         if( id > newItem.id) {
-          newItem.id = ++id;
+          newItem.id = id;
         } 
       }
+      newItem.id ++;
     }
     let newList = itemsList.filter(item => item.id !== newItem.id);
     let newInitialState = [...newList, newItem];
