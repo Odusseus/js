@@ -12,15 +12,6 @@ import * as Environment from '../environment';
 export default function ItemsList({ show }) {
 
 	let displayInfo = show ? styles.displayInitial : styles.displayNone;
-	// const newInitialState = [];
-
-	//  if (newInitialState.length === 0) {
-
-	//  	newInitialState.push(new Item('va', 'ca'));
-	//  	newInitialState.push(new Item('vb', 'cb'));
-	//  	newInitialState.push(new Item('vc', 'cc'));
-	//  }
-
 	const [items, setItems] = useState([]);
 	const [item, setItem] = useState(new Item(0));
 	const [error, setError] = useState('');
@@ -154,21 +145,19 @@ export default function ItemsList({ show }) {
 	}
 
 	const addItem = (newItem) => {
+		if(newItem.id === 0){
+      newItem.id = 1;
+      for (let i = 0; i < items.length; i++) {
+        let id = items[i].id;
+        if( id > newItem.id) {
+          newItem.id = ++id;
+        } 
+      }
+		}
 		let newList = items.filter(item => item.id !== newItem.id);
 		const newInitialState = [...newList, newItem];
 		const newInitialStateSoort = newInitialState.sort(compareValues('value'));
-		// TODO refactoring
 		setItems(newInitialStateSoort);
-		let maxId = 0;
-		for (let i = 0; i < newInitialStateSoort.length; i++) {
-			let id = newInitialStateSoort[i].id;
-			if( id > maxId) {
-				maxId = id;
-			} 
-		}	
-		if(maxId > 0) maxId++;	
-		const resetItem = new Item(maxId);
-		setItem(resetItem);		
 		setSave(true);
 	};
 
