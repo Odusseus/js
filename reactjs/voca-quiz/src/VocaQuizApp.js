@@ -139,7 +139,7 @@ function Info({ show }) {
   let displayInfo = show ? styles.displayInitial : styles.displayNone;
   return (
     <div className={displayInfo}>
-      <h1>Item 1.0</h1>
+      <h1>Item 1.0.1 8-8-2020 Basic version</h1>
     </div>
   );
 }
