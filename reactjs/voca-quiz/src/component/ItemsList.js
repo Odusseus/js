@@ -7,13 +7,11 @@ import ItemForm from './ItemForm';
 import * as Constant from '../constant';
 import * as Environment from '../environment';
 
-
-
 export default function ItemsList({ show }) {
 
 	let displayInfo = show ? styles.displayInitial : styles.displayNone;
 	const [items, setItems] = useState([]);
-	const [item, setItem] = useState(new Item(0));
+	const [item, setItem] = useState(new Item(0,'', ''));
 	const [error, setError] = useState('');
 	const [message, setMessage] = useState('');
 	const [version, setVersion] = useState(0);
@@ -145,27 +143,30 @@ export default function ItemsList({ show }) {
 	}
 
 	const addItem = (newItem) => {
-		if(newItem.id === 0){
+    let  itemsList =  items;
+    if(itemsList === undefined){
+      itemsList = [];
+    }
+		if(newItem.id === '' || newItem.id === 0){
       newItem.id = 1;
-      for (let i = 0; i < items.length; i++) {
-        let id = items[i].id;
+      for (let i = 0; i < itemsList.length; i++) {
+        let id = itemsList[i].id;
         if( id > newItem.id) {
           newItem.id = ++id;
         } 
       }
-		}
-		let newList = items.filter(item => item.id !== newItem.id);
-		const newInitialState = [...newList, newItem];
-		const newInitialStateSoort = newInitialState.sort(compareValues('value'));
+    }
+    let newList = itemsList.filter(item => item.id !== newItem.id);
+    let newInitialState = [...newList, newItem];
+		let newInitialStateSoort = newInitialState.sort(compareValues('value'));
 		setItems(newInitialStateSoort);
-		setSave(true);
+    setSave(true);
+    setItem(new Item(0, '', ''));
 	};
 
 	const handleRemoveClick = (index) => {
 		const newItems = [...items];
-
 		newItems.splice(index, 1);
-
 		setItems(newItems);
 		saveItem();
 	};
