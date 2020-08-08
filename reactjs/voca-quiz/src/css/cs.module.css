@@ -1,0 +1,97 @@
+
+.event{
+  width: 100%;
+}
+
+.group {
+  font-weight: bold;
+  /* display: inline-block; */
+  padding-right: 10px;
+  /* width: 100px; */
+}
+.id {
+  display: inline-block;
+  padding-right: 10px;
+  width: 20px;
+  display: none;
+  }
+
+.date {
+display: inline-block;
+padding-right: 10px;
+width: 90px;
+}
+
+.day {
+  display: inline-block;
+  padding-right: 10px;
+  width: 90px;
+  }
+
+.description {
+  display: inline-block;
+  /* padding-right: 10px; */
+  width: 200px;
+}
+
+.type {
+  display: inline-block;
+  width: 70px;
+  padding-right: 10px;
+}
+
+.button {
+  display: inline-block;
+  padding-right: 10px;
+}
+
+.inputFieldLabel {
+  padding-right: 5px;
+  width: 90px;
+  display: inline-block;
+}
+
+.inputField {
+  width: 300px;
+}
+
+.fieldset {
+  white-space: nowrap;
+}
+
+.debug {
+  display: none;
+}
+
+.displayNone {
+  display: none;
+}
+
+.displayInitial {
+  display: initial;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  xbackground-color: #333;
+}
+
+lix {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: #111;
+}
+
