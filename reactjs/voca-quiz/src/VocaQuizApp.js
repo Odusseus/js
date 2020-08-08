@@ -175,7 +175,7 @@ function CreateAccount({ show }) {
         email: email
       })
     };
-    fetch(`${Environment.HostDebug}${Constant.UserCreateApi}`, requestOptions)
+    fetch(`${Environment.Host}${Constant.UserCreateApi}`, requestOptions)
       .then((response) => {
         return response.json()
       })
@@ -277,7 +277,7 @@ function SignIn({ show }) {
       })
     };
 
-    fetch(`${Environment.HostDebug}${Constant.UserLoginApi}`, requestOptions)
+    fetch(`${Environment.Host}${Constant.UserLoginApi}`, requestOptions)
       .then((response) => {
         try {
           return response.json();
@@ -304,7 +304,7 @@ function SignIn({ show }) {
       })
       .catch(error => {
         console.error('There was an error.', error);
-        setError(`There was an error : ${Environment.HostDebug}${Constant.UserLoginApi}`);
+        setError(`There was an error : ${Environment.Host}${Constant.UserLoginApi}`);
       });
   }
 
@@ -376,7 +376,7 @@ function ItemLength({ show }) {
       }
     };
     let token = Constant.SameOrigin ? '' : `&token=${cookies.token}`;
-    fetch(`${Environment.HostDebug}${Constant.Itemlength}${token}`, requestOptions)
+    fetch(`${Environment.Host}${Constant.Itemlength}${token}`, requestOptions)
       .then((response) => {
         return response.json()
       })
@@ -391,7 +391,7 @@ function ItemLength({ show }) {
       })
       .catch(error => {
         console.error('There was an error.', error);
-        setError(`There was an error : ${Environment.HostDebug}${Constant.UserLoginApi}`);
+        setError(`There was an error : ${Environment.Host}${Constant.UserLoginApi}`);
       });
   }
 
@@ -440,7 +440,7 @@ function SaveItem({ show }) {
     
     let token = Constant.SameOrigin ? '' : `?token=${cookies.token}`;
     
-    fetch(`${Environment.HostDebug}${Constant.SaveItem}${token}`, requestOptions)
+    fetch(`${Environment.Host}${Constant.SaveItem}${token}`, requestOptions)
       .then((response) => {
         return response.json()
       })
@@ -455,7 +455,7 @@ function SaveItem({ show }) {
       })
       .catch(error => {
         console.error('There was an error.', error);
-        setError(`There was an error : ${Environment.HostDebug}${Constant.UserLoginApi}`);
+        setError(`There was an error : ${Environment.Host}${Constant.UserLoginApi}`);
       });
   }
 
@@ -520,7 +520,7 @@ function GetItem({ show }) {
 
     let token = Constant.SameOrigin ? '' : `?token=${cookies.token}`;
     
-    fetch(`${Environment.HostDebug}${Constant.GetItem}${token}`, requestOptions)
+    fetch(`${Environment.Host}${Constant.GetItem}${token}`, requestOptions)
       .then((response) => {
         return response.json()
       })
@@ -535,7 +535,7 @@ function GetItem({ show }) {
       })
       .catch(error => {
         console.error('There was an error.', error);
-        setError(`There was an error : ${Environment.HostDebug}${Constant.UserLoginApi}`);
+        setError(`There was an error : ${Environment.Host}${Constant.UserLoginApi}`);
       });
   }
 

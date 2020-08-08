@@ -1,2 +1,2 @@
-export const AppName = 'test';
-export const HostDebug = 'http://local.elpida.odusseus.org';
+export const AppName = 'voca';
+export const Host = 'http://local.elpida.odusseus.org';

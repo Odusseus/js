@@ -40,7 +40,7 @@ export default function ItemsList({ show }) {
       }
 		};
 		let token = Constant.SameOrigin ? '' : `?token=${cookies.token}`;
-    fetch(`${Environment.HostDebug}${Constant.GetItem}${token}`, requestOptions)
+    fetch(`${Environment.Host}${Constant.GetItem}${token}`, requestOptions)
       .then((response) => {
         return response.json()
       })
@@ -79,7 +79,7 @@ export default function ItemsList({ show }) {
       })
       .catch(error => {
         console.error('There was an error.', error);
-        setError(`There was an error : ${Environment.HostDebug}${Constant.GetItem} error:${error}`);
+        setError(`There was an error : ${Environment.Host}${Constant.GetItem} error:${error}`);
       });
 	}, []);
 
@@ -108,7 +108,7 @@ export default function ItemsList({ show }) {
       })
 		};
     let token = Constant.SameOrigin ? '' : `?token=${cookies.token}`;
-    fetch(`${Environment.HostDebug}${Constant.SaveItem}${token}`, requestOptions)
+    fetch(`${Environment.Host}${Constant.SaveItem}${token}`, requestOptions)
       .then((response) => {
         return response.json()
       })
@@ -123,7 +123,7 @@ export default function ItemsList({ show }) {
       })
       .catch(error => {
         console.error('There was an error.', error);
-        setError(`There was an error : ${Environment.HostDebug}${Constant.SaveItem}`);
+        setError(`There was an error : ${Environment.Host}${Constant.SaveItem}`);
       });
   }
 
