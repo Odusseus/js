@@ -25,7 +25,7 @@ export default function ItemForm({ item, addItem }) {
     const nextItem = new Item(0, '', '');
     setId(nextItem.id);
     setValue(nextItem.value);
-    setComment(nextItem.comment);    
+    setComment(nextItem.comment);
   };
 
   const handleOnChange = (event) => {
@@ -46,8 +46,8 @@ export default function ItemForm({ item, addItem }) {
         </div>
         <div className={styles.inputField}>
           <label className={styles.inputFieldLabel}>
-            Value
-              <input 
+            <div>Value</div>
+            <input
               className={styles.inputField}
               type="text"
               value={value}
@@ -58,13 +58,15 @@ export default function ItemForm({ item, addItem }) {
         </div>
         <div className={styles.inputField}>
           <label className={styles.inputFieldLabel}>
-            comment
-            <input className={styles.inputField}
-              type="text"
+            <div>Comment</div>
+            <textarea
+              rows="5"
+              cols="40"
+              name="comment"
               value={comment}
-              onChange={e => setComment(e.target.value)}
               placeholder="my comment..."
-            />
+              onChange={e => setComment(e.target.value)}>
+            </textarea>
           </label>
         </div>
         <div className={styles.button}>

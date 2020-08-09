@@ -142,6 +142,10 @@ export default function ItemsList({ show }) {
 	}
 
 	const addItem = (newItem) => {
+		// TODO
+		// let comment = newItem.comment;
+		// let newComment = comment.replace('\\\n', '\\~{"\\\n"}');
+		// newItem.comment = newComment;
     let  itemsList =  items;
     if(itemsList === undefined){
       itemsList = [];

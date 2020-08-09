@@ -8,10 +8,11 @@ export default function ItemRow({ item, index, handleItemClick, handleRemoveClic
         {item.id}
       </div>
       <div className={styles.description}>
-        Value: {item.value}
+          Value:
+          {item.value}
       </div>
       <div>
-        Comment: {item.comment}
+          {item.comment}
       </div>
       <div className={styles.button}>
         <button onClick={() => handleItemClick(index)}>Edit</button>
