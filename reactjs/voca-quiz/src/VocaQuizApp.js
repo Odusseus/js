@@ -8,69 +8,88 @@ import ItemsList from './component/ItemsList';
 import Item from './component/Item';
 import styles from './css/cs.module.css';
 
-//import ItemsEdit from './component/ItemsEdit';
-//import ItemEdit from './component/ItemEdit';
-//import ItemsShow from './component/ItemsShow';
-//import Item from './component/Item';
-//import Items from './component/Items';
-
-// let newItems = new Items();    
-//     let itemA = new Item('va', 'ca');
-//     let itemB = new Item('vb', 'cb');
-//     let itemC = new Item('vc', 'cc');
-//     newItems.Add(itemA);
-//     newItems.Add(itemB);
-//     newItems.Add(itemC);  
-
 export default function MyApp() {
   const [showInfo, setShowInfo] = useState(false);
-  const [showNewAccount, setShowNewAccount] = useState(false);
+  // const [showNewAccount, setShowNewAccount] = useState(false);
   const [showSignIn, setShowSignIn] = useState(false);
-  const [showItemLength, setShowItemLength] = useState(false);
-  const [showSaveItem, setShowSaveItem] = useState("");
-  const [showGetItem, setShowGetItem] = useState("");
+  // const [showItemLength, setShowItemLength] = useState(false);
+  // const [showSaveItem, setShowSaveItem] = useState("");
+  // const [showGetItem, setShowGetItem] = useState("");
   const [showItemsList, setShowItemsList] = useState(false);
-  const [initialState, setInitialState] = useState([]);
+  //const [initialState, setInitialState] = useState([]);
 
-  // useEffect ( () => {
-  //   const newInitialState = initialState;
-  //   newInitialState.push( new Item('va', 'ca'));
-  //   newInitialState.push( new Item('vb', 'cb'));
-  //   newInitialState.push( new Item('vc', 'cc')); 
-  //   setInitialState(newInitialState);
-  //  }, []);
-
-  //const [showItemsEdit, setShowItemsEdit] = useState(false);
-  //const [item, setItem] = useState(new Item('',''));
- // const [items, setItems] = useState(newItems);
-
-  
-    //useEffect ( () => {
-    // let newItems = new Items();    
-    // let itemA = new Item('va', 'ca');
-    // let itemB = new Item('vb', 'cb');
-    // let itemC = new Item('vc', 'cc');
-    // newItems.Add(itemA);
-    // newItems.Add(itemB);
-    // newItems.Add(itemC);  
-    //setItems(newItems);
-    //}, [])
-  
-    
   function info() {
     let show = showInfo;
     setShowInfo(!show);
   }
 
-  function newAccount() {
-    let show = showNewAccount;
-    setShowNewAccount(!show);
-  }
+  // function newAccount() {
+  //   let show = showNewAccount;
+  //   setShowNewAccount(!show);
+  // }
 
   function signIn() {
     let show = showSignIn;
     setShowSignIn(!show);
   }
+
+  // function itemLength() {
+  //   let show = showItemLength;
+  //   setShowItemLength(!show);
+  // }
+
+  // function saveItem() {
+  //   let show = showSaveItem;
+  //   setShowSaveItem(!show);
+  // }
+
+  // function getItem() {
+  //   let show = showGetItem;
+  //   setShowGetItem(!show);
+  // }
+
+  function listItems() {
+    let show = showItemsList;
+    setShowItemsList(!show);
+  }
+
+  const greeting = "Hello Voca-Quiz!";
+  const myApp =
+    <div className={styles.event}>
+      <nav>
+        <button onClick={info}>Info</button>
+        {/* <button onClick={newAccount}>New account</button> */}
+        <button onClick={signIn}>Sign in</button>
+        {/* <button onClick={itemLength}>Item length</button>
+        <button onClick={saveItem}>Save Item</button>
+        <button onClick={getItem}>Get Item</button> */}
+        {/* <button onClick={editItems}>Show Items</button> */}
+        <button onClick={listItems}>Show Items List</button>
+      </nav>
+      <div className={styles.group}>
+        <h1>{greeting}</h1>
+        <Info show={showInfo} />
+        {/* <CreateAccount show={showNewAccount} /> */}
+        <SignIn show={showSignIn} />
+        {/* <ItemLength show={showItemLength} />
+        <SaveItem show={showSaveItem} />
+        <GetItem show={showGetItem} /> */}
+        {/* <AppDataShow /> */}
+        {/* <ItemsEdit show={true} /> */}
+        <ItemsList show={showItemsList} />
+      </div>
+    </div>
+    ;
+
+  return myApp;
+}
+
+function Info({ show }) {
+  let displayInfo = show ? styles.displayInitial : styles.displayNone;
+  const [showItemLength, setShowItemLength] = useState(false);
+  const [showSaveItem, setShowSaveItem] = useState(false);
+  const [showGetItem, setShowGetItem] = useState(false);
+
 
   function itemLength() {
     let show = showItemLength;
@@ -87,61 +106,24 @@ export default function MyApp() {
     setShowGetItem(!show);
   }
 
-  // function editItems() {
-  //   let show = showItemsEdit;
-  //   setShowItemsEdit(!show);
-  // }  
-
-  function listItems() {
-    let show = showItemsList;
-    setShowItemsList(!show);
-  }  
-
-//   function parentFunction(id){
-//     //alert(id);
-//     let editItem = items.GetItem(id);
-//     let newItem =  editItem[0];
-//     setItem(newItem);
-// }
-
-  const greeting = "Hello Voca-Quiz!";
-  const myApp =
-    <div className={styles.event}>
+  return (
+    <div className={displayInfo}>
       <nav>
-        <button onClick={info}>Info</button>
-        <button onClick={newAccount}>New account</button>
-        <button onClick={signIn}>sign in</button>
         <button onClick={itemLength}>Item length</button>
         <button onClick={saveItem}>Save Item</button>
         <button onClick={getItem}>Get Item</button>
-        {/* <button onClick={editItems}>Show Items</button> */}
-        <button onClick={listItems}>Show Items List</button>
       </nav>
+      <div>
+        <p>Item 1.0.4 9-8-2020 Refresh item list when is showed.</p>
+        <p>Item 1.0.3 9-8-2020 Timeout cookie is fixed.</p>
+        <p>Item 1.0.2 8-8-2020 Save new item is fixed.</p>
+        <p>Item 1.0.1 8-8-2020 Basic version.</p>
+      </div>
       <div className={styles.group}>
-        <h1>{greeting}</h1>
-        <Info show={showInfo} />
-        <CreateAccount show={showNewAccount} />
-        <SignIn show={showSignIn} />
         <ItemLength show={showItemLength} />
         <SaveItem show={showSaveItem} />
-        <GetItem show={showGetItem} />        
-        {/* <AppDataShow /> */}
-        {/* <ItemsEdit show={true} /> */}
-        <ItemsList show={showItemsList}/>
+        <GetItem show={showGetItem} />
       </div>
-    </div>
-    ;
-
-  return myApp;
-}
-
-function Info({ show }) {
-  let displayInfo = show ? styles.displayInitial : styles.displayNone;
-  return (
-    <div className={displayInfo}>
-      <h1>Item 1.0.2 9-8-2020 Timeout cookie is fixed.</h1>
-      <h1>Item 1.0.2 8-8-2020 Save new item is fixed.</h1>
-      <h1>Item 1.0.1 8-8-2020 Basic version.</h1>
     </div>
   );
 }
@@ -260,7 +242,12 @@ function SignIn({ show }) {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [cookies, setCookie, removeCookie] = useCookies([Constant.Cookie]);
+  const [showNewAccount, setShowNewAccount] = useState(false);
 
+  function newAccount() {
+    let show = showNewAccount;
+    setShowNewAccount(!show);
+  }
   const handelSubmit = (evt) => {
     setError('');
     setMessage('');
@@ -292,9 +279,9 @@ function SignIn({ show }) {
         console.log(data);
         if (data.statusCode === 200) {
           setMessage(data.message);
-         let tokenTimeoutMilliSeconde = parseInt(data.tokenTimeoutSeconde, 10) * 1000;
-         let expiresTime = new Date(tokenTimeoutMilliSeconde);
-         setCookie(Constant.Cookie, data.token, {expires: expiresTime});
+          let tokenTimeoutMilliSeconde = parseInt(data.tokenTimeoutSeconde, 10) * 1000;
+          let expiresTime = new Date(tokenTimeoutMilliSeconde);
+          setCookie(Constant.Cookie, data.token, { expires: expiresTime });
         }
         else {
           if (data.statusCode !== undefined) {
@@ -313,6 +300,8 @@ function SignIn({ show }) {
 
   return (
     <div className={displayInfo}>
+      <button onClick={newAccount}>New account</button>
+      <CreateAccount show={showNewAccount} />
       <form onSubmit={handelSubmit}>
         <fieldset className={styles.fieldset}>
           <legend>Login:</legend>
@@ -440,9 +429,9 @@ function SaveItem({ show }) {
         version: version
       })
     };
-    
+
     let token = Constant.SameOrigin ? '' : `?token=${cookies.token}`;
-    
+
     fetch(`${Environment.Host}${Constant.SaveItem}${token}`, requestOptions)
       .then((response) => {
         return response.json()
@@ -504,7 +493,7 @@ function SaveItem({ show }) {
 function GetItem({ show }) {
 
   let displayInfo = show ? styles.displayInitial : styles.displayNone;
-  
+
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [cookies, setCookie, removeCookie] = useCookies([Constant.Cookie]);
@@ -518,11 +507,11 @@ function GetItem({ show }) {
       method: 'GET',
       headers: {
         'content-type': 'application/x-www-form-urlencoded'
-      }      
+      }
     };
 
     let token = Constant.SameOrigin ? '' : `?token=${cookies.token}`;
-    
+
     fetch(`${Environment.Host}${Constant.GetItem}${token}`, requestOptions)
       .then((response) => {
         return response.json()

@@ -8,10 +8,7 @@ import * as Constant from '../constant';
 import * as Environment from '../environment';
 
 export default function ItemsList({ show }) {
-
-	let displayInfo = show ? styles.displayInitial : styles.displayNone;
-  
-  //const [displayInfo] = useState(displayInfox);
+  const [displayInfo, setDisplayInfo] = useState(styles.displayInitial);
   const [items, setItems] = useState([]);
 	const [item, setItem] = useState(new Item(0,'', ''));
 	const [error, setError] = useState('');
@@ -20,6 +17,10 @@ export default function ItemsList({ show }) {
 	const [save, setSave] = useState(false);
 	const [cookies, setCookie, removeCookie] = useCookies([Constant.Cookie]);
 
+	let showDisplayInfo = show ? styles.displayInitial : styles.displayNone;
+  if(displayInfo !== showDisplayInfo){
+		setDisplayInfo(showDisplayInfo);
+	}
   useEffect(() => {
     setError('');
     setMessage('');    
@@ -43,7 +44,12 @@ export default function ItemsList({ show }) {
 					let messageVersion = 0
 					if(data.message) {
 						let message = JSON.parse(data.message);
-						itemsValue = JSON.parse(message.value);
+						try {
+							itemsValue = JSON.parse(message.value);
+						}
+						catch(err) {
+							// do nothing. Value is not correct.
+						}
 						messageVersion = message.version;
 					}
 					setItems(itemsValue);
@@ -63,7 +69,7 @@ export default function ItemsList({ show }) {
         console.error('There was an error.', error);
         setError(`There was an error : ${Environment.Host}${Constant.GetItem} error:${error}`);
       });
-	}, []);
+	}, [displayInfo]);
 
 	useEffect(() => {
 		if(save) {
