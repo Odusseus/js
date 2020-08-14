@@ -1,11 +1,13 @@
 import styles from '../css/cs.module.css';
 import React, { useState, useEffect } from 'react';
-import { useCookies } from 'react-cookie';
+import * as Constant from '../constant';
+import * as Environment from '../environment';
+import Error from './Error';
 import Item from './Item';
 import ItemRow from './ItemRow';
 import ItemForm from './ItemForm';
-import * as Constant from '../constant';
-import * as Environment from '../environment';
+import Message from './Message';
+import {useCookies} from 'react-cookie';
 
 export default function ItemsList({ show }) {
   const [displayInfo, setDisplayInfo] = useState(styles.displayInitial);
@@ -15,7 +17,7 @@ export default function ItemsList({ show }) {
 	const [message, setMessage] = useState('');
 	const [version, setVersion] = useState(0);
 	const [save, setSave] = useState(false);
-	const [cookies, setCookie, removeCookie] = useCookies([Constant.Cookie]);
+	const [cookies] = useCookies([Constant.Cookie]);
 
 	let showDisplayInfo = show ? styles.displayInitial : styles.displayNone;
   if(displayInfo !== showDisplayInfo){
@@ -202,17 +204,3 @@ export default function ItemsList({ show }) {
 		</div>
 	);
 }; 
-
-function Error({ error }) {
-
-  return (<div>
-    {error}
-  </div>)
-}
-
-function Message({ message }) {
-
-  return (<div>
-    {message}
-  </div>)
-}
