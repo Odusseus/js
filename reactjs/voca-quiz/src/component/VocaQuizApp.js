@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import * as Constant from './constant';
 import * as Environment from './environment';
-import Error from './component/Error';
+import Common from './Common';
+import Error from './Error';
 import Fetch from 'unfetch';
-import Info from './component/Info';
-import ItemsList from './component/ItemsList';
-import Message from './component/Message';
-import Styles from './css/cs.module.css';
+import Info from './Info';
+import ItemsList from './ItemsList';
+import Message from './Message';
+import Styles from '../css/cs.module.css';
 import {useCookies} from 'react-cookie';
 
 export default function MyApp() {
@@ -49,50 +50,6 @@ export default function MyApp() {
   return myApp;
 }
 
-// function Info({ show }) {
-//   let displayInfo = show ? Styles.displayInitial : Styles.displayNone;
-//   const [showItemLength, setShowItemLength] = useState(false);
-//   const [showSaveItem, setShowSaveItem] = useState(false);
-//   const [showGetItem, setShowGetItem] = useState(false);
-
-
-//   function itemLength() {
-//     let show = showItemLength;
-//     setShowItemLength(!show);
-//   }
-
-//   function saveItem() {
-//     let show = showSaveItem;
-//     setShowSaveItem(!show);
-//   }
-
-//   function getItem() {
-//     let show = showGetItem;
-//     setShowGetItem(!show);
-//   }
-
-//   return (
-//     <div className={displayInfo}>
-//       <nav>
-//         <button onClick={itemLength}>Item length</button>
-//         <button onClick={saveItem}>Save Item</button>
-//         <button onClick={getItem}>Get Item</button>
-//       </nav>
-//       <div>
-//         <p>Item 1.0.4 9-8-2020 Refresh item list when is showed.</p>
-//         <p>Item 1.0.3 9-8-2020 Timeout cookie is fixed.</p>
-//         <p>Item 1.0.2 8-8-2020 Save new item is fixed.</p>
-//         <p>Item 1.0.1 8-8-2020 Basic version.</p>
-//       </div>
-//       <div className={Styles.group}>
-//         <ItemLength show={showItemLength} />
-//         <SaveItem show={showSaveItem} />
-//         <GetItem show={showGetItem} />
-//       </div>
-//     </div>
-//   );
-// }
-
 function CreateAccount({ show }) {
 
   let displayInfo = show ? Styles.displayInitial : Styles.displayNone;
@@ -115,13 +72,13 @@ function CreateAccount({ show }) {
         'content-type': 'application/x-www-form-urlencoded'
       },
       body: JSON.stringify({
-        appname: Environment.AppName,
+        appname: Constant.AppName,
         nickname: nickname,
         password: password,
         email: email
       })
     };
-    Fetch(`${Environment.Host}${Constant.UserCreateApi}`, requestOptions)
+    Fetch(`${Common.GetHost()}${Constant.UserCreateApi}`, requestOptions)
       .then((response) => {
         return response.json()
       })
@@ -217,14 +174,14 @@ function SignIn({ show }) {
         'content-type': 'application/x-www-form-urlencoded'
       },
       body: JSON.stringify({
-        appname: Environment.AppName,
+        appname: Constant.AppName,
         nickname: nickname,
         password: password,
         iscookiepermanent: isCookiePermanent
       })
     };
 
-    Fetch(`${Environment.Host}${Constant.UserLoginApi}`, requestOptions)
+    Fetch(`${Common.GetHost()}${Constant.UserLoginApi}`, requestOptions)
       .then((response) => {
         try {
           return response.json();
@@ -252,7 +209,7 @@ function SignIn({ show }) {
       })
       .catch(error => {
         console.error('There was an error.', error);
-        setError(`There was an error : ${Environment.Host}${Constant.UserLoginApi}`);
+        setError(`There was an error : ${Common.GetHost()}${Constant.UserLoginApi}`);
       });
   }
 

@@ -1,9 +1,10 @@
 import styles from '../css/cs.module.css';
 import React, { useState, useEffect } from 'react';
-import * as Constant from '../constant';
-import * as Environment from '../environment';
+import * as Constant from './constant';
+import * as Environment from './environment';
 import Error from './Error';
-import Item from './Item';
+import Common from './Common';
+import Item from './class/Item';
 import ItemRow from './ItemRow';
 import ItemForm from './ItemForm';
 import Message from './Message';
@@ -34,7 +35,7 @@ export default function ItemsList({ show }) {
       }
 		};
 		let token = Constant.SameOrigin ? '' : `?token=${cookies.token}`;
-    fetch(`${Environment.Host}${Constant.GetItem}${token}`, requestOptions)
+    fetch(`${Common.GetHost()}${Constant.GetItem}${token}`, requestOptions)
       .then((response) => {
         return response.json()
       })
@@ -46,13 +47,15 @@ export default function ItemsList({ show }) {
 					let messageVersion = 0
 					if(data.message) {
 						let message = JSON.parse(data.message);
-						try {
-							itemsValue = JSON.parse(message.value);
-						}
-						catch(err) {
+						if(message != null){
+							messageVersion = message.version;
+						  try {
+							  itemsValue = JSON.parse(message.value);
+						  }
+						  catch(err) {
 							// do nothing. Value is not correct.
+							}
 						}
-						messageVersion = message.version;
 					}
 					setItems(itemsValue);
 					setVersion(messageVersion);				
@@ -62,14 +65,14 @@ export default function ItemsList({ show }) {
 					let errorMessage = data.message;
 					if(data.statusCode === 401){
 						errorMessage = 'You are logged out, svp login again.';
-						//removeCookie(Environment.AppName);
+						//removeCookie(Constant.AppName);
 					}
           setError(errorMessage);
         }
       })
       .catch(error => {
         console.error('There was an error.', error);
-        setError(`There was an error : ${Environment.Host}${Constant.GetItem} error:${error}`);
+        setError(`There was an error : ${Common.GetHost()}${Constant.GetItem} error:${error}`);
       });
 	}, [displayInfo]);
 
@@ -98,7 +101,7 @@ export default function ItemsList({ show }) {
       })
 		};
     let token = Constant.SameOrigin ? '' : `?token=${cookies.token}`;
-    fetch(`${Environment.Host}${Constant.SaveItem}${token}`, requestOptions)
+    fetch(`${Common.GetHost()}${Constant.SaveItem}${token}`, requestOptions)
       .then((response) => {
         return response.json()
       })
@@ -113,7 +116,7 @@ export default function ItemsList({ show }) {
       })
       .catch(error => {
         console.error('There was an error.', error);
-        setError(`There was an error : ${Environment.Host}${Constant.SaveItem}`);
+        setError(`There was an error : ${Common.GetHost()}${Constant.SaveItem}`);
       });
   }
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Error from './Error';
-import Item from './Item';
+import Item from './class/Item';
 import Message from './Message';
 import Styles from '../css/cs.module.css';
 
