@@ -1,1 +1,1 @@
-export const HostDebug = 'http://local.elpida.odusseus.org';
+export const HostLocal = 'http://local.elpida.odusseus.org';

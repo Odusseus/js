@@ -8,7 +8,7 @@ export const UserCreateApi = '/UserCreateApi.php';
 export const UserLoginApi = '/UserLoginApi.php';
 export const Cookie = 'token';
 export const SameOrigin = false;
-export const HostDebug = 'http://local.elpida.odusseus.org';
+export const HostLocal = 'http://local.elpida.odusseus.org';
 export const Host = 'https://www.odusseus.org/php/elpida';
 
 

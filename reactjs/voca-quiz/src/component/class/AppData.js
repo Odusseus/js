@@ -1,9 +1,9 @@
 export default class AppData {
-  debug;
+  local;
   appName;
 
   constructor(appName){
     this.appName = appName;
-    this.debug = false;
+    this.local = false;
   }
 }

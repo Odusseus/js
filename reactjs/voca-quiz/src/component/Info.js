@@ -54,10 +54,10 @@ export default function Info({ show }) {
       </nav>
       <div>
         <Checkbox 
-        title="Debug"
-        fnChange={v => {setAppData({ debug: v});
+        title="Local"
+        fnChange={v => {setAppData({ local: v});
                        }}
-        checked={appData.debug}
+        checked={appData.local}
         />
       </div>
       <div>
@@ -223,7 +223,7 @@ function GetItem({ show }) {
 
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
-  const [debug, setDebug] = useState(false);
+  const [local, setLocal] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies([Constant.Cookie]);
 
   const handelSubmit = (evt) => {
