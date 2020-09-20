@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import * as Constant from './constant';
-import * as Environment from './environment';
 import Common from './Common';
 import Error from './Error';
 import Fetch from 'unfetch';
@@ -157,11 +156,22 @@ function SignIn({ show }) {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [showNewAccount, setShowNewAccount] = useState(false);
-  const [cookie, setCookie] = useCookies([Constant.Cookie]);
+  const [cookie, setCookie, removeCookie] = useCookies([Constant.Cookie]);
 
   function newAccount() {
     let show = showNewAccount;
+    setError('');
+    setMessage('');
     setShowNewAccount(!show);
+  }
+  
+  function logOut() {
+    setError('');
+    removeCookie(Constant.Cookie);
+    setMessage('You are logged out.');
+    setNickname('');
+    setPassword('');
+    setIsCookiePermanent(false);
   }
   const handelSubmit = (evt) => {
     setError('');
@@ -216,6 +226,7 @@ function SignIn({ show }) {
   return (
     <div className={displayInfo}>
       <button onClick={newAccount}>New account</button>
+      <button onClick={logOut}>Log out</button>
       <CreateAccount show={showNewAccount} />
       <form onSubmit={handelSubmit}>
         <fieldset className={Styles.fieldset}>

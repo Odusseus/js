@@ -1,7 +1,6 @@
 import styles from '../css/cs.module.css';
 import React, { useState, useEffect } from 'react';
 import * as Constant from './constant';
-import * as Environment from './environment';
 import Error from './Error';
 import Common from './Common';
 import Item from './class/Item';
