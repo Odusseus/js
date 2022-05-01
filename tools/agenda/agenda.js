@@ -35,8 +35,6 @@ for (const [key, value] of Object.entries(agendas.agenda)) {
         eventDate.setFullYear(new Date().getFullYear());
     }
 
-
-
      if (eventDate >= today && (isAll || !value.isEveryYear)){
          var newEvent = new ag.Event(eventDate, value.event, value.description, value.url)
          var x = newEvent.date.ddmmyyyy();
@@ -49,20 +47,30 @@ for (const [key, value] of Object.entries(agendas.agenda)) {
   })
 
   var dayList = "<ul>";
+  var month = undefined;
+  var monthOld = undefined;
   for (const [key, value] of Object.entries(events.list)) {
-      var dateString = value.date.ddmmyyyy();
-    dayList += '<li>'
-    dayList += dateString+' '+value.event
+      month = value.date.getMonth();
+      if(monthOld == undefined){
+        monthOld = month;
+      }
+    if(month != monthOld){
+        monthOld = month;
+        dayList += '<br/>';
+    }
+    var dateString = value.date.ddmmyyyy();
+    dayList += '<li>';
+    dayList += dateString+' '+value.event;
     if(value.description){
-        dayList += ' '+value.description
+        dayList += ' '+value.description;
     }
     if(value.url){
-        dayList += ' <a href="'+value.url+'" target="_blank">'+value.url
-        dayList += '</a>'
+        dayList += ' <a href="'+value.url+'" target="_blank">'+value.url;
+        dayList += '</a>';
     }
-    dayList += '</li>' 
+    dayList += '</li>';
 }
-dayList += '<ul>' 
+dayList += '<ul>' ;
 
 
     output(dayList);

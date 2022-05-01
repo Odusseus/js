@@ -1,7 +1,7 @@
 var agendaList = {
   agenda: [
     {
-      "date": "1952-05-26T00:00:00",
+      "date": "1952-04-26T00:00:00",
       "event": "Sigfrid anniversaire",
       "isEveryYear":true
     },
@@ -147,6 +147,18 @@ var agendaList = {
     {
       "date": "2022-05-03T00:00:00",
       "event": "OZU 6 kamp"
+    },
+    {
+      "date": "2022-05-07T00:00:00",
+      "event": "Jeu de boule",
+      "description":"14 uur bierkantine",
+      "url":"https://open.van-ee.nl"
+    },
+    {
+      "date": "2022-05-17T00:00:00",
+      "event": "Hoogland Schaaktoernooi",
+      "description":"12u aanmelden",
+      "url":"https://www.schakeninhoogland.nl"
     },
     {
       "date": "2022-05-17T00:00:00",
