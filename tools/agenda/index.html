@@ -1,18 +1,35 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>
-            Agenda
-        </title>
-    </head>
-    <link href="../css/tools.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="agendalist.js"></script>
-    <script type="text/javascript" src="../js/tools.js"></script>
-    <script type="text/javascript" src="agenda.js" defer></script>
+
+<head>
+    <title>
+        Agenda
+    </title>
+</head>
+<link href="../css/tools.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="agendalist.js"></script>
+<!-- https://github.com/bitwiseshiftleft/sjcl/wiki -->
+<script type="text/javascript" src="../js/sjcl.js"></script>
+<script type="text/javascript" src="../js/tools.js"></script>
+<script type="text/javascript" src="agenda.js" defer></script>
+
 </html>
+
 <body>
     <div>
-        <input type="button" value="Show all" onclick="ag.ShowList(true)">
+
+        <div id="key" class="labelInput">
+            <label>Key</label>
+            <input type="password" id="keyField" />
+            <input type="button" value="Set" onclick="ag.SetCookie('keyField')">
+            <input type="button" value="Get" onclick="ag.GetCookie('keyField')">
+        </div>
+    </div>
+    <div>
+        <div class="labelInput">
+            <input type="button" value="Show short" onclick="ag.ShowList(false)">
+            <input type="button" value="Show all" onclick="ag.ShowList(true)">
+        </div>
     </div>
     <div id="output">
     </div>

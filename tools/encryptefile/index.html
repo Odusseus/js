@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Encrypte!
+        </title>
+    </head>
+    <link href="../css/tools.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="json/private/input.js" defer></script>
+    <!-- https://github.com/bitwiseshiftleft/sjcl/wiki -->
+    <script type="text/javascript" src="../js/sjcl.js"></script>
+    <script type="text/javascript" src="encryptefile.js" defer></script>
+</html>
+<body>
+    <div id="key">
+        <input type="text" id="keyField"/>
+    </div>
+    <div>
+        <input type="button" value="Set key" onclick="ef.SetCookie('keyField')">
+    </div>
+    <div>
+        <input type="button" value="Get key" onclick="ef.GetCookie('keyField')">
+    </div>
+    <div>
+        <input type="button" value="Encrypte" onclick="ef.Encrypte()">
+    </div>
+    <div>
+        <input type="button" value="Decrypte" onclick="ef.Decrypte()">
+    </div>
+    
+    <div id="input">
+    </div>
+<p>=========================</p>
+    <div id="output">
+    </div>
+    <p>=========================</p>
+    <div id="outputDecrypted">
+    </div>
+
+</body>
