@@ -1,0 +1,10 @@
+﻿var ChessMachine = ChessMachine || {};
+ChessMachine.Game = function () {
+    "use strict";
+
+    this.coinPurses = 0;
+    this.cashRegister = 0;
+    this.startCoinPurses = 0;
+    this.games = 0;
+    
+};

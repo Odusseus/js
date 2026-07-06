@@ -1,0 +1,482 @@
+﻿h1{
+    padding-bottom: 5px;
+    font-size:xx-large
+}
+
+h2{
+    padding: 5px;
+    font-size:large
+}
+
+legend{
+    padding: 5px;
+    font-size:larger;
+}
+
+label{
+    font-size:large;
+}
+
+.bold{
+    font-weight:bold;
+}
+
+.text{
+    width:200px;
+    float:left;
+    text-align:left;
+    font-size:larger;
+    color:GrayText;
+}
+
+.text1{
+    float:left;
+    width:120px;
+    text-align:left;
+    font-size:large;
+    color:darkgray;
+}
+
+.alarm1, .alarm2 {
+    float:left;
+    width:80px;
+    font-size:large;
+    color:gold;
+}
+
+.text2, .text3{
+    float:left;
+    width:100px;
+    text-align:left;
+    font-size:large;
+    color:darkgray;
+}
+
+.text4{
+    float:left;
+    text-align:right;
+    font-size:large;
+    color:darkgray;
+}
+
+
+.textLuckNumber{
+    float:right;
+    width:100px;
+    text-align:left;
+    font-size:large;
+    color:darkgray;
+}
+
+#win1, #win2, #win3, #luckyNumber, #luckyNumberResult {
+    width:390px;
+} 
+
+.luckyNumber1{
+    float:left;
+    width:185px;
+    text-align:left;
+    font-size:large;
+    color:darkgray;
+ }
+
+#luckyNumber .text2{
+    width:200px;
+    color:HighlightText;
+}
+
+#luckyNumber .text3{
+    color:yellow;
+}
+
+.win {
+    font-size: large;
+    color: gold;
+}
+
+.lose {
+    font-size: large;
+    color: darkmagenta;
+}
+
+.result{
+    width:200px;
+    float:left;
+}
+
+#coinPurses{
+    /*width:180px;*/
+    /*float:left;
+    text-align:right;*/
+    font-size:x-large;
+    color:gold;
+    font-family: 'Comic Sans MS';
+}
+
+#games{
+    /*width:180px;
+    float:left;
+    text-align:right;*/
+    font-size:x-large;
+    color:orange;
+    font-family: 'Comic Sans MS';
+}
+
+#cashRegister{
+    /*width:180px;
+    float:left;
+    text-align:right;*/
+    font-size:x-large;
+    color:green;
+    font-family: 'Comic Sans MS';
+}
+
+#chessmachine-coinPurses, #chessmachine-games, #chessmachine-cashRegister{
+    width:120px;
+    font-size:large;
+    text-align:right;
+}
+
+#coinPurses, #games, #cashRegister{
+    text-align:right;
+}
+
+
+#win{
+    width:180px;
+    float:left;
+    text-align:right;
+    font-size:xx-large;
+    color:yellow;
+    font-family: 'Comic Sans MS';
+}
+
+
+.clearboth{
+    clear:both;
+}
+
+*.carousel {
+    float:left;
+}
+
+*.carouselButton {
+    padding-left:10px;
+}
+
+
+#carousel1, #carousel2, #carousel3{
+    width:100px;
+    height:100px;
+    margin: 15px;
+    
+}
+
+*.defaultCardBorder{
+    border-style:solid;
+    border-color: yellow;
+}
+
+*.lockedCardBorder{
+    border-style:solid;
+    border-color: red;
+}
+
+
+#previousCarousel1, #previousCarousel2, #previousCarousel3, #nextCarousel1, #nextCarousel2, #nextCarousel3 {
+    width:100px;
+    height:50px;
+    margin: 15px;
+    border-style:solid;
+}
+
+
+button{
+    width:100px;
+    margin: 10px;
+
+    padding: 5px;
+}
+
+button.menu{
+    width:200px;
+    height:50px;
+}
+
+#lockCard button{
+    width:100px;
+}
+
+*.lockDefault {
+    background-color: grey;
+}
+
+*.lockFalse {
+    background-color: green;
+}
+
+*.lockTrue {
+    background-color: red;
+}
+
+*.playButton, *.playNewGameButton, *.insertCoinsButton {
+    width:180px;
+    
+}
+
+*.playButton{
+    color: yellow;
+    background-color:green;
+}
+
+*.playNewGameButton{
+    font-size:larger;
+    color: green;
+    background-color:yellow;
+}
+
+*.insertCoinsButton{
+    font-size:larger;
+    color: gold;
+    background-color:gray;
+}
+
+#play{
+    width:402px;
+    text-align:right;
+}
+
+
+#optionsButton{
+    text-align:left;
+}
+
+.whiteking {
+    background-image:url("../images/pieces/chess_piece_white_king.png");
+    background-repeat: no-repeat;
+}
+.whitequeen {
+    background-image:url("../images/pieces/chess_piece_white_queen.png");
+    background-repeat: no-repeat;
+}
+.whiterook {
+    background-image:url("../images/pieces/chess_piece_white_rook.png");
+    background-repeat: no-repeat;
+}
+.whitebishop {
+    background-image:url("../images/pieces/chess_piece_white_bishop.png");
+    background-repeat: no-repeat;
+}
+.whiteknight {
+    background-image:url("../images/pieces/chess_piece_white_knight.png");
+    background-repeat: no-repeat;
+}
+.whitepawn {
+    background-image:url("../images/pieces/chess_piece_white_pawn.png");
+    background-repeat: no-repeat;
+}
+
+
+.blackking {
+    background-image:url("../images/pieces/chess_piece_black_king.png");
+    background-repeat: no-repeat;
+}
+.blackqueen {
+    background-image:url("../images/pieces/chess_piece_black_queen.png");
+    background-repeat: no-repeat;
+}
+.blackrook {
+    background-image:url("../images/pieces/chess_piece_black_rook.png");
+    background-repeat: no-repeat;
+}
+.blackbishop {
+    background-image:url("../images/pieces/chess_piece_black_bishop.png");
+    background-repeat: no-repeat;
+}
+.blackknight {
+    background-image:url("../images/pieces/chess_piece_black_knight.png");
+    background-repeat: no-repeat;
+}
+.blackpawn {
+    background-image:url("../images/pieces/chess_piece_black_pawn.png");
+    background-repeat: no-repeat;
+}
+
+.option{
+   font-size:large;
+   min-width:300px;
+   display:inline-block;
+}
+
+.selectOption{
+    width:150px;
+}
+
+.number{
+    font-size:large;
+    width:145px;
+    text-align:right;
+}
+
+.thhiscore {
+    font-size:larger;
+}
+ .texthiscore{
+     font-size:large;
+ }
+
+ .numberhiscore{
+    text-align:right;
+}
+
+table.hiscore{
+    border:none;
+}
+
+table.hiscore td{
+    padding-left:20px;
+}
+
+tr.hiscore:nth-child(1){
+    color:gold;
+}
+
+tr.hiscore:nth-child(2){
+    color:silver;
+}
+
+tr.hiscore:nth-child(3){
+    color:#CD7F32;
+}
+
+fieldset {
+    border:none;
+}
+
+div#wrapper {
+position:absolute;
+top: 0px;
+left: 0px;
+padding: 10px;
+}
+
+div#blockHead{
+ padding-left: 15px;
+}
+
+div#specialBox {
+display: none;
+position: absolute;
+top: 300px;
+left: 50px;
+
+z-index: 3;
+margin: 10px auto 0px auto;
+width: 300px; 
+height: 350px;
+background-color:beige;
+color: #000;
+border:2px solid;
+border-radius:25px;
+}
+
+div#overlay {
+display: none;
+z-index: 2;
+background: #000;
+position: fixed;
+width: 100%;
+height: 100%;
+top: 0px;
+left: 0px;
+text-align: center;
+}
+
+.redbox {
+    border:medium;
+    border-color: red;
+}
+
+.buttonClose, .buttonOk{
+    color:black;
+    border-color:black;
+}
+
+.buttonClose:hover, .buttonOk:hover{
+    color:black;
+    border-color:black;
+    background-color:lightgray;
+}
+
+.default{
+    color:green;
+    background: lightgray;
+    border: red solid 1px;
+}
+
+.hightLight{
+    color:green;
+    background: yellow;
+    border: red solid 1px;
+}
+
+#item4.default{
+  color:yellow;  
+  background: green;
+  border: orange solid 1px;
+}
+
+#item4.hightLight{
+  color:gold;  
+  background: red;
+  border: orange solid 1px;
+}
+
+#selected{
+    visibility:hidden;
+}
+
+#grid {
+  padding-top: 15px;
+  display: -ms-grid;
+  border-radius: 100%;
+  width:60px;
+  -ms-grid-columns: 30px 30px 1fr 2fr;
+  -ms-grid-rows: 30px 30px;
+  }
+
+#item4 {
+  text-align:center;
+  border-radius: 100%;
+  -ms-grid-row: 1;
+  -ms-grid-column: 1;
+}
+#item1 {
+  text-align:center;
+  border-radius: 100%;
+  -ms-grid-row: 1;
+  -ms-grid-column: 2;
+}
+#item3 {
+  text-align:center;
+  border-radius: 100%;
+  -ms-grid-row: 2;
+  -ms-grid-column: 1;
+}
+#item2 {
+  text-align:center;
+  border-radius: 100%;
+  -ms-grid-row: 2;
+  -ms-grid-column: 2;
+}
+#info{
+    padding-left:20px;
+    height:20px;
+    color:white;
+    font-size:x-large;
+}
+
+#chessmachine-add5Coins{
+    width:150px;
+}
+

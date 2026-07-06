@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>ChessMachine</title>
+
+        <!-- WinJS references -->
+        <link href="//Microsoft.WinJS.1.0/css/ui-dark.css" rel="stylesheet" />
+        <script src="//Microsoft.WinJS.1.0/js/base.js"></script>
+        <script src="//Microsoft.WinJS.1.0/js/ui.js"></script>
+
+        <!-- ChessMachine references -->
+        <link href="css/default.css" rel="stylesheet" />
+        <link href="css/chessmachine.css" rel="stylesheet" />
+        <script src="js/default.js"></script>
+
+        <script src="Scripts/knockout-3.0.0.js"></script>
+        <script src="Scripts/globalize/globalize.min.js"></script>
+        <script src="Scripts/globalize/cultures/globalize.cultures.min.js"></script>
+        
+        <script src="js/common/common.min.js" type="text/javascript"></script>
+        <script src="js/common/culture.min.js" type="text/javascript"></script>
+
+        <script src="js/option/options.min.js" type="text/javascript" defer="defer"></script>
+        <script src="js/option/optionviewmodel.min.js" type="text/javascript" defer="defer"></script>
+        <script src="js/option/optionbinding.min.js" type="text/javascript" defer="defer"></script>
+
+    </head>
+    <body>
+        <div id="wrapper">
+            <h1 id="option-options">Options</h1>
+            <fieldset>
+                <legend id="option-myOptionsAre">My options are:</legend>
+             <!--   <div>
+                    <label class="option">Your name</label>
+                    <input data-bind="value: option-playerName"/>
+                </div>-->
+                <div>
+                    <label id="option-sound" class="option">Sound</label>
+                    <select class="selectOption" data-bind="options: availableSoundStates, value: option.soundState, optionsText: 'name'"></select>
+                </div>
+            
+                <div>
+                    <label id="option-language" class="option">Language</label>
+                    <select class="selectOption" data-bind="options: $root.availableLanguages, value: option.language, optionsText: 'name'"></select>
+                </div>
+                <div>
+                    <label id="option-theCashRegisterStartWith" class="option">The Cash Register start with</label>
+                    <input class="number" data-bind="value: option.startCashRegister">
+                    <label id="option-coins"class="option">coins</label>
+                </div>
+                <div>
+                    <label id="option-yourCoinPursesStartWith" class="option">Your Coin Purses start with</label>
+                    <input class="number" data-bind="value: option.startCoinPurses">
+                    <label id="option-coins2" class="option">coins</label>
+                </div>
+            </fieldset>
+            <div>
+              <p id="info"> </p>
+            </div>
+            <div id="optionsButton">
+                <button id="option-menu" type="button" onclick="window.location.href='menu.html'">Menu</button>
+                <button id="option-save" data-bind="click: store">Save</button>
+            
+            </div>
+            <div>
+                <button id="option-resetGame" type="button" onclick="optionViewModel.resetGame()" title="Reset current game">Reset game</button>
+            </div>
+            <div>
+              <button id="option-resetAll" type="button" onclick="optionViewModel.resetTables()" title=" Reset Options, current Game and Hi-Score">Reset all</button>
+            </div>
+       </div>
+    </body>
+</html>
