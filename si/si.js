@@ -41,17 +41,17 @@ si.ClearInterval = function(){
     clearInterval(interval);
 };
 
-// si.PlaySound = function(soundId ){
-//     document.getElementById(soundId).play();
-//     si.ClearInterval();
-// };
-
-si.playSound = function(soundId){
-    if(si.isSound()){
-        var sound = document.getElementById(soundId);
-        sound.click();
-    }
+si.PlaySound = function(soundId ){
+    document.getElementById(soundId).play();
+    si.ClearInterval();
 };
+
+// si.playSound = function(soundId){
+//     if(si.isSound()){
+//         var sound = document.getElementById(soundId);
+//         sound.click();
+//     }
+// };
 
 si.CreateAudioElement = function(audioFile, id){
     var audio = document.createElement("AUDIO");
