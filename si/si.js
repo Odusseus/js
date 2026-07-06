@@ -41,10 +41,13 @@ si.ClearInterval = function(){
     clearInterval(interval);
 };
 
-si.PlaySound = function(soundId ){
+
+si.playSound = function(soundId ){
     document.getElementById(soundId).play();
     si.ClearInterval();
 };
+
+
 
 // si.playSound = function(soundId){
 //     if(si.isSound()){
