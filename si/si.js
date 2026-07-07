@@ -43,7 +43,8 @@ si.ClearInterval = function(){
 
 
 si.playSound = function(soundId ){
-    document.getElementById(soundId).play();
+    sound = document.getElementById(soundId)
+    sound.play();
     si.ClearInterval();
 };
 
