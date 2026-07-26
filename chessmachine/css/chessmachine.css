@@ -1,4 +1,11 @@
-﻿h1{
+﻿body { 
+    background-color: black;
+    color: white;
+    font-family: 'Comic Sans MS';
+    font-size: large;
+}
+
+h1{
     padding-bottom: 5px;
     font-size:xx-large
 }
@@ -437,12 +444,12 @@ text-align: center;
 }
 
 #grid {
-  padding-top: 15px;
-  display: -ms-grid;
+  padding: 30px;
   border-radius: 100%;
   width:60px;
-  -ms-grid-columns: 30px 30px 1fr 2fr;
-  -ms-grid-rows: 30px 30px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 10px; 
   }
 
 #item4 {
