@@ -12,7 +12,7 @@ si.Constant = {
     RIGHTBOARD : 320,
     TOPBOARD : 30,
     FLOORBOARD : 370,
-    VERSION : "1.0.39",
+    VERSION : "1.0.40",
     DEFAULTTYPE : 0,
     DEFENDER : 1,
     INVADERTYPE : 2,
@@ -32,7 +32,7 @@ si.Constant = {
     SOUNDINTERVAL : 10,
     HIGHSCOREEURLTEST : "http://localhost/hs/getJson.php",
     HIGHSCOREEURL : "http://www.odusseus.org/si/hs/getJson.php",
-    PRODURL : "http://www.si.odusseus.org/si.html"
+    PRODURL : "https://metalimes.com/si/index.htm"
 };
 
 si.Interval = [];
@@ -73,10 +73,10 @@ si.CreateAudioElement = function(audioFile, id){
 
 si.Load = function() {
     
-    if (window.location.protocol == "https:"){
-        window.location = PRODURL;
-        return;
-    }
+    // if (window.location.protocol == "https:"){
+    //     window.location = si.Constant.PRODURL;
+    //     return;
+    // }
 
     si.CreateAudioElement("sound/shot/215438__taira-komori__shoot02.mp3", si.Constant.AUDIOSHOT1);
     si.CreateAudioElement("sound/shot/28912__junggle__btn102.mp3", si.Constant.AUDIOSHOT2);
